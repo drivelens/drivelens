@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BenchmarkCore
+namespace DiskBenchmark.Library
 {
     /// <summary>
     /// 硬盘信息

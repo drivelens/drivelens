@@ -7,8 +7,8 @@
     <ProjectGuid>{340793BF-436A-438F-B87F-E5C61614F8FC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Runner</RootNamespace>
-    <AssemblyName>Runner</AssemblyName>
+    <RootNamespace>DiskBenchmark.UI</RootNamespace>
+    <AssemblyName>DiskBenchmark</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -94,7 +94,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BenchmarkCore\BenchmarkCore.csproj">
+    <ProjectReference Include="..\Library\Library.csproj">
       <Project>{1cdd4c5a-8dc6-4906-a1af-1d70d95c22b5}</Project>
       <Name>BenchmarkCore</Name>
     </ProjectReference>
