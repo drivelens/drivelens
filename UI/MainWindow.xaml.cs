@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Runner
+namespace DiskBenchmark.UI
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
