@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BenchmarkCore
 {
-    class Utility
+    static class Utility
     {
         public static IEnumerable<T> ForEach<T, TResult>(this IEnumerable<T> list, Func<T, TResult> work)
         {
