@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BenchmarkCore
+namespace DiskBenchmark.Library
 {
     /// <summary>
     /// 硬盘信息
     /// </summary>
-    public class DiskInfo
+    public sealed class DiskInfo
     {
-        private PartitionInfo[] _partitions;
+        private List<PartitionInfo> _partitions;
 
         #region 属性
         /// <summary>
@@ -27,7 +27,7 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceID { get; internal set; }
+        public string DeviceId { get; internal set; }
 
         /// <summary>
         /// 
@@ -52,7 +52,7 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public string Type { get; internal set; }
+        public string DiskType { get; internal set; }
 
         /// <summary>
         /// 
@@ -62,7 +62,7 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public PartitionInfo[] Partitions
+        public List<PartitionInfo> Partitions
         {
             get { return _partitions; }
             internal set
@@ -77,8 +77,10 @@ namespace BenchmarkCore
     /// <summary>
     /// 分区信息
     /// </summary>
-    public class PartitionInfo
+    public sealed class PartitionInfo
     {
+        DiskInfo drive;
+
         /// <summary>
         /// 
         /// </summary>
@@ -87,7 +89,7 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceID { get; internal set; }
+        public string DeviceId { get; internal set; }
 
         /// <summary>
         /// 
@@ -117,7 +119,7 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public uint Type { get; internal set; }
+        public uint PartionType { get; internal set; }
 
         /// <summary>
         /// 
@@ -132,6 +134,14 @@ namespace BenchmarkCore
         /// <summary>
         /// 
         /// </summary>
-        public DiskInfo Drive { get; internal set; }
+        public DiskInfo Drive
+        {
+            get { return drive; }
+            internal set
+            {
+                drive = value;
+                drive.Partitions.Add(this);
+            }
+        }
     }
 }
