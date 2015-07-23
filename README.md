@@ -1,7 +1,7 @@
-# DiskBenchmark
-硬盘测试程序
+# 磁盘性能测试程序（DiskBenchmark）
+本程序如其名，是一个用于测试磁盘性能的开源程序。
 ## 项目清单
-### Runner
+### UI
 主界面
-### BenchmarkCore
+### Library
 测试逻辑
