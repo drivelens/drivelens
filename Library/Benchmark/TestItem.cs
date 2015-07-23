@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,7 @@ namespace DiskBenchmark.Library
         public virtual TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
         {
             var sequenceReadTimeTotal = new TimeSpan(0);
-            TestFile.OpenFileStream(partition, type, BlockSize,
+            BenchmarkFile.OpenFileStream(partition, type, BlockSize,
                 stream =>
                 {
                     Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
@@ -94,6 +95,7 @@ namespace DiskBenchmark.Library
 
     public abstract class RandomBenchmarkProvider : IBenchmarkProvider<TimeSpan, BenchmarkType>
     {
+        Random random = new Random();
         //protected readonly int BlockSize = 4096;
         protected abstract int BlockSize { get; }
 
@@ -101,6 +103,24 @@ namespace DiskBenchmark.Library
 
         public TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
         {
+
+            BenchmarkFile.OpenFileStream(partition, type, BlockSize, stream =>
+            {
+                byte[] randomArray;
+                TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
+                for (uint i = 0; i < BlockCount; i++)
+                {
+                    randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                    long pos = BlockSize * this.random.Next(BlockCount);
+                    var array = randomArray;
+                    randomBenchmarkTimeTotal += Utility.GetTime(() =>
+                    {
+                        stream.Seek(pos, SeekOrigin.Begin);
+                        stream.Write(array, 0, array.Length);
+                    });
+                }
+                //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
+            });
             throw new NotImplementedException();
         }
     }
