@@ -89,7 +89,7 @@ namespace DiskBenchmark.Library
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceId { get; internal set; }
+        public string DeviceId { get; set; }
 
         /// <summary>
         /// 

@@ -15,7 +15,7 @@ namespace DiskBenchmark.Library
     /// <summary>
     /// 测试文件的有关操作
     /// </summary>
-    public static class TestFile
+    public static class BenchmarkFile
     {
         #region 标志位
         private const uint FILE_FLAG_NO_BUFFERING = 0x20000000;
