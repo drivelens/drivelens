@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static System.Math;
 
 namespace DiskBenchmark.Library
 {
@@ -23,7 +20,9 @@ namespace DiskBenchmark.Library
     /// <typeparam name="TType"></typeparam>
     public interface IBenchmarkProvider<out TResult, in TType>
     {
-        TResult GetTest(PartitionInfo partition, TType type);
+        TResult GetTestResult(PartitionInfo partition, TType type);
+
+        string Name { get; }
     }
 
     /// <summary>
@@ -62,7 +61,21 @@ namespace DiskBenchmark.Library
 
         public abstract int BlockCount { get; }
 
-        public abstract TimeSpan GetTest(PartitionInfo partition, BenchmarkType type);
+        public abstract string Name { get; }
+
+        public virtual TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type)
+        {
+            TimeSpan result = new TimeSpan();
+            BenchmarkFile.OpenFileStream(partition, type, BlockSize,
+                   stream =>
+                   {
+                       Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
+                       result = DoBenchmarkAlgorithm(stream, work, type);
+                   });
+            return result;
+        }
+
+        protected abstract TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type);
     }
 
     /// <summary>
@@ -70,61 +83,91 @@ namespace DiskBenchmark.Library
     /// </summary>
     public class SequenceBenchmarkProvider : BenchmarkProviderBase
     {
-        readonly int blockSize = 0x1000000; // 16MB
-        readonly int blockCount = 64;
+        public override int BlockSize { get; } = 0x1000000;
 
-        public override int BlockSize
-        {
-            get { return this.blockSize; }
-        }
+        public override int BlockCount { get; } = 64;
 
-        public override int BlockCount
-        {
-            get { return this.blockCount; }
-        }
+        //TODO:本地化
+        public override string Name { get; } = "连续测试";
 
-        public override TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type)
         {
             var sequenceReadTimeTotal = new TimeSpan(0);
-            BenchmarkFile.OpenFileStream(partition, type, BlockSize,
-                stream =>
-                {
-                    Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
-
-                    byte[] buffer = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-                    for (int i = 0; i < BlockCount; i++)
-                    {
-                        sequenceReadTimeTotal += Utility.GetTime(() => work(buffer, 0, buffer.Length));
-                    }
-                });
+            byte[] buffer = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+            for (int i = 0; i < BlockCount; i++)
+            {
+                sequenceReadTimeTotal += Utility.GetTime(() => work(buffer, 0, buffer.Length));
+            }
             return sequenceReadTimeTotal;
         }
     }
 
     public abstract class RandomBenchmarkProvider : BenchmarkProviderBase
     {
+        protected int BlockCountValue = 0x40000;
+
+        public override int BlockCount => this.BlockCountValue;
+
+        public virtual double EvalutionCount => 0x200;
+
         Random random = new Random();
         //protected readonly int BlockSize = 4096;
-        public override TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
-        {
-            BenchmarkFile.OpenFileStream(partition, type, BlockSize, stream =>
-            {
-                Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
+        //public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type)
+        //{
+        //    TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
+        //    BenchmarkFile.OpenFileStream(partition, type, BlockSize,
+        //        stream =>
+        //        {
+        //            Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
 
-                TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
-                for (uint i = 0; i < BlockCount; i++)
+        //            for (uint i = 0; i < BlockCount; i++)
+        //            {
+        //                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+        //                long posision = BlockSize * this.random.Next(BlockCount);
+        //                randomBenchmarkTimeTotal += Utility.GetTime(() =>
+        //                {
+        //                    stream.Seek(posision, SeekOrigin.Begin);
+        //                    work(randomArray, 0, randomArray.Length);
+        //                });
+        //            }
+        //            //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
+        //        });
+        //    throw new NotImplementedException();
+        //}
+
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type)
+        {
+            var randomBenchmarkTimeTotal = new TimeSpan(0);
+            for (int i = 0; i < BlockCount; i++)
+            {
+                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                long posision = BlockSize * this.random.Next(BlockCount);
+                randomBenchmarkTimeTotal += Utility.GetTime(() =>
                 {
-                    var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-                    long posision = BlockSize * this.random.Next(BlockCount);
-                    randomBenchmarkTimeTotal += Utility.GetTime(() =>
-                    {
-                        stream.Seek(posision, SeekOrigin.Begin);
-                        work(randomArray, 0, randomArray.Length);
-                    });
-                }
-                //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
-            });
-            throw new NotImplementedException();
+                    stream.Seek(posision, SeekOrigin.Begin);
+                    work(randomArray, 0, randomArray.Length);
+                });
+
+                var blockCountIn60S = (double)i / randomBenchmarkTimeTotal.Ticks * 60;
+                this.BlockCountValue = (int)Min(this.BlockCountValue, Max(Max(i,EvalutionCount), blockCountIn60S));
+            }
+            return randomBenchmarkTimeTotal;
         }
+    }
+
+    public class Random4KBenchmarkProvider : RandomBenchmarkProvider
+    {
+        public override int BlockSize => 0x1000;
+
+        //TODO:本地化
+        public override string Name { get; } = "4K随机测试";
+    }
+
+    public class Random512KBenchmarkProvider : RandomBenchmarkProvider
+    {
+        public override int BlockSize => 0x80000;
+
+        //TODO:本地化
+        public override string Name { get; } = "512K随机测试";
     }
 }
