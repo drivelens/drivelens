@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using static System.Math;
 
 namespace DiskBenchmark.Library
@@ -85,7 +88,7 @@ namespace DiskBenchmark.Library
     {
         public override int BlockSize { get; } = 0x1000000;
 
-        public override int BlockCount { get; } = 64;
+        public override int BlockCount { get; } = 0X40;
 
         //TODO:本地化
         public override string Name { get; } = "连续测试";
@@ -102,7 +105,7 @@ namespace DiskBenchmark.Library
         }
     }
 
-    public abstract class RandomBenchmarkProvider : BenchmarkProviderBase
+    public abstract class RandomBenchmarkProviderBase : BenchmarkProviderBase
     {
         protected int BlockCountValue = 0x40000;
 
@@ -110,7 +113,7 @@ namespace DiskBenchmark.Library
 
         public virtual double EvalutionCount => 0x200;
 
-        Random random = new Random();
+        protected Random RandomGen = new Random();
         //protected readonly int BlockSize = 4096;
         //public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type)
         //{
@@ -141,7 +144,7 @@ namespace DiskBenchmark.Library
             for (int i = 0; i < BlockCount; i++)
             {
                 var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-                long posision = BlockSize * this.random.Next(BlockCount);
+                long posision = BlockSize * this.RandomGen.Next(BlockCount);
                 randomBenchmarkTimeTotal += Utility.GetTime(() =>
                 {
                     stream.Seek(posision, SeekOrigin.Begin);
@@ -155,7 +158,7 @@ namespace DiskBenchmark.Library
         }
     }
 
-    public class Random4KBenchmarkProvider : RandomBenchmarkProvider
+    public class Random4KBenchmarkProviderBase : RandomBenchmarkProviderBase
     {
         public override int BlockSize => 0x1000;
 
@@ -163,11 +166,44 @@ namespace DiskBenchmark.Library
         public override string Name { get; } = "4K随机测试";
     }
 
-    public class Random512KBenchmarkProvider : RandomBenchmarkProvider
+    public class Random512KBenchmarkProviderBase : RandomBenchmarkProviderBase
     {
         public override int BlockSize => 0x80000;
 
         //TODO:本地化
         public override string Name { get; } = "512K随机测试";
+    }
+
+    public class MultiThreadRandomBenchmarkProvider : BenchmarkProviderBase
+    {
+        public override int BlockSize { get; } = 0x1000;
+
+        public override int BlockCount { get; } = 0x40;
+
+        public override string Name { get; } = "4K64线程";
+
+        private readonly int outstandingThreadsCount = 0x40;
+
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type)
+        {
+            var randomBenchmarkTimes=new TimeSpan[this.outstandingThreadsCount];
+            Parallel.For(0, this.outstandingThreadsCount,
+                i =>
+                {
+                    var random = new Random();
+                    for (int j = 0; j < BlockCount/this.outstandingThreadsCount; j++)
+                    {
+                        var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                        long posision = BlockSize*random.Next(BlockCount);
+                        randomBenchmarkTimes[i] += Utility.GetTime(() =>
+                        {
+                            stream.Seek(posision, SeekOrigin.Begin);
+                            work(randomArray, 0, randomArray.Length);
+                        });
+                    }
+
+                });
+            return randomBenchmarkTimes.Aggregate((a, b) => a + b);
+        }
     }
 }
