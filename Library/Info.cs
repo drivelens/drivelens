@@ -20,47 +20,47 @@ namespace DiskBenchmark.Library
         /// <summary>
         /// 获取此驱动器的控制器名称。
         /// </summary>
-        public string ControllerName { get; set; }
+        public string ControllerName { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的控制器服务名称。
         /// </summary>
-        public string ControllerService { get; set; }
+        public string ControllerService { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的路径。
         /// </summary>
-        public string DeviceId { get; set; }
+        public string DeviceId { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的固件版本。
         /// </summary>
-        public string Firmware { get; set; }
+        public string Firmware { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的型号。
         /// </summary>
-        public string Model { get; set; }
+        public string Model { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的的序列号。
         /// </summary>
-        public string SerialNumber { get; set; }
+        public string SerialNumber { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的容量。
         /// </summary>
-        public ulong Capacity { get; set; }
+        public ulong Capacity { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的类型。
         /// </summary>
-        public string DiskType { get; set; }
+        public string DiskType { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的序号。
         /// </summary>
-        public int Index { get; set; }
+        public int Index { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的所有分区。
@@ -90,7 +90,7 @@ namespace DiskBenchmark.Library
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public ulong BlockSize { get; set; }
+        public ulong BlockSize { get; internal set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -104,42 +104,42 @@ namespace DiskBenchmark.Library
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public ulong StartingOffset { get; set; }
+        public ulong StartingOffset { get; internal set; }
 
         /// <summary>
         /// 获取此分区的容量。
         /// </summary>
-        public ulong Capacity { get; set; }
+        public ulong Capacity { get; internal set; }
 
         /// <summary>
         /// 获取此分区的序号。
         /// </summary>
-        public int Index { get; set; }
+        public int Index { get; internal set; }
 
         /// <summary>
         /// 获取此分区的卷标。
         /// </summary>
-        public string VolumeName { get; set; }
+        public string VolumeName { get; internal set; }
 
         /// <summary>
         /// 获取此分区的序列号。
         /// </summary>
-        public string SerialNumber { get; set; }
+        public string SerialNumber { get; internal set; }
 
         /// <summary>
         /// 获取此分区的类型。
         /// </summary>
-        public uint PartionType { get; set; }
+        public uint PartionType { get; internal set; }
 
         /// <summary>
         /// 获取此分区的空闲空间。
         /// </summary>
-        public ulong FreeSpace { get; set; }
+        public ulong FreeSpace { get; internal set; }
 
         /// <summary>
         /// 获取此分区的文件系统。
         /// </summary>
-        public string FileSystem { get; set; }
+        public string FileSystem { get; internal set; }
 
         /// <summary>
         /// 获取此分区所属的磁盘。
