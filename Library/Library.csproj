@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Benchmark\FileOperator.cs" />
+    <Compile Include="Benchmark\IOSpeed.cs" />
     <Compile Include="Benchmark\TestItem.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="NativeMethods.cs" />

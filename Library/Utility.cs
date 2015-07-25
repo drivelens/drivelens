@@ -79,7 +79,7 @@ namespace DiskBenchmark.Library
             else if (type.HasFlag(BenchmarkType.Write) && !type.HasFlag(BenchmarkType.Read))
                 return stream.Write;
             else
-                throw new ArgumentException($"{nameof(type)}参数不能同时Write和Read标志。",nameof(type));
+                throw new ArgumentException($"{nameof(type)}参数不能同时具有Write和Read标志。",nameof(type));
         }
     }
 }
