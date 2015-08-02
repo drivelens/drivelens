@@ -34,11 +34,19 @@ namespace DiskMagic.DetectionLibrary
             {
                 partition.BlockSize = (long)(ulong)volumeObject["BlockSize"];
             }
+            else
+            {
+                partition.BlockSize = -1;
+            }
             ManagementObject diskPartitionObject = Utility.GetDiskPartitionObjectFromDeviceId(partition.DeviceId);
             if (diskPartitionObject != null)
             {
                 partition.Index = (int)(uint)diskPartitionObject["Index"];
                 partition.StartingOffset = (long)(ulong)diskPartitionObject["StartingOffset"];
+            }
+            else
+            {
+                partition.StartingOffset = partition.Index = -1;
             }
             return partition;
         }
