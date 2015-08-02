@@ -9,23 +9,7 @@ namespace DiskMagic.DetectionLibrary
 {
     public static class Utility
     {
-        public static PartitionInfo CreatePartitionInfoFromLogicalDiskObject(ManagementObject logicalDiskObject)
-        {
-            PartitionInfo partition = new PartitionInfo();
-            partition.Capacity = (ulong)logicalDiskObject["Size"];
-            partition.FreeSpace = (ulong)logicalDiskObject["FreeSpace"];
-            partition.PartionType = (uint)logicalDiskObject["DriveType"];
-            partition.FileSystem = (string)logicalDiskObject["FileSystem"];
-            partition.DeviceId = (string)logicalDiskObject["DeviceID"];
-            partition.VolumeName = (string)logicalDiskObject["VolumeName"];
-            partition.SerialNumber = ((string)logicalDiskObject["VolumeSerialNumber"]).Trim();
-            ManagementObject volumeObject = GetVolumeObjectFromDeviceId(partition.DeviceId);
-            partition.BlockSize = (ulong)volumeObject["BlockSize"];
-            ManagementObject diskPartitionObject = GetDiskPartitionObjectFromDeviceId(partition.DeviceId);
-            partition.Index = (int)(uint)diskPartitionObject["Index"];
-            partition.StartingOffset = (ulong)diskPartitionObject["StartingOffset"];
-            return partition;
-        }
+        
 
         public static ManagementObject GetDiskPartitionObjectFromDeviceId(string partitionId)
         {
