@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using DiskBenchmark.Library;
+using DiskMagic.BenchmarkLibrary;
+using DiskMagic.DetectionLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LibraryUnitTest
+namespace BenchmarkLibraryTests
 {
     [TestClass]
     public class TestFileTest

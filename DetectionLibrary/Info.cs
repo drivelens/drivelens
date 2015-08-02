@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskBenchmark.Library
+namespace DiskMagic.DetectionLibrary
 {
     /// <summary>
     /// 表示一个驱动器。

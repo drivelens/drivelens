@@ -7,8 +7,8 @@
     <ProjectGuid>{1CDD4C5A-8DC6-4906-A1AF-1D70D95C22B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DiskBenchmark.Library</RootNamespace>
-    <AssemblyName>Library</AssemblyName>
+    <RootNamespace>DiskMagic.BenchmarkLibrary</RootNamespace>
+    <AssemblyName>BenchmarkLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -47,13 +47,16 @@
     <Compile Include="Benchmark\FileOperator.cs" />
     <Compile Include="Benchmark\IOSpeed.cs" />
     <Compile Include="Benchmark\TestItem.cs" />
-    <Compile Include="GetInfo\Utility.cs" />
-    <Compile Include="Info.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DetectionLibrary\DetectionLibrary.csproj">
+      <Project>{c5e2bbf9-9047-491d-a032-7ec025c5cc16}</Project>
+      <Name>DetectionLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

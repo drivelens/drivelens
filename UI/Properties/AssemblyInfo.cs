@@ -7,12 +7,12 @@ using System.Windows;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Runner")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DiskMagic - 磁盘综合工具")]
+[assembly: AssemblyDescription("一款用于检测磁盘的综合工具。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Runner")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("DiskMagic")]
+[assembly: AssemblyCopyright("Copyright © Contributors 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

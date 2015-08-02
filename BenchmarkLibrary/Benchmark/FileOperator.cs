@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32.SafeHandles;
+using DiskMagic.DetectionLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskBenchmark.Library
+namespace DiskMagic.BenchmarkLibrary
 {
     /// <summary>
     /// 测试文件的有关操作

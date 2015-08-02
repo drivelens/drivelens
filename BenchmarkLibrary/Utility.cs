@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskBenchmark.Library
+namespace DiskMagic.BenchmarkLibrary
 {
     public static class Utility
     {

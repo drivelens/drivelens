@@ -1,7 +1,9 @@
-# 磁盘性能测试程序（DiskBenchmark）
-本程序如其名，是一个用于测试磁盘性能的开源程序。
+# 磁盘魔术师（DiskMagic）
+本程序如其名，是一个综合性测试磁盘的开源程序。
 ## 项目清单
 ### UI
 主界面
-### Library
+### BenchmarkLibrary
 测试逻辑
+### DetectionLibrary
+磁盘检测逻辑

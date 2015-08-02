@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 // ReSharper disable InconsistentNaming
 
-namespace DiskBenchmark.Library
+namespace DiskMagic.BenchmarkLibrary
 {
     public struct IOSpeed
     {

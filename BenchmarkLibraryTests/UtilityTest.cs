@@ -2,10 +2,10 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using DiskBenchmark.Library;
+using DiskMagic.BenchmarkLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LibraryUnitTest
+namespace BenchmarkLibraryTests
 {
     /// <summary>
     /// UtilityTest 的摘要说明

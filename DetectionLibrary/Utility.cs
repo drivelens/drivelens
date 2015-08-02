@@ -5,7 +5,7 @@ using System.Text;
 using System.Management;
 using System.Threading.Tasks;
 
-namespace DiskBenchmark.Library.GetInfo
+namespace DiskMagic.DetectionLibrary
 {
     public class Utility
     {

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DiskMagic.DetectionLibrary;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Math;
 
-namespace DiskBenchmark.Library
+namespace DiskMagic.BenchmarkLibrary
 {
     ///// <summary>
     ///// 表示一个单独的测试
