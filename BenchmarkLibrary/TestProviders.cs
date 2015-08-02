@@ -247,7 +247,7 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 表示4K64线程测试。
     /// </summary>
-    public class MultiThreadRandomBenchmarkProvider : BenchmarkProviderBase
+    public class Random4K64ThreadRandomBenchmarkProvider : BenchmarkProviderBase
     {
         public override int BlockSize { get; } = 0x1000;
 

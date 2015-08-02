@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace DiskMagic.BenchmarkLibrary
         /// <returns></returns>
         public static TimeSpan GetTime(Action work)
         {
-            GC.Collect();
+            //并没有必要调用GC
+            //GC.Collect();
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
@@ -42,31 +44,34 @@ namespace DiskMagic.BenchmarkLibrary
             return stopwatch.Elapsed;
         }
 
-        private static Dictionary<int, byte[]> cacheData = new Dictionary<int, byte[]>();
+        //private static Dictionary<int, byte[]> cacheData = new Dictionary<int, byte[]>();
+        private static ConcurrentDictionary<int, byte[]> cacheData = new ConcurrentDictionary<int, byte[]>();
 
         private static Random random = new Random();
 
         /// <summary>
-        /// 计算随机数据。
+        /// 以线程安全的方式计算随机数据。
         /// </summary>
         /// <param name="size">需要的字节数</param>
-        /// <param name="compressible">是否可压缩</param>
+        /// <param name="compressible">是否要求可压缩</param>
         /// <returns></returns>
         public static byte[] GetData(int size, bool compressible)
         {
             if (compressible)
             {
+                //如果要求可以压缩，获取缓存中数据。
                 byte[] cache;
-                cacheData.TryGetValue(size, out cache);
-                return cache ?? GetData(size, false);
+                bool hasValue = cacheData.TryGetValue(size, out cache);
+                return hasValue ? cache : GetData(size, false);
             }
             else
             {
+                //如果要求不可压缩,重新计算
                 var data = new byte[size];
                 random.NextBytes(data);
 
-                if (!cacheData.ContainsKey(size))
-                    cacheData.Add(size, data);
+                //更新缓存
+                cacheData.AddOrUpdate(size, data, (key, val) => val);
 
                 return data;
             }
