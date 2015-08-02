@@ -129,6 +129,11 @@ namespace DiskMagic.BenchmarkLibrary
             TimeSpan time = GetTestResult(partition, arg, cancellationToken);
             return new IOSpeed(((double) BlockCount * BlockSize / 0x100000) / time.TotalSeconds);
         }
+
+        public IBenchmarkProvider<IOSpeed, BenchmarkType> AsIOSpeedBenchmarkProvider()
+        {
+            return this;
+        }
     }
 
     /// <summary>
@@ -136,6 +141,8 @@ namespace DiskMagic.BenchmarkLibrary
     /// </summary>
     public class SequenceBenchmarkProvider : BenchmarkProviderBase
     {
+        internal SequenceBenchmarkProvider() { }
+
         public override int BlockSize { get; } = 0x1000000;
 
         public override int BlockCount { get; } = 0X40;
@@ -168,29 +175,6 @@ namespace DiskMagic.BenchmarkLibrary
         public abstract double EvalutionCount { get; }
 
         protected Random RandomGen = new Random();
-        //protected readonly int BlockSize = 4096;
-        //public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type)
-        //{
-        //    TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
-        //    BenchmarkFile.OpenFileStream(partition, type, BlockSize,
-        //        stream =>
-        //        {
-        //            Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
-
-        //            for (uint i = 0; i < BlockCount; i++)
-        //            {
-        //                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-        //                long posision = BlockSize * this.random.Next(BlockCount);
-        //                randomBenchmarkTimeTotal += Utility.GetTime(() =>
-        //                {
-        //                    stream.Seek(posision, SeekOrigin.Begin);
-        //                    work(randomArray, 0, randomArray.Length);
-        //                });
-        //            }
-        //            //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
-        //        });
-        //    throw new NotImplementedException();
-        //}
 
         protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
         {
@@ -217,8 +201,10 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 表示4K随机测试。
     /// </summary>
-    public class Random4KBenchmarkProviderBase : RandomBenchmarkProviderBase
+    public class Random4KBenchmarkProvider : RandomBenchmarkProviderBase
     {
+        internal Random4KBenchmarkProvider() { }
+
         public override int BlockSize => 0x1000;
 
         protected override int BlockCountValue { get; set; } = 0x40000;
@@ -232,8 +218,10 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 表示512K随机测试。
     /// </summary>
-    public class Random512KBenchmarkProviderBase : RandomBenchmarkProviderBase
+    public class Random512KBenchmarkProvider : RandomBenchmarkProviderBase
     {
+        internal Random512KBenchmarkProvider() { }
+
         public override int BlockSize => 0x80000;
 
         public override int BlockCount => 0x800;
@@ -249,6 +237,8 @@ namespace DiskMagic.BenchmarkLibrary
     /// </summary>
     public class Random4K64ThreadRandomBenchmarkProvider : BenchmarkProviderBase
     {
+        internal Random4K64ThreadRandomBenchmarkProvider() { }
+
         public override int BlockSize { get; } = 0x1000;
 
         public override int BlockCount { get; } = 0x40;
