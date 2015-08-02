@@ -72,12 +72,14 @@ namespace DiskBenchmark.Library
             }
         }
 
-        public static Action<byte[], int, int> GetReadOrWriteAction(BenchmarkType type,Stream stream)
+        public static Action<byte[], int, int> GetReadOrWriteAction(BenchmarkType type, Stream stream)
         {
-            if (type.HasFlag(BenchmarkType.Read))
+            if (type.HasFlag(BenchmarkType.Read) && !type.HasFlag(BenchmarkType.Write))
                 return ((bytes, i, length) => stream.Read(bytes, i, length));
-            else
+            else if (type.HasFlag(BenchmarkType.Write) && !type.HasFlag(BenchmarkType.Read))
                 return stream.Write;
+            else
+                throw new ArgumentException($"{nameof(type)}参数不能同时具有Write和Read标志。",nameof(type));
         }
     }
 }

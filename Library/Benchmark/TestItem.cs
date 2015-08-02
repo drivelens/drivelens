@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using static System.Math;
 
 namespace DiskBenchmark.Library
 {
@@ -19,22 +19,50 @@ namespace DiskBenchmark.Library
     /// <summary>
     /// 表示一类测试。
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    /// <typeparam name="TType"></typeparam>
-    public interface IBenchmarkProvider<out TResult, in TType>
+    /// <typeparam name="TResult">测试结果的类型</typeparam>
+    /// <typeparam name="TArg">测试所需参数的类型</typeparam>
+    public interface IBenchmarkProvider<out TResult, TArg>
     {
-        TResult GetTest(PartitionInfo partition, TType type);
+        /// <summary>
+        /// 返回测试结果。
+        /// </summary>
+        /// <param name="partition">测试分区</param>
+        /// <param name="arg">测试所需参数</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        TResult GetTestResult(PartitionInfo partition, TArg arg, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// 获取测试的名称。
+        /// </summary>
+        string Name { get; }
     }
 
+    // TODO:需要更清楚的摘要。
     /// <summary>
-    /// 测试类型：读/写。
+    /// 测试类型
     /// </summary>
     [Flags]
     public enum BenchmarkType
     {
+        /// <summary>
+        /// 默认。
+        /// </summary>
         None = 0x0,
+
+        /// <summary>
+        /// 读测试。
+        /// </summary>
         Read = 0x01,
+
+        /// <summary>
+        /// 写测试。
+        /// </summary>
         Write = 0x02,
+
+        /// <summary>
+        /// 可压缩。
+        /// </summary>
         Compressible = 0x04,
     }
 
@@ -57,71 +85,212 @@ namespace DiskBenchmark.Library
     //}
 
     /// <summary>
-    /// 
+    /// 用作分块读写测试的基类。
     /// </summary>
-    public class SequenceBenchmarkProvider : IBenchmarkProvider<TimeSpan, BenchmarkType>
+    public abstract class BenchmarkProviderBase : IBenchmarkProvider<TimeSpan, BenchmarkType>, IBenchmarkProvider<IOSpeed, BenchmarkType>
     {
-        readonly int blockSize = 0x1000000; // 16MB
-        readonly int blockCount = 64;
+        /// <summary>
+        /// 获取每块大小。
+        /// </summary>
+        public abstract int BlockSize { get; }
 
-        protected virtual int BlockSize
+        /// <summary>
+        /// 获取总块数。
+        /// </summary>
+        public abstract int BlockCount { get; }
+
+        public abstract string Name { get; }
+
+        public virtual TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
         {
-            get { return this.blockSize; }
-        }
-
-        protected virtual int BlockCount
-        {
-            get { return this.blockCount; }
-        }
-
-
-        public virtual TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
-        {
-            var sequenceReadTimeTotal = new TimeSpan(0);
+            TimeSpan result = new TimeSpan();
             BenchmarkFile.OpenFileStream(partition, type, BlockSize,
                 stream =>
                 {
                     Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
-
-                    byte[] buffer = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-                    for (int i = 0; i < BlockCount; i++)
-                    {
-                        sequenceReadTimeTotal += Utility.GetTime(() => work(buffer, 0, buffer.Length));
-                    }
+                    result = DoBenchmarkAlgorithm(stream, work, type, cancellationToken);
                 });
+            return result;
+        }
+
+        /// <summary>
+        /// 测试核心算法
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="work"></param>
+        /// <param name="type"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        protected abstract TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken);
+
+        IOSpeed IBenchmarkProvider<IOSpeed, BenchmarkType>.GetTestResult(PartitionInfo partition, BenchmarkType arg, CancellationToken cancellationToken)
+        {
+            TimeSpan time = GetTestResult(partition, arg, cancellationToken);
+            return new IOSpeed(((double) BlockCount * BlockSize / 0x100000) / time.TotalSeconds);
+        }
+    }
+
+    /// <summary>
+    /// 表示连续测试。
+    /// </summary>
+    public class SequenceBenchmarkProvider : BenchmarkProviderBase
+    {
+        public override int BlockSize { get; } = 0x1000000;
+
+        public override int BlockCount { get; } = 0X40;
+
+        //TODO:本地化
+        public override string Name { get; } = "连续测试";
+
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
+        {
+            var sequenceReadTimeTotal = new TimeSpan(0);
+            byte[] buffer = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+            for (int i = 0; i < BlockCount; i++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();   //可以取消
+                sequenceReadTimeTotal += Utility.GetTime(() => work(buffer, 0, buffer.Length));
+            }
             return sequenceReadTimeTotal;
         }
     }
 
-    public abstract class RandomBenchmarkProvider : IBenchmarkProvider<TimeSpan, BenchmarkType>
+    /// <summary>
+    /// 用作随机测试的基类。
+    /// </summary>
+    public abstract class RandomBenchmarkProviderBase : BenchmarkProviderBase
     {
-        Random random = new Random();
+        public override int BlockCount => this.BlockCountValue;
+
+        protected virtual int BlockCountValue { get; set; }
+
+        public abstract double EvalutionCount { get; }
+
+        protected Random RandomGen = new Random();
         //protected readonly int BlockSize = 4096;
-        protected abstract int BlockSize { get; }
+        //public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type)
+        //{
+        //    TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
+        //    BenchmarkFile.OpenFileStream(partition, type, BlockSize,
+        //        stream =>
+        //        {
+        //            Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
 
-        protected abstract int BlockCount { get; }
+        //            for (uint i = 0; i < BlockCount; i++)
+        //            {
+        //                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+        //                long posision = BlockSize * this.random.Next(BlockCount);
+        //                randomBenchmarkTimeTotal += Utility.GetTime(() =>
+        //                {
+        //                    stream.Seek(posision, SeekOrigin.Begin);
+        //                    work(randomArray, 0, randomArray.Length);
+        //                });
+        //            }
+        //            //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
+        //        });
+        //    throw new NotImplementedException();
+        //}
 
-        public TimeSpan GetTest(PartitionInfo partition, BenchmarkType type)
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
         {
-
-            BenchmarkFile.OpenFileStream(partition, type, BlockSize, stream =>
+            var randomBenchmarkTimeTotal = new TimeSpan(0);
+            for (int i = 0; i < BlockCount; i++)
             {
-                byte[] randomArray;
-                TimeSpan randomBenchmarkTimeTotal = new TimeSpan(0);
-                for (uint i = 0; i < BlockCount; i++)
+                cancellationToken.ThrowIfCancellationRequested();   //可以取消
+
+                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                long posision = BlockSize * this.RandomGen.Next(BlockCount);
+                randomBenchmarkTimeTotal += Utility.GetTime(() =>
                 {
-                    randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
-                    long pos = BlockSize * this.random.Next(BlockCount);
-                    var array = randomArray;
-                    randomBenchmarkTimeTotal += Utility.GetTime(() =>
+                    stream.Seek(posision, SeekOrigin.Begin);
+                    work(randomArray, 0, randomArray.Length);
+                });
+
+                var blockCountIn60S = (double) i / randomBenchmarkTimeTotal.Ticks * 60;
+                this.BlockCountValue = (int) Min(this.BlockCountValue, Max(Max(i, EvalutionCount), blockCountIn60S));
+            }
+            return randomBenchmarkTimeTotal;
+        }
+    }
+
+    /// <summary>
+    /// 表示4K随机测试。
+    /// </summary>
+    public class Random4KBenchmarkProviderBase : RandomBenchmarkProviderBase
+    {
+        public override int BlockSize => 0x1000;
+
+        protected override int BlockCountValue { get; set; } = 0x40000;
+
+        public override double EvalutionCount => 0x200;
+
+        //TODO:本地化
+        public override string Name { get; } = "4K随机测试";
+    }
+
+    /// <summary>
+    /// 表示512K随机测试。
+    /// </summary>
+    public class Random512KBenchmarkProviderBase : RandomBenchmarkProviderBase
+    {
+        public override int BlockSize => 0x80000;
+
+        public override int BlockCount => 0x800;
+
+        public override double EvalutionCount => 0x04;
+
+        //TODO:本地化
+        public override string Name { get; } = "512K随机测试";
+    }
+
+    /// <summary>
+    /// 表示4K64线程测试。
+    /// </summary>
+    public class MultiThreadRandomBenchmarkProvider : BenchmarkProviderBase
+    {
+        public override int BlockSize { get; } = 0x1000;
+
+        public override int BlockCount { get; } = 0x40;
+
+        public override string Name { get; } = "4K64线程";
+
+        private readonly int outstandingThreadsCount = 0x40;
+
+        public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
+        {
+            var randomBenchmarkTimes = new TimeSpan[this.outstandingThreadsCount];
+            BenchmarkFile.OpenFileHandle(partition, type,
+                handle =>
+                {
+                    Parallel.For(0, this.outstandingThreadsCount, i =>
                     {
-                        stream.Seek(pos, SeekOrigin.Begin);
-                        stream.Write(array, 0, array.Length);
+                        using (FileStream stream = new FileStream(handle, FileAccess.Read, BlockSize))
+                        {
+                            Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
+                            randomBenchmarkTimes[i] = DoBenchmarkAlgorithm(stream, work, type, cancellationToken);
+                        }
                     });
-                }
-                //BlockCount = Math.Min((uint)(_4KWriteSpeed.SpeedInIOPerSecond * 60), BlockCount);
-            });
-            throw new NotImplementedException();
+                });
+            return randomBenchmarkTimes.Aggregate((a, b) => a + b);
+        }
+
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
+        {
+            var random = new Random();
+            TimeSpan timeTotal = default(TimeSpan);
+            for (int j = 0; j < BlockCount / this.outstandingThreadsCount; j++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();   //可以取消
+
+                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                long posision = BlockSize * random.Next(BlockCount);
+                timeTotal += Utility.GetTime(() =>
+                {
+                    stream.Seek(posision, SeekOrigin.Begin);
+                    work(randomArray, 0, randomArray.Length);
+                });
+            }
+            return timeTotal;
         }
     }
 }

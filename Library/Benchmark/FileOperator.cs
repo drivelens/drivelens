@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,8 +25,6 @@ namespace DiskBenchmark.Library
         private static readonly string workDirectory = @"\SSD测试工具临时文件夹";
         private static readonly string fileName = "临时文件.tmp";
 
-        //private static Random random = new Random();
-
         /// <summary>
         /// 打开测试用文件流，供测试程序使用。
         /// </summary>
@@ -37,6 +34,19 @@ namespace DiskBenchmark.Library
         /// <param name="work">测试程序</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:验证公共方法的参数", MessageId = "3")]
         public static void OpenFileStream(PartitionInfo partition, BenchmarkType benchmarkType, int bufferSize, Action<FileStream> work)
+        {
+            OpenFileHandle(partition, benchmarkType,
+                handle =>
+                {
+                    //打开文件流
+                    using (FileStream stream = new FileStream(handle, FileAccess.Read, bufferSize, false))
+                    {
+                        work(stream);
+                    }
+                });
+        }
+
+        public static void OpenFileHandle(PartitionInfo partition, BenchmarkType benchmarkType, Action<SafeFileHandle> work)
         {
             FileAccess fileAccess = (benchmarkType.HasFlag(BenchmarkType.Read) ? FileAccess.Read : new FileAccess()) | (benchmarkType.HasFlag(BenchmarkType.Write) ? FileAccess.Write : new FileAccess());
             string fullWorkDirectory = partition.DeviceId + workDirectory;
@@ -52,13 +62,9 @@ namespace DiskBenchmark.Library
                 if (handle.IsInvalid)
                 {
                     //TODO: 本地化
-                    throw new IOException(string.Format("测试临时文件创建失败。错误：{0}", errorcode), new Win32Exception(errorcode));
+                    throw new IOException($"测试临时文件创建失败。错误：{errorcode}", new Win32Exception(errorcode));
                 }
-                //打开文件流
-                using (FileStream stream = new FileStream(handle, FileAccess.Read, bufferSize, false))
-                {
-                    work(stream);
-                }
+                work(handle);
             }
             DeleteDirectory(fullWorkDirectory);
         }
