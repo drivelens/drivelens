@@ -9,13 +9,12 @@ namespace DiskMagic.DetectionLibrary
 {
     public static class Utility
     {
-        
-
         public static ManagementObject GetDiskPartitionObjectFromDeviceId(string partitionId)
         {
             using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='" + partitionId + "'} WHERE AssocClass = Win32_LogicalDiskToPartition"))
             {
-                return logicalDiskSearcher.Get().Cast<ManagementObject>().First();
+                var resultObjects = logicalDiskSearcher.Get().Cast<ManagementObject>();
+                return resultObjects.Count() == 0 ? null : resultObjects.First();
             }
         }
 

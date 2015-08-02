@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,10 +30,16 @@ namespace DiskMagic.DetectionLibrary
             partition.VolumeName = (string)logicalDiskObject["VolumeName"];
             partition.SerialNumber = ((string)logicalDiskObject["VolumeSerialNumber"]).Trim();
             ManagementObject volumeObject = Utility.GetVolumeObjectFromDeviceId(partition.DeviceId);
-            partition.BlockSize = (long)(ulong)volumeObject["BlockSize"];
+            if (volumeObject != null)
+            {
+                partition.BlockSize = (long)(ulong)volumeObject["BlockSize"];
+            }
             ManagementObject diskPartitionObject = Utility.GetDiskPartitionObjectFromDeviceId(partition.DeviceId);
-            partition.Index = (int)(uint)diskPartitionObject["Index"];
-            partition.StartingOffset = (long)(ulong)diskPartitionObject["StartingOffset"];
+            if (diskPartitionObject != null)
+            {
+                partition.Index = (int)(uint)diskPartitionObject["Index"];
+                partition.StartingOffset = (long)(ulong)diskPartitionObject["StartingOffset"];
+            }
             return partition;
         }
     }
