@@ -7,18 +7,9 @@ using System.Threading.Tasks;
 
 namespace DiskMagic.DetectionLibrary
 {
-    public class Utility
+    public static class Utility
     {
-        public static PartitionInfo[] GetPartitions()
-        {
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
-            {
-                return logicalDiskSearcher.Get().Cast<ManagementObject>()
-                    .Select(CreatePartitionInfoFromLogicalDiskObject).ToArray();
-            }
-        }
-
-        private static PartitionInfo CreatePartitionInfoFromLogicalDiskObject(ManagementObject logicalDiskObject)
+        public static PartitionInfo CreatePartitionInfoFromLogicalDiskObject(ManagementObject logicalDiskObject)
         {
             PartitionInfo partition = new PartitionInfo();
             partition.Capacity = (ulong)logicalDiskObject["Size"];
@@ -36,16 +27,7 @@ namespace DiskMagic.DetectionLibrary
             return partition;
         }
 
-        private static ulong GetPartitonBlockSize(string partitonId)
-        {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * from Win32_Volume Where Name = '" + partitonId + @"\\'"))
-            using (ManagementObject obj2 = searcher.Get().Cast<ManagementObject>().First())
-            {
-                return (ulong)obj2["BlockSize"];
-            }
-        }
-
-        private static ManagementObject GetDiskPartitionObjectFromDeviceId(string partitionId)
+        public static ManagementObject GetDiskPartitionObjectFromDeviceId(string partitionId)
         {
             using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='" + partitionId + "'} WHERE AssocClass = Win32_LogicalDiskToPartition"))
             {
@@ -53,7 +35,7 @@ namespace DiskMagic.DetectionLibrary
             }
         }
 
-        private static ManagementObject GetVolumeObjectFromDeviceId(string partitionId)
+        public static ManagementObject GetVolumeObjectFromDeviceId(string partitionId)
         {
             using (ManagementObjectSearcher volumeSearcher = new ManagementObjectSearcher("Select * from Win32_Volume Where Name = '" + partitionId + @"\\'"))
             {
