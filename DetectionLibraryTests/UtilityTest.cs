@@ -12,12 +12,6 @@ namespace DiskMagic.DetectionLibrary.Tests
     [TestClass()]
     public class UtilityTest
     {
-        [TestMethod()]
-        public void GetPartitionsTest()
-        {
-            PartitionInfo[] partInfo = Utility.GetPartitions();
-            Debug.Write(partInfo.Length);
-            Assert.Inconclusive();
-        }
+
     }
 }
