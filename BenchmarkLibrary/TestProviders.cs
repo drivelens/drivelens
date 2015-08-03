@@ -170,7 +170,10 @@ namespace DiskMagic.BenchmarkLibrary
     {
         public override int BlockCount => this.BlockCountValue;
 
-        protected virtual int BlockCountValue { get; set; }
+        /// <summary>
+        /// 用于内部可以调整的BlockCount
+        /// </summary>
+        protected abstract int BlockCountValue { get; set; }
 
         public abstract double EvalutionCount { get; }
 
@@ -224,7 +227,7 @@ namespace DiskMagic.BenchmarkLibrary
 
         public override int BlockSize => 0x80000;
 
-        public override int BlockCount => 0x800;
+        protected override int BlockCountValue { get; set; } = 0x800;
 
         public override double EvalutionCount => 0x04;
 
