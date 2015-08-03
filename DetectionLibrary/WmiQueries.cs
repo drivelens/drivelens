@@ -17,7 +17,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 根据指定的盘符获取卷（Win32_Volume）对象的 WMI 查询语句。
         /// </summary>
-        public static readonly string DeviceIdToWin32Volume = @"SELECT * FROM Win32_Volume WHERE DriveLetter = 'C:'";
+        public static readonly string DeviceIdToWin32Volume = @"SELECT * FROM Win32_Volume WHERE DriveLetter = '{0}'";
 
         /// <summary>
         /// 根据指定的盘符获取磁盘分区（Win32_DiskPartition）对象的 WMI 查询语句。
