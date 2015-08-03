@@ -9,12 +9,12 @@ namespace DiskMagic.UI
 {
     public class BenchmarkViewModel
     {
-        public List<IBenchmarkProvider<object>> BenchmarkProviders => new List<IBenchmarkProvider<object>>
+        public List<IBenchmarkProvider> BenchmarkProviders => new List<IBenchmarkProvider>
         {
-            (IBenchmarkProvider<object>)BenchmarkTestProviders.SequenceBenchmarkProvider,
-            (IBenchmarkProvider<object>)BenchmarkTestProviders.Random4KBenchmarkProvider,
-            (IBenchmarkProvider<object>)BenchmarkTestProviders.Random512KBenchmarkProvider,
-            (IBenchmarkProvider<object>)BenchmarkTestProviders.Random4K64ThreadRandomBenchmarkProvider,
+            BenchmarkTestProviders.SequenceBenchmarkProvider,
+            BenchmarkTestProviders.Random4KBenchmarkProvider,
+            BenchmarkTestProviders.Random512KBenchmarkProvider,
+            BenchmarkTestProviders.Random4K64ThreadRandomBenchmarkProvider,
         };
     }
 }
