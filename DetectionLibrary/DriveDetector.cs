@@ -16,8 +16,9 @@ namespace DiskMagic.DetectionLibrary
         /// <returns>计算机上的所有磁盘分区。</returns>
         public static PartitionInfo[] GetPartitions()
         {
-            // 查询所有磁盘分区
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher(WmiQueries.AllLocalLogicalDisk))
+            // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
+            // Win32_LogicalDisk 对象参考：https://msdn.microsoft.com/en-us/library/aa394173.aspx
+            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3"))
             {
                 return logicalDiskSearcher.Get().Cast<ManagementObject>()   // 转换为 ManagementObject 枚举。
                     .Select(CreatePartitionInfoFromLogicalDiskObject)       // 转换为 PartitionInfo 数组。
