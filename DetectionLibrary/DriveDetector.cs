@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DiskMagic.DetectionLibrary
 {
-    public class DriveDetector
+    public static class DriveDetector
     {
         /// <summary>
         /// 获取该计算机上的所有磁盘分区。
