@@ -36,7 +36,7 @@ namespace DiskMagic.DetectionLibrary
 
             partition.Capacity = (long)(ulong)logicalDiskObject["Size"];            // 分区大小
             partition.FreeSpace = (long)(ulong)logicalDiskObject["FreeSpace"];      // 剩余空间
-            partition.Type = (int)(uint)logicalDiskObject["DriveType"];             // 磁盘类型
+            partition.PartitionType = (int)(uint)logicalDiskObject["DriveType"];             // 磁盘类型
             partition.FileSystem = (string)logicalDiskObject["FileSystem"];         // 文件系统
             partition.DeviceId = (string)logicalDiskObject["DeviceID"];             // 盘符
             partition.VolumeName = (string)logicalDiskObject["VolumeName"];         // 卷标
