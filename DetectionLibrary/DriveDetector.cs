@@ -54,7 +54,7 @@ namespace DiskMagic.DetectionLibrary
                 partition.BlockSize = -1;
             }
 
-            ManagementObject diskPartitionObject = Utility.GetDiskPartitionObjectFromDeviceId(partition.DeviceId);
+            ManagementObject diskPartitionObject = Utility.GetDiskPartitionObjectByDeviceId(partition.DeviceId);
             if (diskPartitionObject != null)                                        // 此处同上。
             {
                 partition.Index = (int)(uint)diskPartitionObject["Index"];          // 分区的索引。
