@@ -50,7 +50,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此驱动器的容量。
         /// </summary>
-        public ulong Capacity { get; internal set; }
+        public long Capacity { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的类型。
@@ -90,7 +90,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public ulong BlockSize { get; internal set; }
+        public long BlockSize { get; internal set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -104,12 +104,12 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public ulong StartingOffset { get; internal set; }
+        public long StartingOffset { get; internal set; }
 
         /// <summary>
         /// 获取此分区的容量。
         /// </summary>
-        public ulong Capacity { get; internal set; }
+        public long Capacity { get; internal set; }
 
         /// <summary>
         /// 获取此分区的序号。
@@ -129,12 +129,12 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的类型。
         /// </summary>
-        public uint PartionType { get; internal set; }
+        public int PartitionType { get; internal set; }
 
         /// <summary>
         /// 获取此分区的空闲空间。
         /// </summary>
-        public ulong FreeSpace { get; internal set; }
+        public long FreeSpace { get; internal set; }
 
         /// <summary>
         /// 获取此分区的文件系统。

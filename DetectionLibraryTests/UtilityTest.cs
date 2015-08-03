@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Management;
 using DiskMagic.DetectionLibrary;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,24 @@ namespace DiskMagic.DetectionLibrary.Tests
     public class UtilityTest
     {
         [TestMethod()]
-        public void GetPartitionsTest()
+        public void GetVolumeObjectFromDeviceIdTest()
         {
-            PartitionInfo[] partInfo = Utility.GetPartitions();
-            Debug.Write(partInfo.Length);
-            Assert.Inconclusive();
+            ManagementObject mo = Utility.GetVolumeObjectByDeviceId("C:");
+            Assert.AreEqual("C:\\", (string)mo["Name"]);
+        }
+
+        [TestMethod()]
+        public void GetDiskPartitionObjectByDeviceIdTest()
+        {
+            ManagementObject mo = Utility.GetDiskPartitionObjectByDeviceId("C:");
+            Assert.IsTrue((ulong)mo["Size"] > 0);
+        }
+
+        [TestMethod()]
+        public void GetDiskDriveObjectByDiskPartitionIdTest()
+        {
+            ManagementObject mo = Utility.GetDiskDriveObjectByDiskPartitionId("Disk #0, Partition #2");
+            Assert.IsTrue((ulong)mo["Size"] > 0);
         }
     }
 }

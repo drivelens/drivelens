@@ -7,57 +7,46 @@ using System.Threading.Tasks;
 
 namespace DiskMagic.DetectionLibrary
 {
-    public class Utility
+    public static class Utility
     {
-        public static PartitionInfo[] GetPartitions()
-        {
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk"))
-            {
-                return logicalDiskSearcher.Get().Cast<ManagementObject>()
-                    .Select(CreatePartitionInfoFromLogicalDiskObject).ToArray();
-            }
-        }
+        /// <summary>
+        /// 根据指定的盘符获取 Win32_DiskPartition 对象。
+        /// </summary>
+        /// <param name="deviceId">盘符。</param>
+        /// <returns>获取的 Win32_DiskPartition 对象。</returns>
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394175.aspx"/>
+        public static ManagementObject GetDiskPartitionObjectByDeviceId(string deviceId) =>
+            GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_LogicalDisk.DeviceID='{deviceId}'}} WHERE AssocClass = Win32_LogicalDiskToPartition");
 
-        private static PartitionInfo CreatePartitionInfoFromLogicalDiskObject(ManagementObject logicalDiskObject)
-        {
-            PartitionInfo partition = new PartitionInfo();
-            partition.Capacity = (ulong)logicalDiskObject["Size"];
-            partition.FreeSpace = (ulong)logicalDiskObject["FreeSpace"];
-            partition.PartionType = (uint)logicalDiskObject["DriveType"];
-            partition.FileSystem = (string)logicalDiskObject["FileSystem"];
-            partition.DeviceId = (string)logicalDiskObject["DeviceID"];
-            partition.VolumeName = (string)logicalDiskObject["VolumeName"];
-            partition.SerialNumber = ((string)logicalDiskObject["VolumeSerialNumber"]).Trim();
-            ManagementObject volumeObject = GetVolumeObjectFromDeviceId(partition.DeviceId);
-            partition.BlockSize = (ulong)volumeObject["BlockSize"];
-            ManagementObject diskPartitionObject = GetDiskPartitionObjectFromDeviceId(partition.DeviceId);
-            partition.Index = (int)(uint)diskPartitionObject["Index"];
-            partition.StartingOffset = (ulong)diskPartitionObject["StartingOffset"];
-            return partition;
-        }
+        /// <summary>
+        /// 根据指定的盘符获取卷（Win32_Volume）对象。
+        /// </summary>
+        /// <param name="deviceId">盘符。</param>
+        /// <returns>获取的 Win32_Volume 对象。</returns>
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394515.aspx"/>
+        public static ManagementObject GetVolumeObjectByDeviceId(string deviceId) =>
+            GetFirstObjectOrNull($"SELECT * FROM Win32_Volume WHERE DriveLetter = '{deviceId}'");
 
-        private static ulong GetPartitonBlockSize(string partitonId)
-        {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * from Win32_Volume Where Name = '" + partitonId + @"\\'"))
-            using (ManagementObject obj2 = searcher.Get().Cast<ManagementObject>().First())
-            {
-                return (ulong)obj2["BlockSize"];
-            }
-        }
+        /// <summary>
+        /// 根据指定的磁盘分区设备号（Win32_DiskPartition.DeviceID）获取磁盘（Win32_DiskDrive）对象。
+        /// </summary>
+        /// <param name="partitionId">磁盘分区设备号（Win32_DiskPartition.DeviceID）。</param>
+        /// <returns>获取的 Win32_DiskDrive 对象。</returns>
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394135.aspx"/>
+        public static ManagementObject GetDiskDriveObjectByDiskPartitionId(string partitionId) =>
+            GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partitionId}'}} WHERE AssocClass = Win32_DiskDriveToDiskPartition");
 
-        private static ManagementObject GetDiskPartitionObjectFromDeviceId(string partitionId)
+        /// <summary>
+        /// 根据指定的 WMI 查询语句来执行 WMI 查询，如果查询到则返回第一个对象，如果没有查询到则返回 null。
+        /// </summary>
+        /// <param name="query">要使用的 WMI 查询语句。</param>
+        /// <returns>查询结果。如果查询到对象则返回查询到的对象；如果没有查询到则返回 null。</returns>
+        public static ManagementObject GetFirstObjectOrNull(string query)
         {
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='" + partitionId + "'} WHERE AssocClass = Win32_LogicalDiskToPartition"))
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
             {
-                return logicalDiskSearcher.Get().Cast<ManagementObject>().First();
-            }
-        }
-
-        private static ManagementObject GetVolumeObjectFromDeviceId(string partitionId)
-        {
-            using (ManagementObjectSearcher volumeSearcher = new ManagementObjectSearcher("Select * from Win32_Volume Where Name = '" + partitionId + @"\\'"))
-            {
-                return volumeSearcher.Get().Cast<ManagementObject>().First();
+                var resultObjects = searcher.Get().Cast<ManagementObject>();
+                return resultObjects.Count() == 0 ? null : resultObjects.First();
             }
         }
     }
