@@ -29,7 +29,7 @@ namespace DiskMagic.BenchmarkLibrary
         /// <param name="arg">测试所需参数</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType arg, CancellationToken cancellationToken);
+        IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType arg, BenchmarkFlags flags, CancellationToken cancellationToken);
 
         /// <summary>
         /// 获取测试的名称。
@@ -41,14 +41,8 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 测试类型
     /// </summary>
-    [Flags]
     public enum BenchmarkType
     {
-        /// <summary>
-        /// 默认。
-        /// </summary>
-        None = 0x0,
-
         /// <summary>
         /// 读测试。
         /// </summary>
@@ -58,30 +52,21 @@ namespace DiskMagic.BenchmarkLibrary
         /// 写测试。
         /// </summary>
         Write = 0x02,
+    }
+
+    [Flags]
+    public enum BenchmarkFlags
+    {
+        /// <summary>
+        /// 默认。
+        /// </summary>
+        None = 0x0,
 
         /// <summary>
         /// 可压缩。
         /// </summary>
         Compressible = 0x04,
     }
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public class TestClass : ITestItem<TimeSpan>
-    //{
-    //    Func<Task<TimeSpan>> testWork;
-
-    //    public TestClass(Func<Task<TimeSpan>> test)
-    //    {
-    //        testWork = test;
-    //    }
-
-    //    public Task<TimeSpan> RunTest()
-    //    {
-    //        return testWork();
-    //    }
-    //}
 
     /// <summary>
     /// 用作分块读写测试的基类。
@@ -100,14 +85,14 @@ namespace DiskMagic.BenchmarkLibrary
 
         public abstract string Name { get; }
 
-        public virtual IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
+        public virtual IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             TimeSpan result = new TimeSpan();
             BenchmarkFile.OpenFileStream(partition, type, BlockSize,
                 stream =>
                 {
                     Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
-                    result = DoBenchmarkAlgorithm(stream, work, type, cancellationToken);
+                    result = DoBenchmarkAlgorithm(stream, work, flags, cancellationToken);
                 });
             return new IOSpeed(time: result, ioCount: BlockCount, bytes: BlockCount * BlockSize);
         }
@@ -117,10 +102,10 @@ namespace DiskMagic.BenchmarkLibrary
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="work"></param>
-        /// <param name="type"></param>
+        /// <param name="flags"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        protected abstract TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken);
+        protected abstract TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkFlags flags, CancellationToken cancellationToken);
     }
 
     /// <summary>
@@ -137,10 +122,10 @@ namespace DiskMagic.BenchmarkLibrary
         //TODO:本地化
         public override string Name { get; } = "连续测试";
 
-        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             var sequenceReadTimeTotal = new TimeSpan(0);
-            byte[] buffer = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+            byte[] buffer = Utility.GetData(BlockSize, flags.HasFlag(BenchmarkFlags.Compressible));
             for (int i = 0; i < BlockCount; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();   //可以取消
@@ -166,14 +151,14 @@ namespace DiskMagic.BenchmarkLibrary
 
         protected Random RandomGen = new Random();
 
-        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             var randomBenchmarkTimeTotal = new TimeSpan(0);
             for (int i = 0; i < BlockCount; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();   //可以取消
 
-                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                var randomArray = Utility.GetData(BlockSize, flags.HasFlag(BenchmarkFlags.Compressible));
                 long posision = BlockSize * this.RandomGen.Next(BlockCount);
                 randomBenchmarkTimeTotal += Utility.GetTime(() =>
                 {
@@ -237,7 +222,7 @@ namespace DiskMagic.BenchmarkLibrary
 
         readonly int outstandingThreadsCount = 0x40;
 
-        public override IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
+        public override IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             var randomBenchmarkTimes = new TimeSpan[this.outstandingThreadsCount];
             BenchmarkFile.OpenFileHandle(partition, type,
@@ -248,7 +233,7 @@ namespace DiskMagic.BenchmarkLibrary
                         using (FileStream stream = new FileStream(handle, FileAccess.Read, BlockSize))
                         {
                             Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
-                            randomBenchmarkTimes[i] = DoBenchmarkAlgorithm(stream, work, type, cancellationToken);
+                            randomBenchmarkTimes[i] = DoBenchmarkAlgorithm(stream, work, flags, cancellationToken);
                         }
                     });
                 });
@@ -256,7 +241,7 @@ namespace DiskMagic.BenchmarkLibrary
             return new IOSpeed(time: totalTimes, ioCount: BlockCount, bytes: BlockCount * BlockSize);
         }
 
-        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
+        protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             var random = new Random();
             TimeSpan timeTotal = default(TimeSpan);
@@ -264,7 +249,7 @@ namespace DiskMagic.BenchmarkLibrary
             {
                 cancellationToken.ThrowIfCancellationRequested();   //可以取消
 
-                var randomArray = Utility.GetData(BlockSize, type.HasFlag(BenchmarkType.Compressible));
+                var randomArray = Utility.GetData(BlockSize, flags.HasFlag(BenchmarkFlags.Compressible));
                 long posision = BlockSize * random.Next(BlockCount);
                 timeTotal += Utility.GetTime(() =>
                 {
