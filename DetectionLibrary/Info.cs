@@ -129,7 +129,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的类型。
         /// </summary>
-        public int PartionType { get; internal set; }
+        public int Type { get; internal set; }
 
         /// <summary>
         /// 获取此分区的空闲空间。
