@@ -20,9 +20,7 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 表示一类测试。
     /// </summary>
-    /// <typeparam name="TResult">测试结果的类型</typeparam>
-    ///// <typeparam name="TArg">测试所需参数的类型</typeparam>
-    public interface IBenchmarkProvider<out TResult>
+    public interface IBenchmarkProvider
     {
         /// <summary>
         /// 返回测试结果。
@@ -31,7 +29,7 @@ namespace DiskMagic.BenchmarkLibrary
         /// <param name="arg">测试所需参数</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        TResult GetTestResult(PartitionInfo partition, BenchmarkType arg, CancellationToken cancellationToken);
+        IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType arg, CancellationToken cancellationToken);
 
         /// <summary>
         /// 获取测试的名称。
@@ -88,7 +86,7 @@ namespace DiskMagic.BenchmarkLibrary
     /// <summary>
     /// 用作分块读写测试的基类。
     /// </summary>
-    public abstract class BenchmarkProviderBase : IBenchmarkProvider<TimeSpan>, IBenchmarkProvider<IOSpeed>
+    public abstract class BenchmarkProviderBase : IBenchmarkProvider
     {
         /// <summary>
         /// 获取每块大小。
@@ -102,7 +100,7 @@ namespace DiskMagic.BenchmarkLibrary
 
         public abstract string Name { get; }
 
-        public virtual TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
+        public virtual IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
         {
             TimeSpan result = new TimeSpan();
             BenchmarkFile.OpenFileStream(partition, type, BlockSize,
@@ -111,7 +109,7 @@ namespace DiskMagic.BenchmarkLibrary
                     Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
                     result = DoBenchmarkAlgorithm(stream, work, type, cancellationToken);
                 });
-            return result;
+            return new IOSpeed(time: result, ioCount: BlockCount, bytes: BlockCount * BlockSize);
         }
 
         /// <summary>
@@ -123,18 +121,7 @@ namespace DiskMagic.BenchmarkLibrary
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         protected abstract TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken);
-
-        IOSpeed IBenchmarkProvider<IOSpeed>.GetTestResult(PartitionInfo partition, BenchmarkType arg, CancellationToken cancellationToken)
-        {
-            TimeSpan time = GetTestResult(partition, arg, cancellationToken);
-            return new IOSpeed(((double) BlockCount * BlockSize / 0x100000) / time.TotalSeconds);
         }
-
-        public IBenchmarkProvider<IOSpeed> AsIOSpeedBenchmarkProvider()
-        {
-            return this;
-        }
-    }
 
     /// <summary>
     /// 表示连续测试。
@@ -170,7 +157,10 @@ namespace DiskMagic.BenchmarkLibrary
     {
         public override int BlockCount => this.BlockCountValue;
 
-        protected virtual int BlockCountValue { get; set; }
+        /// <summary>
+        /// 用于内部可以调整的BlockCount
+        /// </summary>
+        protected abstract int BlockCountValue { get; set; }
 
         public abstract double EvalutionCount { get; }
 
@@ -224,7 +214,7 @@ namespace DiskMagic.BenchmarkLibrary
 
         public override int BlockSize => 0x80000;
 
-        public override int BlockCount => 0x800;
+        protected override int BlockCountValue { get; set; } = 0x800;
 
         public override double EvalutionCount => 0x04;
 
@@ -247,7 +237,7 @@ namespace DiskMagic.BenchmarkLibrary
 
         readonly int outstandingThreadsCount = 0x40;
 
-        public override TimeSpan GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
+        public override IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, CancellationToken cancellationToken)
         {
             var randomBenchmarkTimes = new TimeSpan[this.outstandingThreadsCount];
             BenchmarkFile.OpenFileHandle(partition, type,
@@ -262,7 +252,8 @@ namespace DiskMagic.BenchmarkLibrary
                         }
                     });
                 });
-            return randomBenchmarkTimes.Aggregate((a, b) => a + b);
+            var totalTimes = randomBenchmarkTimes.Aggregate((a, b) => a + b);
+            return new IOSpeed(time: totalTimes, ioCount: BlockCount, bytes: BlockCount * BlockSize);
         }
 
         protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkType type, CancellationToken cancellationToken)
