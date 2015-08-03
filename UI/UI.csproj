@@ -73,9 +73,11 @@
     <Compile Include="BenchmarkPage.xaml.cs">
       <DependentUpon>BenchmarkPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BenchmarkViewModel.cs" />
     <Compile Include="InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InfoViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -112,6 +114,10 @@
     <ProjectReference Include="..\BenchmarkLibrary\BenchmarkLibrary.csproj">
       <Project>{1cdd4c5a-8dc6-4906-a1af-1d70d95c22b5}</Project>
       <Name>BenchmarkLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DetectionLibrary\DetectionLibrary.csproj">
+      <Project>{c5e2bbf9-9047-491d-a032-7ec025c5cc16}</Project>
+      <Name>DetectionLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,7 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <TabControl>
+        <TabItem Header="Benchmark">
+            <Frame Source="/DiskMagic;component/BenchmarkPage.xaml" />
+        </TabItem>
+        <TabItem Header="Info">
+            <Frame Source="/DiskMagic;component/InfoPage.xaml"/>
+        </TabItem>
+    </TabControl>
 </Window>

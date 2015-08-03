@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{340793BF-436A-438F-B87F-E5C61614F8FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C5E2BBF9-9047-491D-A032-7EC025C5CC16} = {C5E2BBF9-9047-491D-A032-7EC025C5CC16}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkLibrary", "BenchmarkLibrary\BenchmarkLibrary.csproj", "{1CDD4C5A-8DC6-4906-A1AF-1D70D95C22B5}"
 EndProject
