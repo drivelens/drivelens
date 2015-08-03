@@ -17,7 +17,6 @@ namespace DiskMagic.DetectionLibrary.Tests
             PartitionInfo[] infos = DriveDetector.GetPartitions();
             if(infos.Length > 0)
             {
-                Assert.Inconclusive();
                 return;
             }
             Assert.Fail();
