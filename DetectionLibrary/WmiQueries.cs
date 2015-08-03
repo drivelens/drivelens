@@ -17,16 +17,16 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 根据指定的盘符获取卷（Win32_Volume）对象的 WMI 查询语句。
         /// </summary>
-        public static readonly string DeviceIdToWin32Volume = @"SELECT * FROM Win32_Volume WHERE Name = '{0}\\'";
+        public static readonly string DeviceIdToWin32Volume = @"SELECT * FROM Win32_Volume WHERE DriveLetter = 'C:'";
 
         /// <summary>
         /// 根据指定的盘符获取磁盘分区（Win32_DiskPartition）对象的 WMI 查询语句。
         /// </summary>
-        public static readonly string DeviceIdToDiskPartition = @"ASSOCIATORS OF {Win32_LogicalDisk.DeviceID='{0}'} WHERE AssocClass = Win32_LogicalDiskToPartition";
+        public static readonly string DeviceIdToDiskPartition = @"ASSOCIATORS OF {{Win32_LogicalDisk.DeviceID='{0}'}} WHERE AssocClass = Win32_LogicalDiskToPartition";
 
         /// <summary>
         /// 根据指定的磁盘分区设备号（Win32_DiskPartition.DeviceID）获取磁盘（Win32_DiskDrive）对象的 WMI 查询语句。
         /// </summary>
-        public static readonly string PartitionIdToDiskDrive = @"ASSOCIATORS OF {Win32_DiskPartition.DeviceID='{0}'} WHERE AssocClass = Win32_DiskDriveToDiskPartition";
+        public static readonly string PartitionIdToDiskDrive = @"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{0}'}} WHERE AssocClass = Win32_DiskDriveToDiskPartition";
     }
 }
