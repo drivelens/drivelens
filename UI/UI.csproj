@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="BenchmarkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -73,11 +74,11 @@
     <Compile Include="BenchmarkPage.xaml.cs">
       <DependentUpon>BenchmarkPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BenchmarkViewModel.cs" />
+    <Compile Include="ViewModels\BenchmarkViewModel.cs" />
     <Compile Include="InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InfoViewModel.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -120,6 +121,7 @@
       <Name>DetectionLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

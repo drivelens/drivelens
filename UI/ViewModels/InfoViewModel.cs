@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DiskMagic.DetectionLibrary;
 
-namespace DiskMagic.UI
+namespace DiskMagic.UI.ViewModels
 {
-    class InfoViewModel
+    class InfoViewModel : ViewModelBase
     {
         public DiskInfo CurrentDiskInfo { get; set; }
 
