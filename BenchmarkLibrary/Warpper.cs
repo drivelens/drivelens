@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DiskMagic.BenchmarkLibrary.BenchmarkProviders;
 
 namespace DiskMagic.BenchmarkLibrary
 {
@@ -11,7 +12,7 @@ namespace DiskMagic.BenchmarkLibrary
         public static readonly SequenceBenchmarkProvider SequenceBenchmarkProvider = new SequenceBenchmarkProvider();
         public static readonly Random4KBenchmarkProvider Random4KBenchmarkProvider = new Random4KBenchmarkProvider();
         public static readonly Random512KBenchmarkProvider Random512KBenchmarkProvider = new Random512KBenchmarkProvider();
-        public static readonly Random4K64ThreadRandomBenchmarkProvider Random4K64ThreadRandomBenchmarkProvider = new Random4K64ThreadRandomBenchmarkProvider();
+        public static readonly Random4K64ThreadBenchmarkProvider Random4K64ThreadRandomBenchmarkProvider = new Random4K64ThreadBenchmarkProvider();
     }
 
     //public static class Benchmarker<T>
