@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿#pragma warning disable RECS0145 // Removes 'private' modifiers that are not required
+using Microsoft.Win32.SafeHandles;
 using DiskMagic.DetectionLibrary;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace DiskMagic.BenchmarkLibrary
         {
             FileAccess fileAccess = (benchmarkType.HasFlag(BenchmarkType.Read) ? FileAccess.Read : new FileAccess()) | (benchmarkType.HasFlag(BenchmarkType.Write) ? FileAccess.Write : new FileAccess());
             string fullWorkDirectory = partition.DeviceId + workDirectory;
-            string fileDirectory = fullWorkDirectory + fileName;
+            string fileDirectory = $@"{fullWorkDirectory}\{fileName}";
 
             DeleteDirectory(fullWorkDirectory);             // 如果有，删除目录
             Directory.CreateDirectory(fullWorkDirectory);   // 创建测试目录            

@@ -26,8 +26,9 @@ namespace DiskMagic.BenchmarkLibrary
         /// 返回测试结果。
         /// </summary>
         /// <param name="partition">测试分区</param>
-        /// <param name="arg">测试所需参数</param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="arg">测试类型</param>
+        /// <param name="flags">测试所需参数</param>
+        /// <param name="cancellationToken">用以取消工作的取消标记</param>
         /// <returns></returns>
         IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType arg, BenchmarkFlags flags, CancellationToken cancellationToken);
 
@@ -85,6 +86,14 @@ namespace DiskMagic.BenchmarkLibrary
 
         public abstract string Name { get; }
 
+        /// <summary>
+        /// 根据核心测试算法返回的时间计算结果。
+        /// </summary>
+        /// <param name="partition">测试分区</param>
+        /// <param name="arg">测试类型</param>
+        /// <param name="flags">测试所需参数</param>
+        /// <param name="cancellationToken">用以取消工作的取消标记</param>
+        /// <returns></returns>
         public virtual IOSpeed GetTestResult(PartitionInfo partition, BenchmarkType type, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
             TimeSpan result = new TimeSpan();
