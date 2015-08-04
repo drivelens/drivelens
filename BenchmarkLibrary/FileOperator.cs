@@ -1,6 +1,7 @@
 ﻿#pragma warning disable RECS0145 // Removes 'private' modifiers that are not required
 using Microsoft.Win32.SafeHandles;
 using DiskMagic.DetectionLibrary;
+using DiskMagic.BenchmarkLibrary.BenchmarkProviders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

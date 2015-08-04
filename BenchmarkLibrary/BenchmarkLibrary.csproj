@@ -44,11 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BenchmarkProviders\MultiThreadBenchmarkProvider.cs" />
+    <Compile Include="BenchmarkProviders\Utility.cs" />
     <Compile Include="FileOperator.cs" />
     <Compile Include="IOSpeed.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestProviders.cs" />
+    <Compile Include="BenchmarkProviders\RandomBenchmarkProvider.cs" />
+    <Compile Include="BenchmarkProviders\SequenceBenchmarkProvider.cs" />
+    <Compile Include="BenchmarkProviders\Common.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Warpper.cs" />
   </ItemGroup>
