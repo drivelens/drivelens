@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DiskMagic.BenchmarkLibrary;
+using DiskMagic.BenchmarkLibrary.BenchmarkProviders;
 using DiskMagic.DetectionLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
