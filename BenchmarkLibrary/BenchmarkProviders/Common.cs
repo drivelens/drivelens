@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static  DiskMagic.BenchmarkLibrary.BenchmarkProviders.Utility;
 
-namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
+namespace DiskMagic.BenchmarkLibrary
 {
     ///// <summary>
     ///// 表示一个单独的测试
@@ -99,7 +100,7 @@ namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
             BenchmarkFile.OpenFileStream(partition, type, BlockSize,
                 stream =>
                 {
-                    Action<byte[], int, int> work = Utility.GetReadOrWriteAction(type, stream);
+                    Action<byte[], int, int> work = GetReadOrWriteAction(type, stream);
                     result = DoBenchmarkAlgorithm(stream, work, flags, cancellationToken);
                 });
             return new IOSpeed(time: result, ioCount: BlockCount, bytes: BlockCount * BlockSize);
