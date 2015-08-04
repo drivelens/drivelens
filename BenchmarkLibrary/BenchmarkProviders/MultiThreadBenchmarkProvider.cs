@@ -17,11 +17,11 @@ namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
     {
         internal Random4K64ThreadBenchmarkProvider() { }
 
-        public override int BlockSize { get; } = 0x1000;
+        public override int BlockSize => 0x1000;
 
-        public override int BlockCount { get; } = 0x40;
+        public override int BlockCount => 0x40;
 
-        public override string Name { get; } = "4K64线程";
+        public override string Name => "4K64线程";
 
         readonly int outstandingThreadsCount = 0x40;
 

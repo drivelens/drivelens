@@ -15,12 +15,12 @@ namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
     {
         internal SequenceBenchmarkProvider() { }
 
-        public override int BlockSize { get; } = 0x1000000;
+        public override int BlockSize => 0x1000000;
 
-        public override int BlockCount { get; } = 0X40;
+        public override int BlockCount => 0X40;
 
         //TODO:本地化
-        public override string Name { get; } = "连续测试";
+        public override string Name => "连续测试";
 
         protected override TimeSpan DoBenchmarkAlgorithm(FileStream stream, Action<byte[], int, int> work, BenchmarkFlags flags, CancellationToken cancellationToken)
         {
