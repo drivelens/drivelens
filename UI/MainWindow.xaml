@@ -1,13 +1,36 @@
-﻿<Window x:Class="DiskMagic.UI.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:DiskMagic.UI.ViewModels"
+        xmlns:local="clr-namespace:DiskMagic.UI"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="DiskMagic.UI.MainWindow"
         Title="MainWindow" Height="350" Width="525">
-    <TabControl>
-        <TabItem Header="Benchmark">
-            <Frame Source="/DiskMagic;component/BenchmarkPage.xaml" />
-        </TabItem>
-        <TabItem Header="Info">
-            <Frame Source="/DiskMagic;component/InfoPage.xaml"/>
-        </TabItem>
-    </TabControl>
+    <Window.DataContext>
+        <vm:MainWindowViewModel x:Name="model"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding Partitions}" SelectedItem="{Binding CurrentPartitionInfo, Mode=OneWayToSource}" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding DeviceId}"/>
+                        <Label Content="{Binding Drive.Model}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Benchmark">
+                <Frame Source="/DiskMagic;component/BenchmarkPage.xaml" />
+            </TabItem>
+            <TabItem Header="Info">
+                <local:PartitionInfoList DataContext="{Binding CurrentPartitionInfo}"/>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="button" Content="c啊啊啊" HorizontalAlignment="Right" Width="75" Grid.Row="1" Height="53.76" VerticalAlignment="Bottom" Click="button_Click"/>
+    </Grid>
 </Window>

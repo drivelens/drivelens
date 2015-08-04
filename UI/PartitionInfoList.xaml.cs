@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace DiskMagic.UI
 {
     /// <summary>
-    /// InfoPage.xaml 的交互逻辑
+    /// PartitionInfoList.xaml 的交互逻辑
     /// </summary>
-    public partial class InfoPage : Page
+    public partial class PartitionInfoList : UserControl
     {
-        public InfoPage()
+        public PartitionInfoList()
         {
             InitializeComponent();
         }

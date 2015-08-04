@@ -54,12 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PartitionInfoList.xaml.cs">
+      <DependentUpon>PartitionInfoList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="BenchmarkPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -75,14 +74,15 @@
       <DependentUpon>BenchmarkPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BenchmarkViewModel.cs" />
-    <Compile Include="InfoPage.xaml.cs">
-      <DependentUpon>InfoPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PartitionInfoList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

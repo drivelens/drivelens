@@ -72,10 +72,11 @@ namespace DiskMagic.UI.ViewModels
 
         public void UpdateResult(PartitionInfo partition,BenchmarkFlags flags,CancellationToken cancellationToken)
         {
-            var result = Results
-                         .Select(item => Tuple.Create(item.Item1, (IOSpeed?)Provider.GetTestResult(partition, item.Item1, flags, cancellationToken)));
-            Results.Clear();
-            result.ForEach(a => Results.Add(a));
+            for (int i = 0; i < Results.Count; i++)
+            {
+                var item = Results[i];
+                Results[i] = Tuple.Create(item.Item1, (IOSpeed?)Provider.GetTestResult(partition, item.Item1, flags, cancellationToken));
+            }
         }
     }
 }
