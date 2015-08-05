@@ -31,6 +31,5 @@
                 <local:PartitionInfoList DataContext="{Binding CurrentPartitionInfo}"/>
             </TabItem>
         </TabControl>
-        <Button x:Name="button" Content="c啊啊啊" HorizontalAlignment="Right" Width="75" Grid.Row="1" Height="53.76" VerticalAlignment="Bottom" Click="button_Click"/>
     </Grid>
 </Window>
