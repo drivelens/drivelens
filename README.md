@@ -8,8 +8,8 @@ Although it is in development now, and many of the features are not implemented,
 ## 项目清单 (Project List)
 
 ### UI
-主界面。
-This is the user interface.  
+主界面。使用WPF。    
+This is the user interface.It based on the WPF.
 
 ### BenchmarkLibrary
 测试逻辑。
@@ -18,6 +18,24 @@ This is the module that contains the progress of benchmarking.
 ### DetectionLibrary
 磁盘检测逻辑。
 This is the module that contains the progress of detecting the information of the disks and partitions.  
+
+## 许可
+本项目采用 GNU LGPL 许可。详见 LICENSE 文件。   
+This project is under the GNU LESSER GENERAL PUBLIC LICENSE. See the LICENSE for more information.
+
+## 参与项目建设
+
+欢迎参与项目。
+
+1. 提出 Issue   
+   如果你
+   - 发现项目存在 BUG
+   - 有好的想法
+   - 需要帮助信息   
+  你都可以提出 Issue 以帮助改善项目。
+  
+1. 贡献代码   
+   你可以 Fork 该版本库，针对某个功能或 Issue 编写代码，并提交 Pull Request 。
 
 ## 项目历史 (Project History)
 本程序的作者之一 @t123yh 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。  
