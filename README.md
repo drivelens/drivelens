@@ -1,22 +1,22 @@
-﻿#DiskMagic
+﻿# DiskMagic
 
 本项目是一个使用 LGPL 开源协议的综合性磁盘工具，用于取代现有的磁盘检测、测试、跑分程序。  
 This project is a generic open-source disk detection/benchmark program under the GNU LGPL license. It is designed to replace other disk tools.  
 尽管它现在还在开发阶段，功能还不完全，但我们相信经过大家的努力它能够变为最强大的磁盘综合工具。  
 Although it is in development now, and many of the features are not implemented, but we believe that with the contributions of you, it will become the best disk benchmark tools.  
 
-##项目清单 (Project List)
+## 项目清单 (Project List)
 
 ### UI
-主界面。  
+主界面。
 This is the user interface.  
 
 ### BenchmarkLibrary
-测试逻辑。  
+测试逻辑。
 This is the module that contains the progress of benchmarking.  
 
 ### DetectionLibrary
-磁盘检测逻辑。  
+磁盘检测逻辑。
 This is the module that contains the progress of detecting the information of the disks and partitions.  
 
 ## 项目历史 (Project History)
