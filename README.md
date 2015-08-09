@@ -20,10 +20,10 @@ This is the module that contains the progress of benchmarking.
 This is the module that contains the progress of detecting the information of the disks and partitions.  
 
 ## 项目历史 (Project History)
-本程序的灵感来源于作者 (t123yh) 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。  
-One day, when I(t123yh) was boring, he decompiled the `AS SSD Benchmark`, then the idea poped up to start the predecessor of the program.  
-后来首先制作了一个版本，但是代码质量很差，并且没有使用源代码管理。经过另一位作者的提醒遂放弃了所有的代码，开始进行此项目。    
-Later, I made the first version, but the code has a poor quality and I didn't use the source control. By the remind of another author (peng1999), I dropped all the code, and then started this project.  
+本程序的作者之一 @t123yh 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。  
+One day, when @t123yh, an author of this project, was boring, he decompiled the `AS SSD Benchmark`, then the idea poped up to start the predecessor of the program.  
+后来首先制作了一个版本，但是代码质量很差，并且没有使用源代码管理。经过另一位作者的提醒遂放弃了所有的代码，开始进行此项目。
+Later, he made the first version, but the code has a poor quality and he didn't use the source control. By the remind of another author ( @peng1999 ), he dropped all the code, and then started this project.
 
 ## 鸣谢列表 (Thanks List)
 - [AS SSD Benchmark](http://www.alex-is.de/ "Alex Intelligent Software")
