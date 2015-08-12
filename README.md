@@ -19,23 +19,32 @@ This is the module that contains the progress of benchmarking.
 磁盘检测逻辑。
 This is the module that contains the progress of detecting the information of the disks and partitions.  
 
-## 许可
+## 许可 (License)
 本项目采用 GNU LGPL 许可。详见 LICENSE 文件。   
-This project is under the GNU LESSER GENERAL PUBLIC LICENSE. See the LICENSE for more information.
+This project is under the GNU Lesser General Public License. See LICENSE for more information.
 
-## 参与项目建设
+## 参与项目建设 (Contributing)
 
-欢迎参与项目。
+欢迎参与项目。  
+Contributing to the project is strongly welcomed.  
 
-1. 提出 Issue   
-   如果你
+1. 提出 Issue。  
+I. Giving issues.  
+   如果你  
+   If you  
    - 发现项目存在 BUG
+   - find any bugs  
    - 有好的想法
-   - 需要帮助信息   
-  你都可以提出 Issue 以帮助改善项目。
+   - have any good ideas  
+   - 需要帮助信息 
+   - need help  
+   你都可以提出 Issue 以帮助我们做得更好。  
+   You can give issues anytime in order to help us to do better.
   
-1. 贡献代码   
-   你可以 Fork 该版本库，针对某个功能或 Issue 编写代码，并提交 Pull Request 。
+2. 贡献代码。  
+II. Writing code.
+   你可以 Fork 该版本库，针对某个功能或 Issue 编写代码，并提交 Pull Request。  
+   You can fork this repo and write code for any features or issues, and create a Pull Request.
 
 ## 项目历史 (Project History)
 本程序的作者之一 @t123yh 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。  
@@ -45,9 +54,9 @@ Later, he made the first version, but the code has a poor quality and he didn't 
 
 ## 鸣谢列表 (Thanks List)
 - [AS SSD Benchmark](http://www.alex-is.de/ "Alex Intelligent Software")
-
+   提供了项目的思路和磁盘检测部分的 WMI 语句。
    For the idea and the drive detection WMI queries.  
 
 - [CrystalDiskInfo](http://crystalmark.info/ "Crystal Dew World")
-
+   提供了 S.M.A.R.T，温度以及设备健康状态检测。
    For the drive S.M.A.R.T, temperature and device health detection.
