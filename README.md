@@ -8,7 +8,7 @@ Although it is in development now, and many of the features are not implemented,
 ## 项目清单 (Project List)
 
 ### UI
-主界面。使用WPF。    
+主界面。基于WPF。    
 This is the main user interface. It is based on the WPF.
 
 ### BenchmarkLibrary
@@ -50,7 +50,7 @@ One day, when @t123yh, one author of this project, was boring, he decompiled the
 后来首先制作了一个版本，但是代码质量很差，并且没有使用源代码管理。经过另一位作者的提醒遂放弃了所有的代码，开始进行此项目。  
 Later, he made the first version, but the code has a poor quality and he didn't use the source control. By the remind of another author ( @peng1999 ), he dropped all the code, and then started this project.  
 
-## 鸣谢列表 (Thanks List)  
+## 鸣谢 (Thanks List)  
 - [AS SSD Benchmark](http://www.alex-is.de/ "Alex Intelligent Software")  
    提供了项目的思路和磁盘检测部分的 WMI 语句。  
    For the idea and the drive detection WMI queries.  
