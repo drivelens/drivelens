@@ -28,10 +28,9 @@ This project is under the GNU Lesser General Public License. See LICENSE for mor
 欢迎参与项目。  
 Contributing to the project is strongly welcomed.  
 
-1. 提出 Issue。  
-I. Giving issues.  
-   如果你  
-   If you  
+1. 提出 Issue。Giving issues.  
+   如果你   
+   If you
    - 发现项目存在 BUG
    - find any bugs  
    - 有好的想法
@@ -41,22 +40,21 @@ I. Giving issues.
    你都可以提出 Issue 以帮助我们做得更好。  
    You can give issues anytime in order to help us to do better.
   
-2. 贡献代码。  
-II. Writing code.
+2. 贡献代码。(Writing code.)
    你可以 Fork 该版本库，针对某个功能或 Issue 编写代码，并提交 Pull Request。  
-   You can fork this repo and write code for any features or issues, and create a Pull Request.
+   You can fork this repo and write code for any features or issues, and create a Pull Request.  
 
 ## 项目历史 (Project History)
-本程序的作者之一 @t123yh 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。  
-One day, when @t123yh, an author of this project, was boring, he decompiled the `AS SSD Benchmark`, then the idea poped up to start the predecessor of the program.  
-后来首先制作了一个版本，但是代码质量很差，并且没有使用源代码管理。经过另一位作者的提醒遂放弃了所有的代码，开始进行此项目。
-Later, he made the first version, but the code has a poor quality and he didn't use the source control. By the remind of another author ( @peng1999 ), he dropped all the code, and then started this project.
+本程序的作者之一 @t123yh 有一天无聊，反编译了 `AS SSD Benchmark`，遂开始了此项目前身的制作。
+One day, when @t123yh, one author of this project, was boring, he decompiled the `AS SSD Benchmark`, then the idea poped up to start the predecessor of the program.    
+后来首先制作了一个版本，但是代码质量很差，并且没有使用源代码管理。经过另一位作者的提醒遂放弃了所有的代码，开始进行此项目。  
+Later, he made the first version, but the code has a poor quality and he didn't use the source control. By the remind of another author ( @peng1999 ), he dropped all the code, and then started this project.  
 
-## 鸣谢列表 (Thanks List)
-- [AS SSD Benchmark](http://www.alex-is.de/ "Alex Intelligent Software")
-   提供了项目的思路和磁盘检测部分的 WMI 语句。
+## 鸣谢列表 (Thanks List)  
+- [AS SSD Benchmark](http://www.alex-is.de/ "Alex Intelligent Software")  
+   提供了项目的思路和磁盘检测部分的 WMI 语句。  
    For the idea and the drive detection WMI queries.  
 
-- [CrystalDiskInfo](http://crystalmark.info/ "Crystal Dew World")
-   提供了 S.M.A.R.T，温度以及设备健康状态检测。
-   For the drive S.M.A.R.T, temperature and device health detection.
+- [CrystalDiskInfo](http://crystalmark.info/ "Crystal Dew World")  
+   提供了 S.M.A.R.T，温度以及设备健康状态检测。  
+   For the drive S.M.A.R.T, temperature and device health detection.  
