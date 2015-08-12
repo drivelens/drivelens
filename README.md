@@ -9,7 +9,7 @@ Although it is in development now, and many of the features are not implemented,
 
 ### UI
 主界面。使用WPF。    
-This is the user interface.It based on the WPF.
+This is the main user interface. It is based on the WPF.
 
 ### BenchmarkLibrary
 测试逻辑。
