@@ -31,16 +31,16 @@ Contributing to the project is strongly welcomed.
 1. 提出 Issue。Giving issues.  
    如果你   
    If you
-   - 发现项目存在 BUG
-   - find any bugs  
-   - 有好的想法
-   - have any good ideas  
-   - 需要帮助信息 
-   - need help  
+   - 发现项目存在 BUG   
+     find any bugs  
+   - 有好的想法     
+     have any good ideas  
+   - 需要帮助信息    
+     need help  
    你都可以提出 Issue 以帮助我们做得更好。  
    You can give issues anytime in order to help us to do better.
   
-2. 贡献代码。(Writing code.)
+1. 贡献代码。(Writing code.)
    你可以 Fork 该版本库，针对某个功能或 Issue 编写代码，并提交 Pull Request。  
    You can fork this repo and write code for any features or issues, and create a Pull Request.  
 
