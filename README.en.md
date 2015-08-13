@@ -1,4 +1,4 @@
-*README.md ÊÇ¸ÃÎÄµµµÄÖÐÎÄ°æ±¾¡£*  
+*README.md æ˜¯è¯¥æ–‡æ¡£çš„ä¸­æ–‡ç‰ˆæœ¬ã€‚*  
 *README.md is the Chinese version of this document.*  
 
 # DiskMagic
