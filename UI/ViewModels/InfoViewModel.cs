@@ -7,7 +7,7 @@ using DiskMagic.DetectionLibrary;
 
 namespace DiskMagic.UI.ViewModels
 {
-    class MainWindowViewModel : ViewModelBase
+    class InfoViewModel : ViewModelBase
     {
         PartitionInfo currentPartitionInfo;
 
