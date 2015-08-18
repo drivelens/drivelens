@@ -10,7 +10,7 @@
       d:DesignHeight="337" d:DesignWidth="300"
       Title="InfoPage">
     <Page.CommandBindings>
-        <CommandBinding Command="{StaticResource NavigateBenchmarkKey}" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"/>
+        <CommandBinding Command="{StaticResource NavigateBenchmarkCmdKey}" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"/>
     </Page.CommandBindings>
     <Page.DataContext>
         <vm:InfoViewModel x:Name="model"/>
@@ -109,6 +109,6 @@
                 </UniformGrid>
             </GroupBox>
         </StackPanel>
-        <Button Grid.Row="2" Content="测试" Command="{Binding Mode=OneWay, Source={StaticResource NavigateBenchmarkKey}}" HorizontalAlignment="Right"/>
+        <Button Grid.Row="2" Content="测试" Command="{Binding Mode=OneWay, Source={StaticResource NavigateBenchmarkCmdKey}}" HorizontalAlignment="Right"/>
     </Grid>
 </Page>

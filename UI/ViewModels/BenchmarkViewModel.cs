@@ -42,6 +42,11 @@ namespace DiskMagic.UI.ViewModels
         PartitionInfo partition;
 
         BenchmarkFlags flags;
+        
+        public void StartMenchmark(CancellationToken cancellationToken)
+        {
+            BenchmarkProviders.ForEach(item => item.UpdateResult(Partition, Flags, cancellationToken));
+        }
     }
 
     class BenchmarkTestModel : ViewModelBase
@@ -65,18 +70,32 @@ namespace DiskMagic.UI.ViewModels
             }
         }
 
-        public ObservableCollection<Tuple<BenchmarkType, IOSpeed?>> Results { get; } = 
-            new ObservableCollection<Tuple<BenchmarkType, IOSpeed?>>(
+        public ObservableCollection<TypeSpeedPair> Results { get; } = 
+            new ObservableCollection<TypeSpeedPair>(
                 new[] { BenchmarkType.Read, BenchmarkType.Write }
-                .Select(type => Tuple.Create<BenchmarkType, IOSpeed?>(type, null)));
+                .Select(type => new TypeSpeedPair(type, null)));
 
         public void UpdateResult(PartitionInfo partition,BenchmarkFlags flags,CancellationToken cancellationToken)
         {
-            for (int i = 0; i < Results.Count; i++)
-            {
-                var item = Results[i];
-                Results[i] = Tuple.Create(item.Item1, (IOSpeed?)Provider.GetTestResult(partition, item.Item1, flags, cancellationToken));
-            }
+            if (IsSelected)
+                for (int i = 0; i < Results.Count; i++)
+                {
+                    var item = Results[i];
+                    Results[i] = new TypeSpeedPair(item.BenchmarkType, Provider.GetTestResult(partition, item.BenchmarkType, flags, cancellationToken));
+                }
         }
+    }
+
+    class TypeSpeedPair
+    {
+        public TypeSpeedPair(BenchmarkType type, IOSpeed? speed)
+        {
+            BenchmarkType = type;
+            Speed = speed;
+        }
+
+        public BenchmarkType BenchmarkType { get; set; }
+
+        public IOSpeed? Speed { get; set; }
     }
 }

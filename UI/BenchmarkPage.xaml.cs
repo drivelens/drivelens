@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,10 +22,41 @@ namespace DiskMagic.UI
     /// </summary>
     public partial class BenchmarkPage : Page
     {
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
         public BenchmarkPage(PartitionInfo partition = null)
         {
             InitializeComponent();
-            model.Partition = partition; 
+            model.Partition = partition;
+            ToReadyState();
+        }
+
+        private void ToReadyState() =>
+            VisualStateManager.GoToElementState(layoutRoot, "Ready", true);
+
+        private void ToRunningState() =>
+            VisualStateManager.GoToElementState(layoutRoot, "Running", true);
+        
+        private void StartExecute(object sender, ExecutedRoutedEventArgs e)
+        {
+            model.StartMenchmark(cancellationTokenSource.Token);
+            ToRunningState();
+        }
+
+        private void CanStartExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void StopExecute(object sender, ExecutedRoutedEventArgs e)
+        {
+            cancellationTokenSource.Cancel();
+            ToReadyState();
+        }
+
+        private void CanStopExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 }
