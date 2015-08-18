@@ -56,6 +56,15 @@ namespace BenchmarkLibraryTests
                         Assert.IsTrue(stream.CanRead);
                         Assert.IsFalse(stream.CanWrite);
                     });
+
+                type = BenchmarkType.Write;
+
+                BenchmarkFile.OpenFileStream(partition, type, size,
+                    stream =>
+                    {
+                        Assert.IsTrue(stream.CanWrite);
+                        Assert.IsFalse(stream.CanRead);
+                    });
             }
         }
     }

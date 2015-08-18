@@ -38,11 +38,12 @@ namespace DiskMagic.BenchmarkLibrary
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:验证公共方法的参数", MessageId = "3")]
         public static void OpenFileStream(PartitionInfo partition, BenchmarkType benchmarkType, int bufferSize, Action<FileStream> work)
         {
+            FileAccess fileAccess = (benchmarkType.HasFlag(BenchmarkType.Read) ? FileAccess.Read : new FileAccess()) | (benchmarkType.HasFlag(BenchmarkType.Write) ? FileAccess.Write : new FileAccess());
             OpenFileHandle(partition, benchmarkType,
                 handle =>
                 {
                     //打开文件流
-                    using (FileStream stream = new FileStream(handle, FileAccess.Read, bufferSize, false))
+                    using (FileStream stream = new FileStream(handle, fileAccess, bufferSize, false))
                     {
                         work(stream);
                     }
