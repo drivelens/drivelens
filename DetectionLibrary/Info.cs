@@ -9,7 +9,7 @@ namespace DiskMagic.DetectionLibrary
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DiskInfo
+    public sealed class DriveInfo
     {
         /// <summary>
         /// 表示此驱动器的所有分区。
@@ -85,7 +85,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 表示此分区所属的驱动器。
         /// </summary>
-        DiskInfo drive;
+        DriveInfo drive;
 
         /// <summary>
         /// 获取此分区的区块大小。
@@ -144,7 +144,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区所属的磁盘。
         /// </summary>
-        public DiskInfo Drive
+        public DriveInfo Drive
         {
             get { return drive; }
             internal set
