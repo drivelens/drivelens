@@ -7,8 +7,11 @@
       xmlns:local="clr-namespace:DiskMagic.UI"
       xmlns:DetectionLibrary="clr-namespace:DiskMagic.DetectionLibrary;assembly=DetectionLibrary"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="337" d:DesignWidth="300"
       Title="InfoPage">
+    <Page.CommandBindings>
+        <CommandBinding Command="{StaticResource NavigateBenchmarkKey}" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"/>
+    </Page.CommandBindings>
     <Page.DataContext>
         <vm:InfoViewModel x:Name="model"/>
     </Page.DataContext>
@@ -16,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ComboBox ItemsSource="{Binding Partitions}" SelectedItem="{Binding CurrentPartitionInfo, Mode=OneWayToSource}" SelectedIndex="0">
             <ComboBox.ItemTemplate>
@@ -105,5 +109,6 @@
                 </UniformGrid>
             </GroupBox>
         </StackPanel>
+        <Button Grid.Row="2" Content="测试" Command="{Binding Mode=OneWay, Source={StaticResource NavigateBenchmarkKey}}" HorizontalAlignment="Right"/>
     </Grid>
 </Page>

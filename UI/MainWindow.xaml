@@ -4,7 +4,7 @@
                   xmlns:local="clr-namespace:DiskMagic.UI"
                   xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="DiskMagic.UI.MainWindow"
                   Source="InfoPage.xaml"
-                  Title="MainWindow" Height="350" Width="525" Style="{DynamicResource NavigationWindowStyle}">
+                  Title="MainWindow" Height="482" Width="525" Style="{DynamicResource NavigationWindowStyle}">
     <NavigationWindow.Resources>
         <LinearGradientBrush x:Key="NavigationWindowNavigationChromeBackground" EndPoint="0,1" StartPoint="0,0">
             <GradientStop Color="#FFFFFF" Offset="0"/>

@@ -11,13 +11,13 @@ namespace DiskMagic.UI.ViewModels
 {
     class BenchmarkViewModel : ViewModelBase
     {
-        public ObservableCollection<BenchmarkTestViewModel> BenchmarkProviders { get; } = new ObservableCollection<BenchmarkTestViewModel>(
+        public ObservableCollection<BenchmarkTestModel> BenchmarkProviders { get; } = new ObservableCollection<BenchmarkTestModel>(
         new IBenchmarkProvider[] {
             BenchmarkTestProviders.SequenceBenchmarkProvider,
             BenchmarkTestProviders.Random4KBenchmarkProvider,
             BenchmarkTestProviders.Random512KBenchmarkProvider,
             BenchmarkTestProviders.Random4K64ThreadRandomBenchmarkProvider,
-        }.Select(s => new BenchmarkTestViewModel(s)));
+        }.Select(s => new BenchmarkTestModel(s)));
 
         public PartitionInfo Partition
         {
@@ -44,11 +44,11 @@ namespace DiskMagic.UI.ViewModels
         BenchmarkFlags flags;
     }
 
-    class BenchmarkTestViewModel : ViewModelBase
+    class BenchmarkTestModel : ViewModelBase
     {
         bool isSelected = true;
         
-        public BenchmarkTestViewModel(IBenchmarkProvider provider)
+        public BenchmarkTestModel(IBenchmarkProvider provider)
         {
             Provider = provider;
         }

@@ -24,5 +24,16 @@ namespace DiskMagic.UI
         {
             InitializeComponent();
         }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var benchmark = new BenchmarkPage(model.CurrentPartitionInfo);
+            NavigationService.Navigate(benchmark);
+        }
+
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
     }
 }

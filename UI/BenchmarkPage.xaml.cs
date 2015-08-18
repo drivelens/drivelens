@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DiskMagic.DetectionLibrary;
 
 namespace DiskMagic.UI
 {
@@ -20,9 +21,10 @@ namespace DiskMagic.UI
     /// </summary>
     public partial class BenchmarkPage : Page
     {
-        public BenchmarkPage()
+        public BenchmarkPage(PartitionInfo partition = null)
         {
             InitializeComponent();
+            model.Partition = partition; 
         }
     }
 }
