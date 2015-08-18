@@ -39,8 +39,8 @@ namespace DiskMagic.UI
         
         private void StartExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            model.StartMenchmark(cancellationTokenSource.Token);
             ToRunningState();
+            model.StartMenchmark(cancellationTokenSource.Token);
         }
 
         private void CanStartExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -50,8 +50,8 @@ namespace DiskMagic.UI
 
         private void StopExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            cancellationTokenSource.Cancel();
             ToReadyState();
+            cancellationTokenSource.Cancel();
         }
 
         private void CanStopExecute(object sender, CanExecuteRoutedEventArgs e)

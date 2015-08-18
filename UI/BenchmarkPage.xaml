@@ -1,0 +1,58 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:vm="clr-namespace:DiskMagic.UI.ViewModels"
+      xmlns:local="clr-namespace:DiskMagic.UI"
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="DiskMagic.UI.BenchmarkPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="437" d:DesignWidth="556.5"
+      Title="BenchmarkPage">
+    <Page.CommandBindings>
+        <CommandBinding Command="{StaticResource StartCmdKey}" Executed="StartExecute" CanExecute="CanStartExecute"/>
+        <CommandBinding Command="{StaticResource StopCmdKey}" Executed="StopExecute" CanExecute="CanStopExecute"/>
+    </Page.CommandBindings>
+    <Page.DataContext>
+        <vm:BenchmarkViewModel x:Name="model"/>
+    </Page.DataContext>
+    <Grid x:Name="layoutRoot">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Ready">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stopButton">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Running">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="startButton">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <VisualStateManager.CustomVisualStateManager>
+            <ei:ExtendedVisualStateManager/>
+        </VisualStateManager.CustomVisualStateManager>
+        <CheckBox Content="可压缩" IsChecked="True"/>
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding BenchmarkProviders}">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
+                <DataGridTextColumn Header="类型" Binding="{Binding Provider.Name, Mode=OneWay}"/>
+                <DataGridTextColumn Header="读" Binding="{Binding Results[0].Speed}"/>
+                <DataGridTextColumn Header="写" Binding="{Binding Results[1].Speed}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="startButton" Grid.Row="2" Content="开始" Command="{Binding Mode=OneWay, Source={StaticResource StartCmdKey}}" HorizontalAlignment="Center"/>
+        <Button x:Name="stopButton"  Grid.Row="2" Content="停止" Command="{Binding Mode=OneWay, Source={StaticResource StopCmdKey}}" HorizontalAlignment="Center"/>
+    </Grid>
+</Page>
