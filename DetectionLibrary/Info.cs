@@ -53,9 +53,9 @@ namespace DiskMagic.DetectionLibrary
         public long Capacity { get; internal set; }
 
         /// <summary>
-        /// 获取此驱动器的类型。
+        /// 获取此驱动器的接口类型。
         /// </summary>
-        public string DiskType { get; internal set; }
+        public string InterfaceType { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的序号。
@@ -86,6 +86,8 @@ namespace DiskMagic.DetectionLibrary
         /// 表示此分区所属的驱动器。
         /// </summary>
         DriveInfo drive;
+
+
 
         /// <summary>
         /// 获取此分区的区块大小。
