@@ -28,18 +28,10 @@ namespace DiskMagic.UI
         {
             InitializeComponent();
             model.Partition = partition;
-            ToReadyState();
         }
-
-        private void ToReadyState() =>
-            VisualStateManager.GoToElementState(layoutRoot, "Ready", true);
-
-        private void ToRunningState() =>
-            VisualStateManager.GoToElementState(layoutRoot, "Running", true);
         
         private void StartExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            ToRunningState();
             model.StartMenchmark(cancellationTokenSource.Token);
         }
 
@@ -50,7 +42,6 @@ namespace DiskMagic.UI
 
         private void StopExecute(object sender, ExecutedRoutedEventArgs e)
         {
-            ToReadyState();
             cancellationTokenSource.Cancel();
         }
 

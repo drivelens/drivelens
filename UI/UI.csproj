@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IOSpeedConventer.cs" />
+    <Compile Include="Conventers.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="Pages\BenchmarkPage.xaml">
       <SubType>Designer</SubType>

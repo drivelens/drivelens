@@ -41,7 +41,7 @@ namespace DiskMagic.UI.ViewModels
 
         PartitionInfo partition;
 
-        BenchmarkFlags flags;
+        BenchmarkFlags flags = BenchmarkFlags.Compressible;
         
         public void StartMenchmark(CancellationToken cancellationToken)
         {
