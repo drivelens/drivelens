@@ -14,7 +14,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 表示此驱动器的所有分区。
         /// </summary>
-        private List<PartitionInfo> _partitions;
+        private List<PartitionInfo> _partitions = new List<PartitionInfo>();
 
         #region 属性
         /// <summary>
@@ -68,11 +68,6 @@ namespace DiskMagic.DetectionLibrary
         public List<PartitionInfo> Partitions
         {
             get { return _partitions; }
-            internal set
-            {
-                _partitions = value;
-                _partitions.ForEach(partition => partition.Drive = this);
-            }
         }
         #endregion
     }
@@ -92,7 +87,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public long BlockSize { get; internal set; }
+        public long? BlockSize { get; internal set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -106,7 +101,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public long StartingOffset { get; internal set; }
+        public long? StartingOffset { get; internal set; }
 
         /// <summary>
         /// 获取此分区的容量。
@@ -116,7 +111,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的序号。
         /// </summary>
-        public int Index { get; internal set; }
+        public int? Index { get; internal set; }
 
         /// <summary>
         /// 获取此分区的卷标。
@@ -148,12 +143,9 @@ namespace DiskMagic.DetectionLibrary
         /// </summary>
         public DriveInfo Drive
         {
-            get { return drive; }
-            internal set
-            {
-                drive = value;
-                drive.Partitions.Add(this);
-            }
+            get;
+            internal set;
+            
         }
     }
 }
