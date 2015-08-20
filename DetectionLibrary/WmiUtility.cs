@@ -61,7 +61,7 @@ namespace DiskMagic.DetectionLibrary
             GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partitionId}'}} WHERE AssocClass = Win32_DiskDriveToDiskPartition");
 
         /// <summary>
-        /// 根据指定的 PNP 设备号（Win32_PNPEntity.DeviceID）返回 IDE 控制器（Win32_IDEControllerDevice）对象。
+        /// 根据指定的 Win32_DiskDrive 对象返回 IDE 控制器（Win32_IDEControllerDevice）对象。
         /// </summary>
         /// <param name="pnpDeviceId"></param>
         /// <returns></returns>
@@ -86,6 +86,11 @@ namespace DiskMagic.DetectionLibrary
             return GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_PNPEntity.DeviceID='{(string)diskDriveObject["PNPDeviceID"]}'}} WHERE AssocClass = {controllerObjectName}");
         }
 
+        /// <summary>
+        /// 根据指定的 PnP 实体对象 ID（Win32_PnPEntity.DeviceID）获取 Win32_PnPEntity 对象。
+        /// </summary>
+        /// <param name="pnpDeviceId">PnP 实体对象 ID。</param>
+        /// <returns>获取到的 Win32_PnPEntity 对象。</returns>
         public static ManagementObject GetPnPEntityObjectByPnPDeviceId(string pnpDeviceId) =>
             GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = {pnpDeviceId.Replace(@"\", @"\\")}");
 

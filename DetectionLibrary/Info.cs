@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace DiskMagic.DetectionLibrary
 {
@@ -23,7 +24,7 @@ namespace DiskMagic.DetectionLibrary
         public string ControllerName { get; internal set; }
 
         /// <summary>
-        /// 获取此驱动器的控制器服务名称。
+        ///// 获取此驱动器的控制器服务名称。
         /// </summary>
         public string ControllerService { get; internal set; }
 
@@ -65,9 +66,18 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此驱动器的所有分区。
         /// </summary>
-        public List<PartitionInfo> Partitions
+        public ReadOnlyCollection<PartitionInfo> Partitions
         {
-            get { return _partitions; }
+            get { return _partitions.AsReadOnly(); }
+        }
+
+        /// <summary>
+        /// 向分区列表中添加项目。
+        /// </summary>
+        /// <param name="partition">要添加的分区。</param>
+        internal void AddPartition(PartitionInfo partition)
+        {
+            _partitions.Add(partition);
         }
         #endregion
     }
