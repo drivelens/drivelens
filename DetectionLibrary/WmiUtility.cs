@@ -18,7 +18,7 @@ namespace DiskMagic.DetectionLibrary
         {
             // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
             using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3"))
-                return logicalDiskSearcher.Get().Cast<ManagementObject>();
+                return logicalDiskSearcher.CastResultToManagementObjectEnumerable();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace DiskMagic.DetectionLibrary
         {
             // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
             using (ManagementObjectSearcher diskDriveSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive"))
-                return diskDriveSearcher.Get().Cast<ManagementObject>();
+                return diskDriveSearcher.CastResultToManagementObjectEnumerable();
         }
 
         /// <summary>
@@ -108,5 +108,9 @@ namespace DiskMagic.DetectionLibrary
             }
         }
 
+        private static IEnumerable<ManagementObject> CastResultToManagementObjectEnumerable(this ManagementObjectSearcher searcher)
+        {
+            return searcher.Get().Cast<ManagementObject>();
+        }
     }
 }
