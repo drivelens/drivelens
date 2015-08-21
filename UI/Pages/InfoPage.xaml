@@ -59,10 +59,6 @@
                         <Label Content="{Binding Drive.Capacity}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="类型"/>
-                        <Label Content="{Binding Drive.DiskType}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
                         <Label Content="序号"/>
                         <Label Content="{Binding Drive.Index}"/>
                     </StackPanel>

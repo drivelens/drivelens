@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace DiskMagic.DetectionLibrary
 {
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DiskInfo
+    public sealed class DriveInfo
     {
         /// <summary>
         /// 表示此驱动器的所有分区。
         /// </summary>
-        private List<PartitionInfo> _partitions;
+        private List<PartitionInfo> _partitions = new List<PartitionInfo>();
 
         #region 属性
         /// <summary>
@@ -23,7 +24,7 @@ namespace DiskMagic.DetectionLibrary
         public string ControllerName { get; internal set; }
 
         /// <summary>
-        /// 获取此驱动器的控制器服务名称。
+        ///// 获取此驱动器的控制器服务名称。
         /// </summary>
         public string ControllerService { get; internal set; }
 
@@ -53,9 +54,9 @@ namespace DiskMagic.DetectionLibrary
         public long Capacity { get; internal set; }
 
         /// <summary>
-        /// 获取此驱动器的类型。
+        /// 获取此驱动器的接口类型。
         /// </summary>
-        public string DiskType { get; internal set; }
+        public string InterfaceType { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的序号。
@@ -65,15 +66,19 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此驱动器的所有分区。
         /// </summary>
-        public List<PartitionInfo> Partitions
+        public ReadOnlyCollection<PartitionInfo> Partitions
         {
-            get { return _partitions; }
-            internal set
-            {
-                _partitions = value;
-                _partitions.ForEach(partition => partition.Drive = this);
-            }
+            get { return _partitions.AsReadOnly(); }
         }
+
+        /// <summary>
+        /// 向分区列表中添加项目。
+        /// </summary>
+        /// <param name="partition">要添加的分区。</param>
+        internal void AddPartition(PartitionInfo partition)
+            {
+            _partitions.Add(partition);
+            }
         #endregion
     }
 
@@ -85,12 +90,14 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 表示此分区所属的驱动器。
         /// </summary>
-        DiskInfo drive;
+        DriveInfo drive;
+
+
 
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public long BlockSize { get; internal set; }
+        public long? BlockSize { get; internal set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -104,7 +111,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public long StartingOffset { get; internal set; }
+        public long? StartingOffset { get; internal set; }
 
         /// <summary>
         /// 获取此分区的容量。
@@ -114,7 +121,7 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区的序号。
         /// </summary>
-        public int Index { get; internal set; }
+        public int? Index { get; internal set; }
 
         /// <summary>
         /// 获取此分区的卷标。
@@ -144,14 +151,11 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取此分区所属的磁盘。
         /// </summary>
-        public DiskInfo Drive
-        {
-            get { return drive; }
-            internal set
+        public DriveInfo Drive
             {
-                drive = value;
-                drive.Partitions.Add(this);
-            }
+            get;
+            internal set;
+            
         }
     }
 }

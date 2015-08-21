@@ -16,21 +16,21 @@ namespace DiskMagic.DetectionLibrary.Tests
         [TestMethod()]
         public void GetVolumeObjectFromDeviceIdTest()
         {
-            ManagementObject mo = Utility.GetVolumeObjectByDeviceId("C:");
+            ManagementObject mo = WmiUtility.GetVolumeObjectByDeviceId("C:");
             Assert.AreEqual("C:\\", (string)mo["Name"]);
         }
 
         [TestMethod()]
         public void GetDiskPartitionObjectByDeviceIdTest()
         {
-            ManagementObject mo = Utility.GetDiskPartitionObjectByDeviceId("C:");
+            ManagementObject mo = WmiUtility.GetDiskPartitionObjectByDeviceId("C:");
             Assert.IsTrue((ulong)mo["Size"] > 0);
         }
 
         [TestMethod()]
-        public void GetDiskDriveObjectByDiskPartitionIdTest()
+        public void GetDiskDriveObjectByDiskPartitionTest()
         {
-            ManagementObject mo = Utility.GetDiskDriveObjectByDiskPartitionId("Disk #0, Partition #2");
+            ManagementObject mo = WmiUtility.GetDiskDriveObjectByPartitionId((string)WmiUtility.GetFirstObjectOrNull("SELECT * FROM Win32_DiskPartition")["DeviceId"]);
             Assert.IsTrue((ulong)mo["Size"] > 0);
         }
     }
