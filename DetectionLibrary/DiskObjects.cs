@@ -76,7 +76,13 @@ namespace DiskMagic.DetectionLibrary
         /// <summary>
         /// 获取一个值，该值指示列表是否已被初始化。
         /// </summary>
-        public static bool Initalized { get; private set; }
+        public static bool Initalized
+        {
+            get
+            {
+                return PartitionInitalized && DriveInitalized;
+            }
+        }
 
         /// <summary>
         /// 初始化列表。
@@ -85,7 +91,6 @@ namespace DiskMagic.DetectionLibrary
         {
             InitalizeDrive();
             InitalizePartition();
-            Initalized = true;
         }
 
         /// <summary>
