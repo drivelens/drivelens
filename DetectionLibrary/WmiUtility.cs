@@ -17,8 +17,7 @@ namespace DiskMagic.DetectionLibrary
         public static IEnumerable<ManagementObject> GetAllLocalDisks()
         {
             // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3"))
-                return logicalDiskSearcher.CastResultToManagementObjectEnumerable();
+            return GetAllObjects("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3");
         }
 
         /// <summary>
@@ -29,8 +28,29 @@ namespace DiskMagic.DetectionLibrary
         public static IEnumerable<ManagementObject> GetAllLocalDrives()
         {
             // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
-            using (ManagementObjectSearcher diskDriveSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive"))
-                return diskDriveSearcher.CastResultToManagementObjectEnumerable();
+            return GetAllObjects("SELECT * FROM Win32_DiskDrive");
+        }
+
+        /// <summary>
+        /// 根据指定查询语句返回所有查询结果的可枚举对象。
+        /// </summary>
+        /// <param name="query">要使用的 WMI 查询语句。</param>
+        /// <returns>查询结果的可枚举对象。</returns>
+        public static IEnumerable<ManagementObject> GetAllObjects(string query)
+        {
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+                return searcher.Get().Cast<ManagementObject>();
+        }
+
+        /// <summary>
+        /// 根据指定的 WMI 查询语句来执行 WMI 查询，如果查询到则返回第一个对象，如果没有查询到则返回 null。
+        /// </summary>
+        /// <param name="query">要使用的 WMI 查询语句。</param>
+        /// <returns>查询结果。如果查询到对象则返回查询到的对象；如果没有查询到则返回 null。</returns>
+        public static ManagementObject GetFirstObjectOrNull(string query)
+        {
+            var resultObjects = GetAllObjects(query);
+            return resultObjects.Count() == 0 ? null : resultObjects.First();
         }
 
         /// <summary>
@@ -94,23 +114,5 @@ namespace DiskMagic.DetectionLibrary
         public static ManagementObject GetPnPEntityObjectByPnPDeviceId(string pnpDeviceId) =>
             GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = '{pnpDeviceId.Replace(@"\", @"\\")}'");
 
-        /// <summary>
-        /// 根据指定的 WMI 查询语句来执行 WMI 查询，如果查询到则返回第一个对象，如果没有查询到则返回 null。
-        /// </summary>
-        /// <param name="query">要使用的 WMI 查询语句。</param>
-        /// <returns>查询结果。如果查询到对象则返回查询到的对象；如果没有查询到则返回 null。</returns>
-        public static ManagementObject GetFirstObjectOrNull(string query)
-        {
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
-            {
-                var resultObjects = searcher.Get().Cast<ManagementObject>();
-                return resultObjects.Count() == 0 ? null : resultObjects.First();
-            }
-        }
-
-        private static IEnumerable<ManagementObject> CastResultToManagementObjectEnumerable(this ManagementObjectSearcher searcher)
-        {
-            return searcher.Get().Cast<ManagementObject>();
-        }
     }
 }
