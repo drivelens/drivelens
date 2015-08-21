@@ -14,7 +14,7 @@ namespace DiskMagic.DetectionLibrary
         /// 获取该计算机上的所有磁盘分区。
         /// </summary>
         /// <returns>计算机上的所有磁盘分区。</returns>
-        internal static PartitionInfo[] GetPartitions()
+        public static PartitionInfo[] GetPartitions()
         {
             if (!DiskObjects.DriveInitalized)
             {
@@ -55,9 +55,9 @@ namespace DiskMagic.DetectionLibrary
             drive.Index = (int)(uint)diskDriveObject["Index"];
 
             //控制器信息
-            DiskControllerNameInfo controllerInfo = new DiskControllerNameInfo();
-            drive.ControllerName = controllerInfo.ControllerName;
-            drive.ControllerService = controllerInfo.ControllerService;
+            DiskControllerNameInfo? controllerInfo = DiskInformationUtility.GetDiskControllerNameService(diskDriveObject);
+            drive.ControllerName = controllerInfo?.ControllerName;
+            drive.ControllerService = controllerInfo?.ControllerService;
 
             return drive;
         }

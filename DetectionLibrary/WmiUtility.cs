@@ -83,7 +83,7 @@ namespace DiskMagic.DetectionLibrary
                     return null;
             }
 
-            return GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_PNPEntity.DeviceID='{(string)diskDriveObject["PNPDeviceID"]}'}} WHERE AssocClass = {controllerObjectName}");
+            return GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_PNPEntity.DeviceID='{((string)diskDriveObject["PNPDeviceID"])}'}} WHERE AssocClass = {controllerObjectName}");
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace DiskMagic.DetectionLibrary
         /// <param name="pnpDeviceId">PnP 实体对象 ID。</param>
         /// <returns>获取到的 Win32_PnPEntity 对象。</returns>
         public static ManagementObject GetPnPEntityObjectByPnPDeviceId(string pnpDeviceId) =>
-            GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = {pnpDeviceId.Replace(@"\", @"\\")}");
+            GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = '{pnpDeviceId.Replace(@"\", @"\\")}'");
 
         /// <summary>
         /// 根据指定的 WMI 查询语句来执行 WMI 查询，如果查询到则返回第一个对象，如果没有查询到则返回 null。
