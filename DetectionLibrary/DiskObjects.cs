@@ -68,7 +68,8 @@ namespace DiskMagic.DetectionLibrary
             {
                 if (!Initalized)
                 {
-                    throw new InvalidOperationException();
+                    //throw new InvalidOperationException();
+                    InitalizeList();
                 }
                 return _allDrives;
             }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DiskMagic.DetectionLibrary;
 
 namespace DiskMagic.UI
 {
@@ -33,7 +34,16 @@ namespace DiskMagic.UI
 
         private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            if (model.CurrentPartitionInfo != null)
+                e.CanExecute = true;
+            else
+                e.CanExecute = false;
+        }
+
+        private void list_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var value = e.NewValue is PartitionInfo ? (PartitionInfo)e.NewValue : null;
+            model.CurrentPartitionInfo = value;
         }
     }
 }

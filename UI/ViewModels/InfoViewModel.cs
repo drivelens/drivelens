@@ -21,6 +21,8 @@ namespace DiskMagic.UI.ViewModels
             }
         }
 
-        public ReadOnlyCollection<PartitionInfo> Partitions { get; } = DiskObjects.AllPartitions;
+        public ReadOnlyCollection<DriveInfo> Drives { get; } = DiskObjects.AllDrives;
+
+        //public ReadOnlyCollection<PartitionInfo> Partitions { get; } = DiskObjects.AllPartitions;
     }
 }

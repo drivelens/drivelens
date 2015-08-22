@@ -7,8 +7,24 @@
       xmlns:local="clr-namespace:DiskMagic.UI"
       xmlns:DetectionLibrary="clr-namespace:DiskMagic.DetectionLibrary;assembly=DetectionLibrary"
       mc:Ignorable="d" 
-      d:DesignHeight="337" d:DesignWidth="300"
+      d:DesignHeight="332.5" d:DesignWidth="463.5"
       Title="InfoPage">
+    <Page.Resources>
+        <HierarchicalDataTemplate x:Key="PartitionTemplate" DataType="DetectionLibrary:PartitionInfo">
+            <TextBlock><InlineUIContainer>
+        			<Label Content="{Binding DeviceId}"/>
+        		</InlineUIContainer><InlineUIContainer>
+        			<Label Content="（"/>
+        		</InlineUIContainer><InlineUIContainer>
+        			<Label Content="{Binding FileSystem}"/>
+        		</InlineUIContainer><InlineUIContainer>
+        			<Label Content=")"/>
+        		</InlineUIContainer></TextBlock>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate  x:Key="DriveTemplate" DataType="DetectionLibrary:DriveInfo" ItemsSource="{Binding Partitions}" ItemTemplate="{StaticResource PartitionTemplate}">
+            <TextBlock Text="{Binding Model}"/>
+        </HierarchicalDataTemplate>
+    </Page.Resources>
     <Page.CommandBindings>
         <CommandBinding Command="{StaticResource NavigateBenchmarkCmdKey}" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"/>
     </Page.CommandBindings>
@@ -16,22 +32,23 @@
         <vm:InfoViewModel x:Name="model"/>
     </Page.DataContext>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="192"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox ItemsSource="{Binding Partitions}" SelectedItem="{Binding CurrentPartitionInfo, Mode=OneWayToSource}" SelectedIndex="0">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding DeviceId}"/>
-                        <Label Content="{Binding Drive.Model}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <StackPanel Grid.Row="1" Orientation="Vertical" DataContext="{Binding CurrentPartitionInfo}">
+        <TreeView x:Name="list" Grid.RowSpan="2" ItemsSource="{Binding Drives}" SelectedItemChanged="list_SelectedItemChanged" ItemTemplate="{DynamicResource DriveTemplate}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+        <StackPanel Orientation="Vertical" DataContext="{Binding CurrentPartitionInfo}" Grid.Column="1">
             <GroupBox Header="硬盘信息">
                 <UniformGrid Columns="2">
                     <StackPanel Orientation="Horizontal">
@@ -105,6 +122,6 @@
                 </UniformGrid>
             </GroupBox>
         </StackPanel>
-        <Button Grid.Row="2" Content="测试" Command="{Binding Mode=OneWay, Source={StaticResource NavigateBenchmarkCmdKey}}" HorizontalAlignment="Right"/>
+        <Button Grid.Row="1" Content="测试" Command="{Binding Mode=OneWay, Source={StaticResource NavigateBenchmarkCmdKey}}" HorizontalAlignment="Right" Grid.Column="1" Width="42" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
     </Grid>
 </Page>
