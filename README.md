@@ -1,7 +1,7 @@
 ﻿*README.en.md is the English version of this document.*  
 *README.en.md 是该文档的英语版本。*  
 
-# Drivelens
+# 驱动镜
 
 本项目是一个使用 LGPL 开源协议的综合性磁盘工具，用于取代现有的磁盘检测、测试、跑分程序。  
 尽管它现在还在开发阶段，功能还不完全，但我们相信经过大家的努力它能够变为最强大的磁盘综合工具。  
