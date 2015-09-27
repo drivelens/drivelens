@@ -1,7 +1,7 @@
 *README.md 是该文档的中文版本。*  
 *README.md is the Chinese version of this document.*  
 
-# DiskMagic
+# Drivelens
 
 This project is a generic open-source disk detection/benchmark program under the GNU LGPL license. It is designed to replace other disk tools.   
 Although it is in development now, and many of the features are not implemented, but we believe that with the contributions of you, it will become the best disk benchmark tools.  
