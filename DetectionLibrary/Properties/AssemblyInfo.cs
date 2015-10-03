@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("DiskMagic - 检测模块")]
+[assembly: AssemblyTitle("Drivelens - 检测模块")]
 [assembly: AssemblyDescription("实现磁盘信息检测的模块。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DiskMagic")]
+[assembly: AssemblyProduct("Drivelens")]
 [assembly: AssemblyCopyright("Copyright © t123yh 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

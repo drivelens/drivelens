@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.DetectionLibrary
+namespace Drivelens.DetectionLibrary
 {
     /// <summary>
     /// 表示一个驱动器。

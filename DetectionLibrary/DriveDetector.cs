@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.DetectionLibrary
+namespace Drivelens.DetectionLibrary
 {
     public static class DriveDetector
     {

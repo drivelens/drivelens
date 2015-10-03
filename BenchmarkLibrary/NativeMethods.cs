@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.BenchmarkLibrary
+namespace Drivelens.BenchmarkLibrary
 {
     internal static class NativeMethods
     {

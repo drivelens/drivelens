@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.BenchmarkLibrary
+namespace Drivelens.BenchmarkLibrary
 {
     /// <summary>
     /// 表示读写速度。

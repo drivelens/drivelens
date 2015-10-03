@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Management;
-using DiskMagic.DetectionLibrary;
+using Drivelens.DetectionLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace DiskMagic.DetectionLibrary.Tests
+namespace Drivelens.DetectionLibrary.Tests
 {
     [TestClass()]
     public class UtilityTest

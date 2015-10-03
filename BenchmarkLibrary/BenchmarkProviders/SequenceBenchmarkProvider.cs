@@ -1,12 +1,12 @@
-﻿using DiskMagic.DetectionLibrary;
+﻿using Drivelens.DetectionLibrary;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AssemblyUtility = DiskMagic.BenchmarkLibrary.Utility;
+using AssemblyUtility = Drivelens.BenchmarkLibrary.Utility;
 
-namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
+namespace Drivelens.BenchmarkLibrary.BenchmarkProviders
 {
     /// <summary>
     /// 表示连续测试。

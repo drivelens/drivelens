@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("DiskMagic - 跑分模块")]
-[assembly: AssemblyDescription("实现磁盘跑分的模块。")]
+[assembly: AssemblyTitle("Drivelens - 性能测试模块")]
+[assembly: AssemblyDescription("实现磁盘性能测试的模块。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DiskMagic")]
+[assembly: AssemblyProduct("Drivelens")]
 [assembly: AssemblyCopyright("Copyright © peng1999 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

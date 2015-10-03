@@ -1,7 +1,7 @@
 ﻿#pragma warning disable RECS0145 // Removes 'private' modifiers that are not required
 using Microsoft.Win32.SafeHandles;
-using DiskMagic.DetectionLibrary;
-using DiskMagic.BenchmarkLibrary.BenchmarkProviders;
+using Drivelens.DetectionLibrary;
+using Drivelens.BenchmarkLibrary.BenchmarkProviders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.BenchmarkLibrary
+namespace Drivelens.BenchmarkLibrary
 {
     /// <summary>
     /// 测试文件的有关操作

@@ -1,12 +1,12 @@
-﻿using DiskMagic.DetectionLibrary;
+﻿using Drivelens.DetectionLibrary;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static  DiskMagic.BenchmarkLibrary.BenchmarkProviders.Utility;
+using static Drivelens.BenchmarkLibrary.BenchmarkProviders.Utility;
 
-namespace DiskMagic.BenchmarkLibrary
+namespace Drivelens.BenchmarkLibrary
 {
     ///// <summary>
     ///// 表示一个单独的测试

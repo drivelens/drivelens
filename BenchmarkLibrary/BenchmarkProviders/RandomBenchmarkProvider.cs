@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using static System.Math;
-using AssemblyUtility = DiskMagic.BenchmarkLibrary.Utility;
+using AssemblyUtility = Drivelens.BenchmarkLibrary.Utility;
 
 
-namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
+namespace Drivelens.BenchmarkLibrary.BenchmarkProviders
 {
 
     /// <summary>

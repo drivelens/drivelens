@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DiskMagic.BenchmarkLibrary.BenchmarkProviders;
+using Drivelens.BenchmarkLibrary.BenchmarkProviders;
 
-namespace DiskMagic.BenchmarkLibrary
+namespace Drivelens.BenchmarkLibrary
 {
     public static class BenchmarkTestProviders
     {

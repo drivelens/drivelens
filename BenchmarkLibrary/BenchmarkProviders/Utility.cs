@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiskMagic.BenchmarkLibrary.BenchmarkProviders
+namespace Drivelens.BenchmarkLibrary.BenchmarkProviders
 {
     static class Utility
     {

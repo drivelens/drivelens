@@ -7,7 +7,7 @@
     <ProjectGuid>{1CDD4C5A-8DC6-4906-A1AF-1D70D95C22B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DiskMagic.BenchmarkLibrary</RootNamespace>
+    <RootNamespace>Drivelens.BenchmarkLibrary</RootNamespace>
     <AssemblyName>BenchmarkLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
