@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DetectionLibrary", "Detecti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DetectionLibraryTests", "DetectionLibraryTests\DetectionLibraryTests.csproj", "{B4BBFF3B-8495-493C-9AAF-28EE08CBFAA7}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BenchLibrary", "BenchLibrary\BenchLibrary.fsproj", "{081D111C-37F2-4308-895A-245E42B1686F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B4BBFF3B-8495-493C-9AAF-28EE08CBFAA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4BBFF3B-8495-493C-9AAF-28EE08CBFAA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4BBFF3B-8495-493C-9AAF-28EE08CBFAA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{081D111C-37F2-4308-895A-245E42B1686F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081D111C-37F2-4308-895A-245E42B1686F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081D111C-37F2-4308-895A-245E42B1686F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081D111C-37F2-4308-895A-245E42B1686F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
