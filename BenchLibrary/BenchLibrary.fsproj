@@ -45,7 +45,15 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Type.fs" />
+    <Compile Include="FileOperation.fs" />
     <Compile Include="Bench.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DetectionLibrary\DetectionLibrary.csproj">
+      <Name>DetectionLibrary</Name>
+      <Project>{c5e2bbf9-9047-491d-a032-7ec025c5cc16}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

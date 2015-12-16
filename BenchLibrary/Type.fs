@@ -8,3 +8,5 @@ type BenchmarkType =
 type BenchmarkFlags =
     | None = 0x0
     | Compressible = 0x04
+
+type IOSpeed(time : System.TimeSpan, ioCount : int, bytes : int64) = struct end
