@@ -56,7 +56,7 @@ namespace Drivelens.BenchmarkLibrary
     }
 
     [Flags]
-    public enum 
+    public enum BenchmarkFlags
     {
         /// <summary>
         /// 默认。
