@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Type.fs" />
+    <Compile Include="NativeMethods.fs" />
     <Compile Include="FileOperation.fs" />
     <Compile Include="Bench.fs" />
   </ItemGroup>
