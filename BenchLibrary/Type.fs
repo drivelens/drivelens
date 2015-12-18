@@ -9,4 +9,11 @@ type BenchmarkFlags =
     | None = 0x0
     | Compressible = 0x04
 
-type IOSpeed(time : System.TimeSpan, ioCount : int, bytes : int64) = struct end
+[<Struct>]
+type IOSpeed(time : System.TimeSpan, ioCount : int, bytes : int64) =
+    member __.Time = time
+    member __.IoCount = ioCount
+    member __.Bytes = bytes
+    member __.Megabytes = bytes / 0x100000L
+    member this.MegabytePerSecond = double this.Megabytes / this.Time.TotalSeconds
+    member this.IOPerSecond = double this.IoCount / this.Time.TotalSeconds

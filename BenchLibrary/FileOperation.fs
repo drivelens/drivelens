@@ -3,6 +3,7 @@ module Drivelens.BenchLibrary.BenchmarkFile
 
 open Drivelens.DetectionLibrary
 open Microsoft.Win32.SafeHandles
+open System.ComponentModel
 open System.IO
 open System.Management
 open System.Runtime.InteropServices
@@ -22,8 +23,8 @@ let DeleteDirectory directory =
 
 let DecompressFolder (path : string) =
     let path' =
-        (path.Replace(@"\", @"\\") )
-        |> (sprintf "Win32_Directory.Name=\"%s\"")
+        path.Replace(@"\", @"\\")
+        |> sprintf "Win32_Directory.Name=\"%s\""
     use obj  = new ManagementObject(path')
     downcast obj.InvokeMethod("Uncompress", null, null).Properties.["ReturnValue"].Value
     
@@ -33,13 +34,13 @@ let OpenFileHandle (partition : PartitionInfo) (benchmarkType : BenchmarkType) w
         if benchmarkType.HasFlag(BenchmarkType.Read) then FileAccess.Read else FileAccess() 
         ||| if benchmarkType.HasFlag(BenchmarkType.Write) then FileAccess.Write else FileAccess()
     let fullWorkDirectory = partition.DeviceId + workDirectory
-    let fileDirectory = sprintf "%s\\%s" fullWorkDirectory fileName
+    let fileDirectory = sprintf @"%s\%s" fullWorkDirectory fileName
 
     DeleteDirectory fullWorkDirectory                       // 如果有，删除目录
     Directory.CreateDirectory fullWorkDirectory |> ignore   // 创建测试目录            
     DecompressFolder fullWorkDirectory                      // 将测试目录的压缩选项取消
     //打开文件句柄
-    use handle = NativeMethods.CreateFile(fileDirectory, fileAccess, FileShare.None, IntPtr.Zero, FileMode.OpenOrCreate, FileFlags, IntPtr.Zero)
+    use handle = NativeMethods.CreateFile(fileDirectory, fileAccess, FileShare.None, System.IntPtr.Zero, FileMode.OpenOrCreate, int32 FileFlags, System.IntPtr.Zero)
     let errorcode = Marshal.GetLastWin32Error()
     if handle.IsInvalid then
         //TODO: 本地化
@@ -48,7 +49,7 @@ let OpenFileHandle (partition : PartitionInfo) (benchmarkType : BenchmarkType) w
     DeleteDirectory(fullWorkDirectory)
 
 
-let openFileStream (partition : PartitionInfo) benchType bufferSize work benchmarkType=
+let openFileStream (partition : PartitionInfo) benchType bufferSize benchmarkType work =
     OpenFileHandle partition benchmarkType (
         fun handle ->
             //打开文件流

@@ -5,10 +5,10 @@ open Drivelens.DetectionLibrary
 open System.Threading
 open System.IO
 
-let getTestResult (partition : PartitionInfo) benchType flags Blocksize (cancellationToken : CancellationToken) algorithm =
-    openFileStream partition benchType BlockSize (
+let getTestResult (partition : PartitionInfo) benchType flags blocksize (cancellationToken : CancellationToken) algorithm =
+    openFileStream partition benchType blocksize (
         fun stream ->
             let work = GetReadOrWriteAction(benchType, stream)
             algorithm(stream, work, flags, cancellationToken)
     )
-    IOSpeed(time: result, ioCount: BlockCount, bytes: BlockCount * BlockSize)
+    IOSpeed( result, BlockCount, BlockCount * blocksize)
