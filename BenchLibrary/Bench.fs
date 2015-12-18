@@ -5,7 +5,7 @@ open Drivelens.DetectionLibrary
 open System.Threading
 open System.IO
 
-let getTestResult (partition : PartitionInfo) benchType flags blocksize (cancellationToken : CancellationToken) algorithm =
+let blockBench (partition : PartitionInfo) benchType flags blocksize (cancellationToken : CancellationToken) algorithm =
     openFileStream partition benchType blocksize (
         fun stream ->
             let work = GetReadOrWriteAction(benchType, stream)
