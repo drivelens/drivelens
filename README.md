@@ -1,5 +1,5 @@
-﻿* [README.en.md](README.en.md) is the English version of this document.*  
-* [README.en.md](README.en.md) 是该文档的英语版本。*  
+<i> [README.en.md](README.en.md) is the English version of this document.   
+ [README.en.md](README.en.md) 是该文档的英语版本。 </i>  
 
 # 驱动镜
 
