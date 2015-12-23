@@ -45,8 +45,9 @@ let openFileHandle (partition : PartitionInfo) (benchmarkType : BenchmarkType) w
     if handle.IsInvalid then
         //TODO: 本地化
         raise <| IOException(sprintf "测试临时文件创建失败。错误：%d" errorcode, Win32Exception(errorcode));
-    work(handle)
+    let result = work(handle)
     deleteDirectory(fullWorkDirectory)
+    result
 
 
 let openFileStream (partition : PartitionInfo) benchmarkType bufferSize work =
