@@ -13,9 +13,10 @@ let GetReadOrWriteAction (stream : Stream) =
     | _ -> raise <| System.ArgumentException(" benchType 参数不能同时具有Write和Read标志。", "benchType")
 
 let blockBench (partition : PartitionInfo) benchType flags blocksize blockCount algorithm =
-    let result = openFileStream partition benchType blocksize (
-        fun stream ->
-            let work = GetReadOrWriteAction stream benchType
-            algorithm stream work flags
-    )
+    let result =
+        openFileStream partition benchType blocksize (
+            fun stream ->
+                let work = GetReadOrWriteAction stream benchType
+                algorithm stream work flags
+        )
     IOSpeed( result, blockCount, int64 (blockCount * blocksize))

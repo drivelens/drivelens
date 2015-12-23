@@ -48,6 +48,7 @@
     <Compile Include="Type.fs" />
     <Compile Include="NativeMethods.fs" />
     <Compile Include="FileOperation.fs" />
+    <Compile Include="Algorithm.fs" />
     <Compile Include="Bench.fs" />
   </ItemGroup>
   <ItemGroup>
