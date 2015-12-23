@@ -1,5 +1,5 @@
-*README.md 是该文档的中文版本。*  
-*README.md is the Chinese version of this document.*  
+<i> [README.md](README.md) 是该文档的中文版本。  
+[README.md](README.md) is the Chinese version of this document.</i>  
 
 # Drivelens
 
