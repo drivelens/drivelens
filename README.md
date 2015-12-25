@@ -9,10 +9,13 @@
 ## 项目清单
 
 ### UI
-主界面。基于WPF。  
+主界面。基于WPF。   
+
+### BenchLibrary
+包含测试逻辑。使用F#。
 
 ### BenchmarkLibrary
-包含测试逻辑。 
+包含测试逻辑。（已迁移到 `BenchLibrary` ，并停止维护）
 
 ### DetectionLibrary
 包含磁盘检测逻辑。  
