@@ -2,6 +2,7 @@
 
 open System.Collections.Concurrent
 open System.Diagnostics
+open System.IO
 
 let cacheData = ConcurrentDictionary<int, byte[]>()
 let random = System.Random()
@@ -34,11 +35,25 @@ let getTime work =
 
     stopwatch.Elapsed
 
-let SequenceBenchmark blockSize blockCount stream work (flags : BenchmarkFlags) =
+let constf x o = x
+
+let sequenceBenchmark blockSize blockCount stream work (flags : BenchmarkFlags) =
     let buffer = getData blockSize <| flags.HasFlag(BenchmarkFlags.Compressible)
 
-    let constf x o = x
     {1 .. blockCount}
     |> Seq.map (constf <| getTime (constf <| work (buffer, 0, buffer.Length)))
     |> Seq.fold (+) (System.TimeSpan 0L)
 
+let randomBenchmark evalutionCount blockSize blockCount (stream : FileStream) work (flags : BenchmarkFlags) =
+    let benchOnce _ =
+        let buffer = getData blockSize <| flags.HasFlag(BenchmarkFlags.Compressible)
+        let posision = int64 <| blockSize * random.Next blockCount
+        let work' () =
+            ignore <| stream.Seek(posision, SeekOrigin.Begin)
+            work (buffer, 0, buffer.Length)
+        getTime work'
+    let f b (i, a) = i, a + b
+    Seq.initInfinite benchOnce
+    |> Seq.scan (+) (System.TimeSpan 0L)
+    |> Seq.zip (Seq.initInfinite id)
+    |> Seq.takeWhile (fun (i, v) -> v < System.TimeSpan.FromSeconds 60.0)
