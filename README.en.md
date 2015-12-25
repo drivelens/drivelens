@@ -11,8 +11,11 @@ Although it is in development now, and many of the features are not implemented,
 ### UI    
 This is the main user interface. It is based on the Windows Presentation Foundation (WPF).
 
+### BenchLibrary
+This contains the code of benchmark. use F#.
+
 ### BenchmarkLibrary
-This contains the code of benchmark.  
+This contains the code of benchmark.(Have migrated to `BenchLibrary` and stoped the maintenance)  
 
 ### DetectionLibrary
 This contains the code that detects the information of the disks and partitions.  
