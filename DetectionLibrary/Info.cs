@@ -93,7 +93,21 @@ namespace Drivelens.DetectionLibrary
 
         public PartitionInfo(ManagementObject source)
         {
+            // 基础信息
+            this.Capacity = (long)(ulong)source["Size"];            // 分区大小
+            this.FreeSpace = (long)(ulong)source["FreeSpace"];      // 剩余空间
+            this.PartitionType = (int)(uint)source["DriveType"];    // 磁盘类型
+            this.FileSystem = (string)source["FileSystem"];         // 文件系统
+            this.DeviceId = (string)source["DeviceID"];             // 盘符
+            this.VolumeName = (string)source["VolumeName"];         // 卷标
+            this.SerialNumber = ((string)source["VolumeSerialNumber"]).Trim();  // 分区序列号，头尾去除空格
 
+            // 卷信息
+            this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
+
+            DiskPartitionInfo? indexAndStartingOffset = DiskInformationUtility.GetDiskPartitionIndexAndStartingOffset(this.DeviceId);
+            this.Index = indexAndStartingOffset?.Index;                        // 分区的索引
+            this.StartingOffset = indexAndStartingOffset?.StartingOffset;      // 分区起始偏移
         }
 
         /// <summary>
