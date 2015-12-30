@@ -32,34 +32,8 @@ namespace Drivelens.DetectionLibrary
         internal static DriveInfo[] GetDrives()
         {
             return WmiUtility.GetAllLocalDrives()                          // 获取所有的 LogicalDisk 对象。
-                .Select(CreateDriveInfoFromDiskDriveObject)         // 转换为 PartitionInfo 数组。
+                .Select(m => new DriveInfo(m))         // 转换为 PartitionInfo 数组。
                 .ToArray();
-        }
-
-        /// <summary>
-        /// 根据 Win32_DiskDrive WMI 对象创建 DriveInfo 对象。
-        /// </summary>
-        /// <param name="diskDriveObject">表示 Win32_DiskDrive 的 WMI 对象。</param>
-        /// <returns>创建的 DriveInfo 对象。</returns>
-        private static DriveInfo CreateDriveInfoFromDiskDriveObject(ManagementObject diskDriveObject)
-        {
-            DriveInfo drive = new DriveInfo();
-
-            // 基础信息
-            drive.Model = diskDriveObject["Model"].ToString();
-            drive.DeviceId = (string)diskDriveObject["DeviceID"];
-            drive.InterfaceType = (string)diskDriveObject["InterfaceType"];
-            drive.Capacity = diskDriveObject["Size"] != null ? (long)(ulong)diskDriveObject["Size"] : 0;
-            drive.SerialNumber = ((string)diskDriveObject["SerialNumber"]).Trim();
-            drive.Firmware = (string)diskDriveObject["FirmwareRevision"];
-            drive.Index = (int)(uint)diskDriveObject["Index"];
-
-            //控制器信息
-            DiskControllerInfo controllerInfo = new DiskControllerInfo();
-            drive.ControllerName = controllerInfo.ControllerName;
-            drive.ControllerService = controllerInfo.ControllerService;
-
-            return drive;
         }
 
         /// <summary>
@@ -92,7 +66,7 @@ namespace Drivelens.DetectionLibrary
                 ManagementObject diskDriveObject = WmiUtility.GetDiskDriveObjectByPartitionId(indexAndStartingOffset?.DeviceId);
                 // 此处初始化磁盘时 Drive 里的磁盘信息不完善，不能让外部访问，故创建此特殊通道。
                 DriveInfo drive = DiskObjects.DrivesInternal.Where(disk => disk.DeviceId == (string)diskDriveObject["DeviceId"]).First();
-                drive.AddPartition(partition);
+                //drive.AddPartition(partition);
                 partition.Drive = drive;
             }
 
