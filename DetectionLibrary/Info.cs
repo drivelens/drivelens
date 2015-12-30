@@ -3,18 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Management;
 
 namespace Drivelens.DetectionLibrary
 {
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DiskInfo
+    public sealed class DriveInfo
     {
         /// <summary>
-        /// 表示此驱动器的所有分区。
+        /// 从 Win32_DiskDrive WMI 对象创建 DriveInfo 对象。
         /// </summary>
-        private List<PartitionInfo> _partitions;
+        /// <param name="source"></param>
+        internal DriveInfo(ManagementObject source)
+        {
+            this.Model = source["Model"].ToString();
+            this.DeviceId = (string)source["DeviceID"];
+            this.InterfaceType = (string)source["InterfaceType"];
+            this.Capacity = source["Size"] != null ? (long)(ulong)source["Size"] : 0;
+            this.SerialNumber = ((string)source["SerialNumber"]).Trim();
+            this.Firmware = (string)source["FirmwareRevision"];
+            this.Index = (int)(uint)source["Index"];
+
+            DiskControllerInfo? info = DiskInformationUtility.GetDiskControllerInfo(source);
+            if (info.HasValue)
+            {
+                this.ControllerName = info.Value.ControllerName;
+                this.ControllerService = info.Value.ControllerService;
+            }
+            else
+            {
+                this.ControllerName = this.ControllerService = "";
+            }
+        }
 
         #region 属性
         /// <summary>
@@ -53,27 +76,15 @@ namespace Drivelens.DetectionLibrary
         public long Capacity { get; internal set; }
 
         /// <summary>
-        /// 获取此驱动器的类型。
+        /// 获取此驱动器的接口类型。
         /// </summary>
-        public string DiskType { get; internal set; }
+        public string InterfaceType { get; internal set; }
 
         /// <summary>
         /// 获取此驱动器的序号。
         /// </summary>
         public int Index { get; internal set; }
 
-        /// <summary>
-        /// 获取此驱动器的所有分区。
-        /// </summary>
-        public List<PartitionInfo> Partitions
-        {
-            get { return _partitions; }
-            internal set
-            {
-                _partitions = value;
-                _partitions.ForEach(partition => partition.Drive = this);
-            }
-        }
         #endregion
     }
 
@@ -85,12 +96,14 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 表示此分区所属的驱动器。
         /// </summary>
-        DiskInfo drive;
+        DriveInfo drive;
+
+
 
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public long BlockSize { get; internal set; }
+        public long? BlockSize { get; internal set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -104,7 +117,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public long StartingOffset { get; internal set; }
+        public long? StartingOffset { get; internal set; }
 
         /// <summary>
         /// 获取此分区的容量。
@@ -114,7 +127,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此分区的序号。
         /// </summary>
-        public int Index { get; internal set; }
+        public int? Index { get; internal set; }
 
         /// <summary>
         /// 获取此分区的卷标。
@@ -144,14 +157,11 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此分区所属的磁盘。
         /// </summary>
-        public DiskInfo Drive
+        public DriveInfo Drive
         {
-            get { return drive; }
-            internal set
-            {
-                drive = value;
-                drive.Partitions.Add(this);
-            }
+            get;
+            internal set;
+
         }
     }
 }
