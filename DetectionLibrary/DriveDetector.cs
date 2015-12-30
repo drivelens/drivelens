@@ -55,7 +55,7 @@ namespace DiskMagic.DetectionLibrary
             drive.Index = (int)(uint)diskDriveObject["Index"];
 
             //控制器信息
-            DiskControllerNameInfo controllerInfo = new DiskControllerNameInfo();
+            DiskControllerInfo controllerInfo = new DiskControllerInfo();
             drive.ControllerName = controllerInfo.ControllerName;
             drive.ControllerService = controllerInfo.ControllerService;
 

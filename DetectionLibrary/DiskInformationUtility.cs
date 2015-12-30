@@ -51,9 +51,9 @@ namespace DiskMagic.DetectionLibrary
                 }
         }
 
-        public static DiskControllerNameInfo? GetDiskControllerNameService(ManagementObject diskDriveObject)
+        public static DiskControllerInfo? GetDiskControllerInfo(ManagementObject diskDriveObject)
         {
-            DiskControllerNameInfo result = new DiskControllerNameInfo();
+            DiskControllerInfo result = new DiskControllerInfo();
             using (ManagementObject controllerDeviceObject = WmiUtility.GetControllerDeviceByDiskDriveObject(diskDriveObject))
             {
                 result.ControllerName = (string)controllerDeviceObject["Name"];
@@ -63,7 +63,7 @@ namespace DiskMagic.DetectionLibrary
                     // 在 IDE 接口的电脑上需要进行两次该操作才能获取到真实的控制器信息，否则只能获得“主要 IDE 通道”字样。
                     if(result.ControllerService == "atapi")
                     {
-                        return GetDiskControllerNameService(controllerPnPObject);
+                        return GetDiskControllerInfo(controllerPnPObject);
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace DiskMagic.DetectionLibrary
         public string DeviceId;
     }
 
-    public struct DiskControllerNameInfo
+    public struct DiskControllerInfo
     {
         public string ControllerName;
         public string ControllerService;
