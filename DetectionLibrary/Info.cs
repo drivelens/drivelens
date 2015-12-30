@@ -14,7 +14,7 @@ namespace Drivelens.DetectionLibrary
     public sealed class DriveInfo
     {
         /// <summary>
-        /// 从 Win32_DiskDrive WMI 对象创建 DriveInfo 对象。
+        /// 用指定的 Win32_DiskDrive WMI 对象初始化 DriveInfo 对象的新实例。
         /// </summary>
         /// <param name="source"></param>
         internal DriveInfo(ManagementObject source)
@@ -28,15 +28,8 @@ namespace Drivelens.DetectionLibrary
             this.Index = (int)(uint)source["Index"];
 
             DiskControllerInfo? info = DiskInformationUtility.GetDiskControllerInfo(source);
-            if (info.HasValue)
-            {
-                this.ControllerName = info.Value.ControllerName;
-                this.ControllerService = info.Value.ControllerService;
-            }
-            else
-            {
-                this.ControllerName = this.ControllerService = "";
-            }
+            this.ControllerName = info?.ControllerName;
+            this.ControllerService = info?.ControllerService;
         }
 
         #region 属性
@@ -93,12 +86,15 @@ namespace Drivelens.DetectionLibrary
     /// </summary>
     public sealed class PartitionInfo
     {
-        /// <summary>
-        /// 表示此分区所属的驱动器。
-        /// </summary>
-        DriveInfo drive;
+        ///// <summary>
+        ///// 表示此分区所属的驱动器。
+        ///// </summary>
+        //DriveInfo drive;
 
+        public PartitionInfo(ManagementObject source)
+        {
 
+        }
 
         /// <summary>
         /// 获取此分区的区块大小。
