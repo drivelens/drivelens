@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace DiskMagic.DetectionLibrary
+namespace Drivelens.DetectionLibrary
 {
     public static class DiskObjects
     {

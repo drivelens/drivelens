@@ -11,15 +11,15 @@ namespace Drivelens.DetectionLibrary.Tests
     [TestClass()]
     public class DriveDetectorTests
     {
-        [TestMethod()]
-        public void GetPartitionsTest()
-        {
-            PartitionInfo[] infos = DriveDetector.GetPartitions();
-            if(infos.Length > 0)
-            {
-                return;
-            }
-            Assert.Fail();
-        }
+        //[TestMethod()]
+        //public void GetPartitionsTest()
+        //{
+        //    PartitionInfo[] infos = DriveDetector.GetPartitions();
+        //    if(infos.Length > 0)
+        //    {
+        //        return;
+        //    }
+        //    Assert.Fail();
+        //}
     }
 }

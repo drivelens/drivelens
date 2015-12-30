@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 
-namespace DiskMagic.DetectionLibrary
+namespace Drivelens.DetectionLibrary
 {
     public static class DiskInformationUtility
     {
