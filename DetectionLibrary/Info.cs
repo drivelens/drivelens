@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Management;
 
 namespace DiskMagic.DetectionLibrary
 {
@@ -13,9 +14,30 @@ namespace DiskMagic.DetectionLibrary
     public sealed class DriveInfo
     {
         /// <summary>
-        /// 表示此驱动器的所有分区。
+        /// 从 Win32_DiskDrive WMI 对象创建 DriveInfo 对象。
         /// </summary>
-        private List<PartitionInfo> _partitions = new List<PartitionInfo>();
+        /// <param name="source"></param>
+        internal DriveInfo(ManagementObject source)
+        {
+            this.Model = source["Model"].ToString();
+            this.DeviceId = (string)source["DeviceID"];
+            this.InterfaceType = (string)source["InterfaceType"];
+            this.Capacity = source["Size"] != null ? (long)(ulong)source["Size"] : 0;
+            this.SerialNumber = ((string)source["SerialNumber"]).Trim();
+            this.Firmware = (string)source["FirmwareRevision"];
+            this.Index = (int)(uint)source["Index"];
+
+            DiskControllerInfo? info = DiskInformationUtility.GetDiskControllerInfo(source);
+            if (info.HasValue)
+            {
+                this.ControllerName = info.Value.ControllerName;
+                this.ControllerService = info.Value.ControllerService;
+            }
+            else
+            {
+                this.ControllerName = this.ControllerService = "";
+            }
+        }
 
         #region 属性
         /// <summary>
@@ -24,7 +46,7 @@ namespace DiskMagic.DetectionLibrary
         public string ControllerName { get; internal set; }
 
         /// <summary>
-        ///// 获取此驱动器的控制器服务名称。
+        /// 获取此驱动器的控制器服务名称。
         /// </summary>
         public string ControllerService { get; internal set; }
 
@@ -63,22 +85,6 @@ namespace DiskMagic.DetectionLibrary
         /// </summary>
         public int Index { get; internal set; }
 
-        /// <summary>
-        /// 获取此驱动器的所有分区。
-        /// </summary>
-        public ReadOnlyCollection<PartitionInfo> Partitions
-        {
-            get { return _partitions.AsReadOnly(); }
-        }
-
-        /// <summary>
-        /// 向分区列表中添加项目。
-        /// </summary>
-        /// <param name="partition">要添加的分区。</param>
-        internal void AddPartition(PartitionInfo partition)
-        {
-            _partitions.Add(partition);
-        }
         #endregion
     }
 
@@ -155,7 +161,7 @@ namespace DiskMagic.DetectionLibrary
         {
             get;
             internal set;
-            
+
         }
     }
 }
