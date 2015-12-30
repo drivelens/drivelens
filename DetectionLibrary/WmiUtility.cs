@@ -108,5 +108,38 @@ namespace Drivelens.DetectionLibrary
             }
         }
 
+        /// <summary>
+        /// 使用指定的转换方法，将指定对象转换为要求的类型。如果要转换的对象为 null，则返回指定的默认值。
+        /// </summary>
+        /// <typeparam name="TResult">目标类型。</typeparam>
+        /// <param name="source">要转换的对象。</param>
+        /// <param name="cast">用于转换的函数。</param>
+        /// <param name="defaultValue">默认值。</param>
+        /// <returns>如果要转换的对象不为 null，则调用指定的转换函数进行转换；否则返回默认值。</returns>
+        public static TResult TryCastObject<TResult>(object source, Func<object, TResult> cast, TResult defaultValue)
+        {
+            if(source == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return cast(source);
+            }
+        }
+
+        /// <summary>
+        /// 尝试获得 WMI 对象指定的属性。如果值为 null，则返回指定的默认值。
+        /// </summary>
+        /// <typeparam name="TResult">目标类型。</typeparam>
+        /// <param name="source">源 ManagementObject。</param>
+        /// <param name="propertyName">相关的属性的名称。</param>
+        /// <param name="cast">用于转换的函数。</param>
+        /// <param name="defaultValue">默认值。</param>
+        /// <returns>如果指定属性不为 null，则调用指定的转换函数进行转换；否则返回默认值。</returns>
+        public static TResult GetConvertedProperty<TResult>(this ManagementObject source, string propertyName, Func<object, TResult> cast, TResult defaultValue)
+        {
+            return TryCastObject(source[propertyName], cast, defaultValue);
+        }
     }
 }
