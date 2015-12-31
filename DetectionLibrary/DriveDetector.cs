@@ -16,7 +16,7 @@ namespace Drivelens.DetectionLibrary
         /// <returns>计算机上的所有磁盘分区。</returns>
         internal static PartitionInfo[] GetPartitions()
         {
-            return WmiUtility.GetAllLocalDisks()                          // 获取所有的 LogicalDisk 对象。
+            return WmiUtility.GetAllLogicalDisks()                          // 获取所有的 LogicalDisk 对象。
                 .Select(m => new PartitionInfo(m))         // 转换为 PartitionInfo 数组。
                 .ToArray();
         }
@@ -27,7 +27,7 @@ namespace Drivelens.DetectionLibrary
         /// <returns>计算机上的所有磁盘驱动器。</returns>
         internal static DriveInfo[] GetDrives()
         {
-            return WmiUtility.GetAllLocalDrives()                          // 获取所有的 LogicalDisk 对象。
+            return WmiUtility.GetAllDiskDrives()                          // 获取所有的 LogicalDisk 对象。
                 .Select(m => new DriveInfo(m))         // 转换为 PartitionInfo 数组。
                 .ToArray();
         }
