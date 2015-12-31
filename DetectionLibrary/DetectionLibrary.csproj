@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="DiskInformationUtility.cs" />
     <Compile Include="DriveDetector.cs" />
-    <Compile Include="DiskObjects.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WmiUtility.cs" />
