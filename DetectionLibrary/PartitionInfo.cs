@@ -12,11 +12,6 @@ namespace Drivelens.DetectionLibrary
     /// </summary>
     public sealed class PartitionInfo
     {
-        ///// <summary>
-        ///// 表示此分区所属的驱动器。
-        ///// </summary>
-        //DriveInfo drive;
-
         /// <summary>
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
@@ -119,7 +114,6 @@ namespace Drivelens.DetectionLibrary
         {
             get;
             private set;
-
         }
     }
 }
