@@ -19,13 +19,13 @@ namespace Drivelens.DetectionLibrary
         /// <param name="source"></param>
         internal DriveInfo(ManagementObject source)
         {
-            this.Model = source["Model"].ToString();
-            this.DeviceId = (string)source["DeviceID"];
-            this.InterfaceType = (string)source["InterfaceType"];
-            this.Capacity = source["Size"] != null ? (long)(ulong)source["Size"] : 0;
-            this.SerialNumber = ((string)source["SerialNumber"]).Trim();
-            this.Firmware = (string)source["FirmwareRevision"];
-            this.Index = (int)(uint)source["Index"];
+            this.Model = source.GetConvertedProperty("Model", Convert.ToString, null);
+            this.DeviceId = source.GetConvertedProperty("DeviceId", Convert.ToString, null);
+            this.InterfaceType = source.GetConvertedProperty("InterfaceType", Convert.ToString, null);
+            this.Capacity = source.GetConvertedProperty("DeviceId", Convert.ToInt64, -1);
+            this.SerialNumber = source.GetConvertedProperty("SerialNumber", s => Convert.ToString(s).Trim(), null);
+            this.Firmware = source.GetConvertedProperty("FirmwareRevision", Convert.ToString, null);
+            this.Index = source.GetConvertedProperty("Index", Convert.ToInt32, -1);
 
             DiskControllerInfo? info = DiskInformationUtility.GetDiskControllerInfo(source);
             this.ControllerName = info?.ControllerName;
@@ -94,13 +94,13 @@ namespace Drivelens.DetectionLibrary
         public PartitionInfo(ManagementObject source)
         {
             // 基础信息
-            this.Capacity = (long)(ulong)source["Size"];            // 分区大小
-            this.FreeSpace = (long)(ulong)source["FreeSpace"];      // 剩余空间
-            this.PartitionType = (int)(uint)source["DriveType"];    // 磁盘类型
-            this.FileSystem = (string)source["FileSystem"];         // 文件系统
-            this.DeviceId = (string)source["DeviceID"];             // 盘符
-            this.VolumeName = (string)source["VolumeName"];         // 卷标
-            this.SerialNumber = ((string)source["VolumeSerialNumber"]).Trim();  // 分区序列号，头尾去除空格
+            this.Capacity = source.GetConvertedProperty("Size", Convert.ToInt64, -1);            // 分区大小
+            this.FreeSpace = source.GetConvertedProperty("FreeSpace", Convert.ToInt64, -1);      // 剩余空间
+            this.PartitionType = source.GetConvertedProperty("DriveType", Convert.ToInt32, -1);    // 磁盘类型
+            this.FileSystem = source.GetConvertedProperty("FileSystem", Convert.ToString, null);         // 文件系统
+            this.DeviceId = source.GetConvertedProperty("DeviceId", Convert.ToString, null);             // 盘符
+            this.VolumeName = source.GetConvertedProperty("VolumeName", Convert.ToString, null);         // 卷标
+            this.SerialNumber = source.GetConvertedProperty("VolumeSerialNumber", s => Convert.ToString(s).Trim(), null);  // 分区序列号，头尾去除空格
 
             // 卷信息
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小

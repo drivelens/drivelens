@@ -68,7 +68,7 @@ namespace Drivelens.DetectionLibrary
         public static ManagementObject GetControllerDeviceByDiskDriveObject(ManagementObject diskDriveObject)
         {
             string controllerObjectName;
-            switch ((string)diskDriveObject["InterfaceType"])
+            switch (diskDriveObject.GetConvertedProperty("InterfaceType", Convert.ToString, null))
             {
                 case "IDE":
                     controllerObjectName = "Win32_IDEControllerDevice";
@@ -83,7 +83,7 @@ namespace Drivelens.DetectionLibrary
                     return null;
             }
 
-            return GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_PNPEntity.DeviceID='{(string)diskDriveObject["PNPDeviceID"]}'}} WHERE AssocClass = {controllerObjectName}");
+            return GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_PNPEntity.DeviceID='{diskDriveObject.GetConvertedProperty("PNPDeviceId", Convert.ToString, "")}'}} WHERE AssocClass = {controllerObjectName}");
         }
 
         /// <summary>

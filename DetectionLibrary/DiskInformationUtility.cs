@@ -14,18 +14,18 @@ namespace Drivelens.DetectionLibrary
         /// </summary>
         /// <param name="deviceId">该磁盘的盘符（例如 D:）。</param>
         /// <returns>如果获取到，则为该磁盘的单元大小；如果没有获取到则为Null。</returns>
-        public static long? GetPartitionBlockSize(string deviceId)
+        public static long GetPartitionBlockSize(string deviceId)
         {
             // 获取卷对象用于获取分区的区块大小。
             using (ManagementObject volumeObject = WmiUtility.GetVolumeObjectByDeviceId(deviceId))
                 // 如果获取到了就设置，如果没有获取到就设为 -1。
                 if (volumeObject != null)
                 {
-                    return (long)(ulong)volumeObject["BlockSize"];       // 分区的区块大小。
+                    return volumeObject.GetConvertedProperty("BlockSize", Convert.ToInt64, -1);       // 分区的区块大小。
                 }
                 else
                 {
-                    return null;
+                    return -1;
                 }
         }
 
@@ -40,9 +40,9 @@ namespace Drivelens.DetectionLibrary
                 if (diskPartitionObject != null)
                 {
                     DiskPartitionInfo result = new DiskPartitionInfo();
-                    result.Index = (int)(uint)diskPartitionObject["Index"];
-                    result.StartingOffset = (long)(ulong)diskPartitionObject["StartingOffset"];
-                    result.DeviceId = (string)diskPartitionObject["DeviceId"];
+                    result.Index = diskPartitionObject.GetConvertedProperty("Index", Convert.ToInt32, -1);
+                    result.StartingOffset = diskPartitionObject.GetConvertedProperty("StartingOffset", Convert.ToInt64, -1);
+                    result.DeviceId = diskPartitionObject.GetConvertedProperty("DeviceId", Convert.ToString, null);
                     return result;
                 }
                 else
@@ -56,12 +56,12 @@ namespace Drivelens.DetectionLibrary
             DiskControllerInfo result = new DiskControllerInfo();
             using (ManagementObject controllerDeviceObject = WmiUtility.GetControllerDeviceByDiskDriveObject(diskDriveObject))
             {
-                result.ControllerName = (string)controllerDeviceObject["Name"];
-                using (ManagementObject controllerPnPObject = WmiUtility.GetPnPEntityObjectByPnPDeviceId((string)controllerDeviceObject["DeviceId"]))
+                result.ControllerName = controllerDeviceObject.GetConvertedProperty("Name", Convert.ToString, null);
+                using (ManagementObject controllerPnPObject = WmiUtility.GetPnPEntityObjectByPnPDeviceId(controllerDeviceObject.GetConvertedProperty("DeviceId", Convert.ToString, null)))
                 {
-                    result.ControllerService = (string)controllerPnPObject["Service"];
+                    result.ControllerService = controllerDeviceObject.GetConvertedProperty("Service", Convert.ToString, null);
                     // 在 IDE 接口的电脑上需要进行两次该操作才能获取到真实的控制器信息，否则只能获得“主要 IDE 通道”字样。
-                    if(result.ControllerService == "atapi")
+                    if (result.ControllerService == "atapi")
                     {
                         return GetDiskControllerInfo(controllerPnPObject);
                     }
