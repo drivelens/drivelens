@@ -14,10 +14,27 @@ namespace Drivelens.DetectionLibrary
     public sealed class DriveInfo
     {
         /// <summary>
-        /// 用指定的 Win32_DiskDrive WMI 对象初始化 DriveInfo 对象的新实例。
+        /// 用指定的 WMI 对象（Win32_DiskDrive）初始化 DriveInfo 对象的新实例。
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">用于初始化的 WMI 对象（Win32_DiskDrive）。</param>
         internal DriveInfo(ManagementObject source)
+        {
+            RefreshPropertiesFromWmiObject(source);
+        }
+
+        /// <summary>
+        /// 刷新本实例所包含的磁盘信息。
+        /// </summary>
+        public void RefreshProperties()
+        {
+            RefreshPropertiesFromWmiObject(WmiUtility.GetDiskDriveObjectById(this.DeviceId));
+        }
+
+        /// <summary>
+        /// 刷新磁盘信息。
+        /// </summary>
+        /// <param name="source">用于获取信息的 WMI 对象（Win32_DiskDrive）。</param>
+        private void RefreshPropertiesFromWmiObject(ManagementObject source)
         {
             this.Model = source.GetConvertedProperty("Model", Convert.ToString, null);
             this.DeviceId = source.GetConvertedProperty("DeviceId", Convert.ToString, null);

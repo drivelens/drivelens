@@ -17,10 +17,32 @@ namespace Drivelens.DetectionLibrary
         ///// </summary>
         //DriveInfo drive;
 
-        public PartitionInfo(ManagementObject source)
+        /// <summary>
+        /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
+        /// </summary>
+        /// <param name="source">用于初始化的 WMI 对象（Win23_LogicalDisk）。</param>
+        internal PartitionInfo(ManagementObject source)
+        {
+            RefreshPropertiesFromWmiObject(source);
+        }
+
+
+        /// <summary>
+        /// 刷新本实例所包含的分区信息。
+        /// </summary>
+        public void RefreshProperties()
+        {
+            RefreshPropertiesFromWmiObject(WmiUtility.GetLogicalDiskObjectById(this.DeviceId));
+        }
+
+        /// <summary>
+        /// 刷新分区信息。
+        /// </summary>
+        /// <param name="source">用于获取信息的 WMI 对象（Win23_LogicalDisk）。</param>
+        private void RefreshPropertiesFromWmiObject(ManagementObject source)
         {
             // 基础信息
-            this.Capacity = source.GetConvertedProperty("Size", Convert.ToInt64, -1);            // 分区大小
+            this.Capacity = source.GetConvertedProperty("Size", Convert.ToInt64, -1);                   // 分区大小
             this.FreeSpace = source.GetConvertedProperty("FreeSpace", Convert.ToInt64, -1);      // 剩余空间
             this.PartitionType = source.GetConvertedProperty("DriveType", Convert.ToInt32, -1);    // 磁盘类型
             this.FileSystem = source.GetConvertedProperty("FileSystem", Convert.ToString, null);         // 文件系统
