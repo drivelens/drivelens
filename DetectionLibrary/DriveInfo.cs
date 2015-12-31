@@ -11,7 +11,7 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DriveInfo
+    public sealed class DriveInfo : IIdentifiable<string>
     {
         /// <summary>
         /// 用指定的 WMI 对象（Win32_DiskDrive）初始化 DriveInfo 对象的新实例。
@@ -95,7 +95,20 @@ namespace Drivelens.DetectionLibrary
         /// </summary>
         public int Index { get; private set; }
 
+
         #endregion
+
+        /// <summary>
+        /// 获取标识符。
+        /// </summary>
+        public string Identifier
+        {
+            get
+            {
+                return this.DeviceId;
+            }
+        }
+
     }
 
 

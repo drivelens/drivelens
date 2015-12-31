@@ -10,7 +10,7 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个分区。
     /// </summary>
-    public sealed class PartitionInfo
+    public sealed class PartitionInfo : IIdentifiable<string>
     {
         /// <summary>
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
@@ -110,6 +110,17 @@ namespace Drivelens.DetectionLibrary
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 获取标识符。
+        /// </summary>
+        public string Identifier
+        {
+            get
+            {
+                return DeviceId;
+            }
         }
     }
 }

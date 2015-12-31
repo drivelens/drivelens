@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiskInformationUtility.cs" />
+    <Compile Include="IIdentifiable.cs" />
+    <Compile Include="ReadOnlyPoolCollection.cs" />
     <Compile Include="DriveDetector.cs" />
     <Compile Include="DriveInfo.cs" />
     <Compile Include="PartitionInfo.cs" />
