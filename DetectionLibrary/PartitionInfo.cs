@@ -61,11 +61,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此分区所分配的盘符。
         /// </summary>
-#if DEBUG
-        public string DeviceId { get; set; }
-#else
         public string DeviceId { get; private set; }
-#endif
 
         /// <summary>
         /// 获取此分区的起始偏移。
