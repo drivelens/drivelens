@@ -61,6 +61,22 @@ namespace Drivelens.DetectionLibrary
             GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partitionId}'}} WHERE AssocClass = Win32_DiskDriveToDiskPartition");
 
         /// <summary>
+        /// 根据指定的设备标识符（DeivceId）获取磁盘（Win32_DiskDrive）对象。
+        /// </summary>
+        /// <param name="diskDriveId">磁盘设备标识符（Win32_DiskDrive.DeviceId）。</param>
+        /// <returns>获取的 Win32_DiskDrive 对象。</returns>
+        public static ManagementObject GetDiskDriveObjectById(string diskDriveId) =>
+            GetFirstObjectOrNull($"SELECT * FROM Win32_DiskDrive WHERE DeivceId={diskDriveId}");
+
+        /// <summary>
+        /// 根据指定的设备标识符（DeivceId）获取分区（Win32_LogicalDisk）对象。
+        /// </summary>
+        /// <param name="diskDriveId">分区标识符（Win32_LogicalDisk.DeviceId）。</param>
+        /// <returns>获取的 Win32_LogicalDisk 对象。</returns>
+        public static ManagementObject GetPartitionObjectById(string logicalDiskId) =>
+            GetFirstObjectOrNull($"SELECT * FROM Win32_LogicalDisk WHERE DeivceId={logicalDiskId}");
+
+        /// <summary>
         /// 根据指定的 Win32_DiskDrive 对象返回 IDE 控制器（Win32_IDEControllerDevice）对象。
         /// </summary>
         /// <param name="pnpDeviceId"></param>
