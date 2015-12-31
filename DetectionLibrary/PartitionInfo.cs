@@ -39,7 +39,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
-        public long? BlockSize { get; internal set; }
+        public long? BlockSize { get; private set; }
 
         /// <summary>
         /// 获取此分区所分配的盘符。
@@ -47,48 +47,48 @@ namespace Drivelens.DetectionLibrary
 #if DEBUG
         public string DeviceId { get; set; }
 #else
-        public string DeviceId { get; internal set; }
+        public string DeviceId { get; private set; }
 #endif
 
         /// <summary>
         /// 获取此分区的起始偏移。
         /// </summary>
-        public long? StartingOffset { get; internal set; }
+        public long? StartingOffset { get; private set; }
 
         /// <summary>
         /// 获取此分区的容量。
         /// </summary>
-        public long Capacity { get; internal set; }
+        public long Capacity { get; private set; }
 
         /// <summary>
         /// 获取此分区的序号。
         /// </summary>
-        public int? Index { get; internal set; }
+        public int? Index { get; private set; }
 
         /// <summary>
         /// 获取此分区的卷标。
         /// </summary>
-        public string VolumeName { get; internal set; }
+        public string VolumeName { get; private set; }
 
         /// <summary>
         /// 获取此分区的序列号。
         /// </summary>
-        public string SerialNumber { get; internal set; }
+        public string SerialNumber { get; private set; }
 
         /// <summary>
         /// 获取此分区的类型。
         /// </summary>
-        public int PartitionType { get; internal set; }
+        public int PartitionType { get; private set; }
 
         /// <summary>
         /// 获取此分区的空闲空间。
         /// </summary>
-        public long FreeSpace { get; internal set; }
+        public long FreeSpace { get; private set; }
 
         /// <summary>
         /// 获取此分区的文件系统。
         /// </summary>
-        public string FileSystem { get; internal set; }
+        public string FileSystem { get; private set; }
 
         /// <summary>
         /// 获取此分区所属的磁盘。
@@ -96,7 +96,7 @@ namespace Drivelens.DetectionLibrary
         public DriveInfo Drive
         {
             get;
-            internal set;
+            private set;
 
         }
     }

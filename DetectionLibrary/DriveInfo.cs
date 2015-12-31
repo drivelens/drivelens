@@ -36,47 +36,47 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 获取此驱动器的控制器名称。
         /// </summary>
-        public string ControllerName { get; internal set; }
+        public string ControllerName { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的控制器服务名称。
         /// </summary>
-        public string ControllerService { get; internal set; }
+        public string ControllerService { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的路径。
         /// </summary>
-        public string DeviceId { get; internal set; }
+        public string DeviceId { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的固件版本。
         /// </summary>
-        public string Firmware { get; internal set; }
+        public string Firmware { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的型号。
         /// </summary>
-        public string Model { get; internal set; }
+        public string Model { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的的序列号。
         /// </summary>
-        public string SerialNumber { get; internal set; }
+        public string SerialNumber { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的容量。
         /// </summary>
-        public long Capacity { get; internal set; }
+        public long Capacity { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的接口类型。
         /// </summary>
-        public string InterfaceType { get; internal set; }
+        public string InterfaceType { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的序号。
         /// </summary>
-        public int Index { get; internal set; }
+        public int Index { get; private set; }
 
         #endregion
     }
