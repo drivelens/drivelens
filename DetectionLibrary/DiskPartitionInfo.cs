@@ -15,14 +15,23 @@ namespace Drivelens.DetectionLibrary
 
         internal static DiskPartitionInfo Get(ManagementObject source) =>
             ReadOnlyPoolCollection<DiskPartitionInfo, string>
-            .GetOrCreate(source.GetConvertedProperty("DeviceId", Convert.ToString),
-                () => new DiskPartitionInfo(source));
+                .GetOrCreate(source.GetConvertedProperty("DeviceId", Convert.ToString),
+                    () => new DiskPartitionInfo(source));
 
-        protected DiskPartitionInfo(ManagementObject source) : base(source)
+        protected DiskPartitionInfo(ManagementObject source, string diskDriveId = null) : base(source)
         {
-            this.Drive = new Lazy<DriveInfo>(() =>
-                 DriveInfo.Get(
-                     WmiUtility.GetDiskDriveObjectByPartitionId(this.DeviceId)));
+            if (diskDriveId == null)
+            {
+                this.Drive = new Lazy<DriveInfo>(() =>
+                    DriveInfo.Get(
+                        WmiUtility.GetDiskDriveObjectByPartitionId(this.DeviceId)));
+            }
+            else
+            {
+                this.Drive = new Lazy<DriveInfo>(() =>
+                    DriveInfo.Get(diskDriveId)
+                );
+            }
         }
 
         public override void RefreshProperties()

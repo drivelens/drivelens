@@ -27,11 +27,19 @@ namespace Drivelens.DetectionLibrary
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win23_LogicalDisk）。</param>
-        protected LogicalDiskInfo(ManagementObject source) : base(source)
+        protected LogicalDiskInfo(ManagementObject source, string physicalPartitionId = null) : base(source)
         {
-            this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
-                DiskPartitionInfo.Get(
-                    WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId)));
+            if (physicalPartitionId == null)
+            {
+                this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
+                    DiskPartitionInfo.Get(physicalPartitionId));
+            }
+            else
+            {
+                this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
+                    DiskPartitionInfo.Get(
+                        WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId)));
+            }
         }
 
 
