@@ -31,6 +31,22 @@ namespace Drivelens.DetectionLibrary
             GetObjects("SELECT * FROM Win32_DiskDrive");
 
         /// <summary>
+        /// 获得指定的磁盘驱动器（Win32_DiskDrive）包含的所有物理分区。
+        /// </summary>
+        /// <param name="diskDriveId">磁盘驱动器 ID（Win32_DiskDrive.DeviceId）。</param>
+        /// <returns>该磁盘驱动器下的所有物理分区。</returns>
+        public static IEnumerable<ManagementObject> GetPartitionsByDiskDriveId(string diskDriveId) =>
+            GetObjects($"ASSOCIATORS OF {{Win32_DiskDrive.DeviceID='{diskDriveId}'}} WHERE AssocClass = Win32_DiskDriveToDiskPartition");
+
+        /// <summary>
+        /// 获得指定的物理分区（Win32_DiskPartition）包含的所有逻辑分区。
+        /// </summary>
+        /// <param name="partitionId">物理分区 ID（Win32_DiskPartition.DeviceId）</param>
+        /// <returns>该物理分区下的所有逻辑分区。</returns>
+        public static IEnumerable<ManagementObject> GetLogicalDisksByPartitionId(string partitionId) =>
+            GetObjects($"ASSOCIATORS OF {{Win32_DiskPartition.DeviceID='{partitionId}'}} WHERE AssocClass = Win32_LogicalDiskToPartition");
+
+        /// <summary>
         /// 获取指定的盘符（Win32_LogicalDisk.DeviceId）所对应的分区（Win32_DiskPartition）对象。
         /// </summary>
         /// <param name="deviceId">盘符（Win32_LogicalDisk.DeviceId）。</param>
