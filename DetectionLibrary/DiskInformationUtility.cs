@@ -36,7 +36,7 @@ namespace Drivelens.DetectionLibrary
         /// <returns>如果该磁盘有对应的分区则为获取到的值；如果没有则为 Null。</returns>
         public static DiskPartitionInfo? GetDiskPartitionIndexAndStartingOffset(string deviceId)
         {
-            using (ManagementObject diskPartitionObject = WmiUtility.GetDiskPartitionObjectByDeviceId(deviceId))
+            using (ManagementObject diskPartitionObject = WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(deviceId))
                 if (diskPartitionObject != null)
                 {
                     DiskPartitionInfo result = new DiskPartitionInfo();

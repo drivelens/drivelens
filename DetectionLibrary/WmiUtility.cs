@@ -42,7 +42,7 @@ namespace Drivelens.DetectionLibrary
         /// <param name="deviceId">盘符（Win32_LogicalDisk.DeviceId）。</param>
         /// <returns>获取的 Win32_DiskPartition 对象。</returns>
         /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394175.aspx"/>
-        public static ManagementObject GetDiskPartitionObjectByDeviceId(string deviceId) =>
+        public static ManagementObject GetDiskPartitionObjectByLogicalDiskDeviceId(string deviceId) =>
             GetFirstObjectOrNull($"ASSOCIATORS OF {{Win32_LogicalDisk.DeviceID='{deviceId}'}} WHERE AssocClass = Win32_LogicalDiskToPartition");
 
         /// <summary>

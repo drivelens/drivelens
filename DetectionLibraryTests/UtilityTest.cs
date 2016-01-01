@@ -23,7 +23,7 @@ namespace Drivelens.DetectionLibrary.Tests
         [TestMethod()]
         public void GetDiskPartitionObjectByDeviceIdTest()
         {
-            ManagementObject mo = WmiUtility.GetDiskPartitionObjectByDeviceId("C:");
+            ManagementObject mo = WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId("C:");
             Assert.IsTrue((ulong)mo["Size"] > 0);
         }
 
