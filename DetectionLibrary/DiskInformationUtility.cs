@@ -29,26 +29,26 @@ namespace Drivelens.DetectionLibrary
                 }
         }
 
-        /// <summary>
-        /// 获取指定磁盘的序号和起始偏移。
-        /// </summary>
-        /// <param name="deviceId">该分区的盘符（例如 D:）。</param>
-        /// <returns>如果该磁盘有对应的分区则为获取到的值；如果没有则为 Null。</returns>
-        public static DiskPartitionInfo? GetDiskPartitionIndexAndStartingOffset(ManagementObject diskPartitionObject)
-        {
-            if (diskPartitionObject != null)
-            {
-                DiskPartitionInfo result = new DiskPartitionInfo();
-                result.Index = diskPartitionObject.GetConvertedProperty("Index", Convert.ToInt32, -1);
-                result.StartingOffset = diskPartitionObject.GetConvertedProperty("StartingOffset", Convert.ToInt64, -1);
-                result.DeviceId = diskPartitionObject.GetConvertedProperty("DeviceId", Convert.ToString, null);
-                return result;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        ///// <summary>
+        ///// 获取指定磁盘的序号和起始偏移。
+        ///// </summary>
+        ///// <param name="deviceId">该分区的盘符（例如 D:）。</param>
+        ///// <returns>如果该磁盘有对应的分区则为获取到的值；如果没有则为 Null。</returns>
+        //public static DiskPartitionInfo? GetDiskPartitionIndexAndStartingOffset(ManagementObject diskPartitionObject)
+        //{
+        //    if (diskPartitionObject != null)
+        //    {
+        //        DiskPartitionInfo result = new DiskPartitionInfo();
+        //        result.Index = diskPartitionObject.GetConvertedProperty("Index", Convert.ToInt32, -1);
+        //        result.StartingOffset = diskPartitionObject.GetConvertedProperty("StartingOffset", Convert.ToInt64, -1);
+        //        result.DeviceId = diskPartitionObject.GetConvertedProperty("DeviceId", Convert.ToString, null);
+        //        return result;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         public static DiskControllerInfo? GetDiskControllerInfo(ManagementObject diskDriveObject)
         {
@@ -71,12 +71,12 @@ namespace Drivelens.DetectionLibrary
 
 
     }
-    public struct DiskPartitionInfo
-    {
-        public int Index;
-        public long StartingOffset;
-        public string DeviceId;
-    }
+    //public struct DiskPartitionInfo
+    //{
+    //    public int Index;
+    //    public long StartingOffset;
+    //    public string DeviceId;
+    //}
 
     public struct DiskControllerInfo
     {
