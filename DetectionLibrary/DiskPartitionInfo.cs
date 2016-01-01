@@ -21,7 +21,12 @@ namespace Drivelens.DetectionLibrary
         protected DiskPartitionInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
+            this.Drive = new Lazy<DriveInfo>(() =>
+                 DriveInfo.Get(
+                     WmiUtility.GetDiskDriveObjectByPartitionId(this.DeviceId)));
         }
+
+
 
         public override void RefreshProperties()
         {
@@ -41,5 +46,7 @@ namespace Drivelens.DetectionLibrary
         public long StartingOffset { get; private set; }
         public bool PrimaryPartition { get; private set; }
         #endregion
+
+        public Lazy<DriveInfo> Drive { get; private set; }
     }
 }

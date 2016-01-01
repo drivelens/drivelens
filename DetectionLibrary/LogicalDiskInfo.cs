@@ -30,6 +30,9 @@ namespace Drivelens.DetectionLibrary
         protected LogicalDiskInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
+            this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
+                DiskPartitionInfo.Get(
+                    WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId)));
         }
 
 
@@ -60,9 +63,7 @@ namespace Drivelens.DetectionLibrary
             // 卷信息
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
 
-            this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
-                DiskPartitionInfo.Get(
-                    WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId)));
+
         }
 
         #region 属性
