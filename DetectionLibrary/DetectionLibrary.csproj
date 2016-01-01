@@ -46,7 +46,6 @@
     <Compile Include="DiskPartitionInfo.cs" />
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="ReadOnlyPoolCollection.cs" />
-    <Compile Include="DriveDetector.cs" />
     <Compile Include="DriveInfo.cs" />
     <Compile Include="LogicalDiskInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
