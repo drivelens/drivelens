@@ -11,7 +11,7 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DriveInfo : WmiDeviceInfoObjectBase
+    public class DriveInfo : WmiDeviceInfoObjectBase
     {
         public static DriveInfo Get(string id) =>
             ReadOnlyPoolCollection<DriveInfo, string>
@@ -27,7 +27,7 @@ namespace Drivelens.DetectionLibrary
         /// 用指定的 WMI 对象（Win32_DiskDrive）初始化 DriveInfo 对象的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win32_DiskDrive）。</param>
-        internal DriveInfo(ManagementObject source) : base(source)
+        protected DriveInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
         }

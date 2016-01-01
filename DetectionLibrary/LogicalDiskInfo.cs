@@ -10,7 +10,7 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个分区。
     /// </summary>
-    public sealed class LogicalDiskInfo : WmiDeviceInfoObjectBase
+    public class LogicalDiskInfo : WmiDeviceInfoObjectBase
     {
         public static LogicalDiskInfo Get(string id) =>
             ReadOnlyPoolCollection<LogicalDiskInfo, string>
@@ -27,7 +27,7 @@ namespace Drivelens.DetectionLibrary
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win23_LogicalDisk）。</param>
-        internal LogicalDiskInfo(ManagementObject source) : base(source)
+        protected LogicalDiskInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
         }
