@@ -13,6 +13,14 @@ namespace Drivelens.DetectionLibrary
     /// </summary>
     public class DriveInfo : WmiDeviceInfoObjectBase
     {
+        public static ReadOnlyPoolCollection<DriveInfo, string> LocalDrives
+        {
+            get
+            {
+                return new ReadOnlyPoolCollection<DriveInfo, string>(WmiUtility.GetAllDiskDrives().Select(mobject => DriveInfo.Get(mobject)).ToList());
+            }
+        }
+
         public static DriveInfo Get(string id) =>
             ReadOnlyPoolCollection<DriveInfo, string>
                 .GetOrCreate(id,
@@ -49,7 +57,7 @@ namespace Drivelens.DetectionLibrary
             base.RefreshPropertiesFromWmiObject(source);
             this.Model = source.GetConvertedProperty("Model", Convert.ToString, null);
             this.InterfaceType = source.GetConvertedProperty("InterfaceType", Convert.ToString, null);
-            this.Capacity = source.GetConvertedProperty("DeviceId", Convert.ToInt64, -1);
+            this.Capacity = source.GetConvertedProperty("Size", Convert.ToInt64, -1);
             this.SerialNumber = source.GetConvertedProperty("SerialNumber", s => Convert.ToString(s).Trim(), null);
             this.Firmware = source.GetConvertedProperty("FirmwareRevision", Convert.ToString, null);
             this.Index = source.GetConvertedProperty("Index", Convert.ToInt32, -1);
