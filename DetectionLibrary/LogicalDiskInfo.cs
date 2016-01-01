@@ -14,7 +14,7 @@ namespace Drivelens.DetectionLibrary
     {
         public static LogicalDiskInfo Get(string id) =>
             ReadOnlyPoolCollection<LogicalDiskInfo, string>
-                .GetOrCreate(id, 
+                .GetOrCreate(id,
                 () => new LogicalDiskInfo(WmiUtility.GetLogicalDiskObjectById(id)));
 
 
@@ -60,6 +60,9 @@ namespace Drivelens.DetectionLibrary
             // 卷信息
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
 
+            this.PhysicalPartiton = new Lazy<DiskPartitionInfo>(() =>
+                DiskPartitionInfo.Get(
+                    WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId)));
         }
 
         #region 属性
@@ -67,11 +70,6 @@ namespace Drivelens.DetectionLibrary
         /// 获取此分区的区块大小。
         /// </summary>
         public long? BlockSize { get; private set; }
-
-        /// <summary>
-        /// 获取此分区所分配的盘符。
-        /// </summary>
-        public string DeviceId { get; private set; }
 
         /// <summary>
         /// 获取此分区的起始偏移。
@@ -115,9 +113,9 @@ namespace Drivelens.DetectionLibrary
         #endregion
 
         /// <summary>
-        /// 获取此分区所属的磁盘。
+        /// 获取此逻辑分区所属的物理分区。
         /// </summary>
-        public Lazy<DriveInfo> Drive
+        public Lazy<DiskPartitionInfo> PhysicalPartiton
         {
             get;
             private set;
