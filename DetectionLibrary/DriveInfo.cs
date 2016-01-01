@@ -11,13 +11,13 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个驱动器。
     /// </summary>
-    public sealed class DriveInfo : IIdentifiable<string>
+    public sealed class DriveInfo : WmiDeviceInfoObjectBase
     {
         /// <summary>
         /// 用指定的 WMI 对象（Win32_DiskDrive）初始化 DriveInfo 对象的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win32_DiskDrive）。</param>
-        internal DriveInfo(ManagementObject source)
+        internal DriveInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
         }
@@ -25,7 +25,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 刷新本实例所包含的磁盘信息。
         /// </summary>
-        public void RefreshProperties()
+        public override void RefreshProperties()
         {
             RefreshPropertiesFromWmiObject(WmiUtility.GetDiskDriveObjectById(this.DeviceId));
         }
@@ -34,10 +34,10 @@ namespace Drivelens.DetectionLibrary
         /// 刷新磁盘信息。
         /// </summary>
         /// <param name="source">用于获取信息的 WMI 对象（Win32_DiskDrive）。</param>
-        private void RefreshPropertiesFromWmiObject(ManagementObject source)
+        protected override void RefreshPropertiesFromWmiObject(ManagementObject source)
         {
+            base.RefreshPropertiesFromWmiObject(source);
             this.Model = source.GetConvertedProperty("Model", Convert.ToString, null);
-            this.DeviceId = source.GetConvertedProperty("DeviceId", Convert.ToString, null);
             this.InterfaceType = source.GetConvertedProperty("InterfaceType", Convert.ToString, null);
             this.Capacity = source.GetConvertedProperty("DeviceId", Convert.ToInt64, -1);
             this.SerialNumber = source.GetConvertedProperty("SerialNumber", s => Convert.ToString(s).Trim(), null);
@@ -59,11 +59,6 @@ namespace Drivelens.DetectionLibrary
         /// 获取此驱动器的控制器服务名称。
         /// </summary>
         public string ControllerService { get; private set; }
-
-        /// <summary>
-        /// 获取此驱动器的路径。
-        /// </summary>
-        public string DeviceId { get; private set; }
 
         /// <summary>
         /// 获取此驱动器的固件版本。
@@ -97,17 +92,6 @@ namespace Drivelens.DetectionLibrary
 
 
         #endregion
-
-        /// <summary>
-        /// 获取标识符。
-        /// </summary>
-        public string Identifier
-        {
-            get
-            {
-                return this.DeviceId;
-            }
-        }
 
     }
 

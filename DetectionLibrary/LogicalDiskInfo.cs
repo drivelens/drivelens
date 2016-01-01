@@ -10,13 +10,13 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个分区。
     /// </summary>
-    public sealed class LogicalDiskInfo : IIdentifiable<string>
+    public sealed class LogicalDiskInfo : WmiDeviceInfoObjectBase
     {
         /// <summary>
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win23_LogicalDisk）。</param>
-        internal LogicalDiskInfo(ManagementObject source)
+        internal LogicalDiskInfo(ManagementObject source) : base(source)
         {
             RefreshPropertiesFromWmiObject(source);
         }
@@ -25,7 +25,7 @@ namespace Drivelens.DetectionLibrary
         /// <summary>
         /// 刷新本实例所包含的分区信息。
         /// </summary>
-        public void RefreshProperties()
+        public override void RefreshProperties()
         {
             RefreshPropertiesFromWmiObject(WmiUtility.GetLogicalDiskObjectById(this.DeviceId));
         }
@@ -34,8 +34,9 @@ namespace Drivelens.DetectionLibrary
         /// 刷新分区信息。
         /// </summary>
         /// <param name="source">用于获取信息的 WMI 对象（Win23_LogicalDisk）。</param>
-        private void RefreshPropertiesFromWmiObject(ManagementObject source)
+        protected override void RefreshPropertiesFromWmiObject(ManagementObject source)
         {
+            base.RefreshPropertiesFromWmiObject(source);
             // 基础信息
             this.Capacity = source.GetConvertedProperty("Size", Convert.ToInt64, -1);                   // 分区大小
             this.FreeSpace = source.GetConvertedProperty("FreeSpace", Convert.ToInt64, -1);      // 剩余空间
@@ -49,7 +50,7 @@ namespace Drivelens.DetectionLibrary
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
 
             ManagementObject partition = WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId);
-            DiskPartitionInfo? indexAndStartingOffset = 
+            DiskPartitionInfo? indexAndStartingOffset =
                 DiskInformationUtility.GetDiskPartitionIndexAndStartingOffset(partition);
             this.Index = indexAndStartingOffset?.Index;                        // 分区的索引
             this.StartingOffset = indexAndStartingOffset?.StartingOffset;      // 分区起始偏移
