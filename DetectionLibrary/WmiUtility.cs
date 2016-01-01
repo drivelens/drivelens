@@ -17,24 +17,18 @@ namespace Drivelens.DetectionLibrary
         /// </summary>
         /// <returns>所获取的 Win32_LogicalDisk 对象。</returns>
         /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394173.aspx"/>
-        public static IEnumerable<ManagementObject> GetAllLogicalDisks()
-        {
+        public static IEnumerable<ManagementObject> GetAllLogicalDisks() =>
             // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
-            using (ManagementObjectSearcher logicalDiskSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3"))
-                return logicalDiskSearcher.Get().Cast<ManagementObject>();
-        }
+            GetObjects("SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2 OR DriveType = 3");
+           
 
         /// <summary>
         /// 获取所有本地磁盘驱动器（Win32_DiskDrive）对象。
         /// </summary>
         /// <returns>获取到的 Win32_DiskDrive 对象。</returns>
         /// <seealso cref="https://msdn.microsoft.com/en-us/library/aa394173.aspx"/>
-        public static IEnumerable<ManagementObject> GetAllDiskDrives()
-        {
-            // 获取所有磁盘分区对象的 WMI 查询语句，DriveType 值为 2 时是可移动磁盘，值为 3 是本地磁盘。
-            using (ManagementObjectSearcher diskDriveSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive"))
-                return diskDriveSearcher.Get().Cast<ManagementObject>();
-        }
+        public static IEnumerable<ManagementObject> GetAllDiskDrives() =>
+            GetObjects("SELECT * FROM Win32_DiskDrive");
 
         /// <summary>
         /// 获取指定的盘符（Win32_LogicalDisk.DeviceId）所对应的分区（Win32_DiskPartition）对象。
@@ -123,16 +117,29 @@ namespace Drivelens.DetectionLibrary
             GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = {pnpDeviceId.Replace(@"\", @"\\")}");
 
         /// <summary>
-        /// 根据指定的 WMI 查询语句执行 WMI 查询，并返回查询结果。
+        /// 根据指定的 WMI 查询语句执行 WMI 查询，并返回查询结果的第一项。
         /// </summary>
         /// <param name="query">要执行的 WMI 查询。</param>
-        /// <returns>查询结果。如果查询到对象则返回查询到的对象；如果没有查询到则返回 null。</returns>
+        /// <returns>查询结果。如果查询到对象则返回查询到的第一项；如果没有查询到则返回 null。</returns>
         public static ManagementObject GetFirstObjectOrNull(string query)
         {
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
             {
                 var resultObjects = searcher.Get().Cast<ManagementObject>();
                 return resultObjects.Count() == 0 ? null : resultObjects.First();
+            }
+        }
+
+        /// <summary>
+        /// 根据指定的 WMI 查询语句执行 WMI 查询，并返回查询结果。
+        /// </summary>
+        /// <param name="query">要执行的 WMI 查询。</param>
+        /// <returns>查询到的对象。</returns>
+        public static IEnumerable<ManagementObject> GetObjects(string query)
+        {
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            {
+                return searcher.Get().Cast<ManagementObject>();
             }
         }
 
