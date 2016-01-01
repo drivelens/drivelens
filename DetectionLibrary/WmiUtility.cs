@@ -80,6 +80,14 @@ namespace Drivelens.DetectionLibrary
             GetFirstObjectOrNull($"SELECT * FROM Win32_LogicalDisk WHERE DeivceId={logicalDiskId}");
 
         /// <summary>
+        /// 获得一个物理分区（Win32_DiskPartition）对象。
+        /// </summary>
+        /// <param name="diskPartitionId">分区标识符（Win32_DiskPartition.DeviceId）。</param>
+        /// <returns>获取的 Win32_DiskPartition 对象。</returns>
+        public static ManagementObject GetDiskPartitionObjectById(string diskPartitionId) =>
+            GetFirstObjectOrNull($"SELECT * FROM Win32_DiskPartition WHERE DeivceId={diskPartitionId}");
+
+        /// <summary>
         /// 获取指定的磁盘（Win32_DiskDrive）对象的控制器对象。
         /// 所获取的控制器对象类型根据磁盘类型而定，可能为 Win32_IDEControllerDevice、Win32_SCSIControllerDevice 和 Win32_USBControllerDevice 三者之一。
         /// </summary>
