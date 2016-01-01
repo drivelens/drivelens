@@ -12,6 +12,17 @@ namespace Drivelens.DetectionLibrary
     /// </summary>
     public sealed class LogicalDiskInfo : WmiDeviceInfoObjectBase
     {
+        public static LogicalDiskInfo Get(string id) =>
+            ReadOnlyPoolCollection<LogicalDiskInfo, string>
+                .GetOrCreate(id, 
+                () => new LogicalDiskInfo(WmiUtility.GetLogicalDiskObjectById(id)));
+
+
+        internal static LogicalDiskInfo Get(ManagementObject source) =>
+            ReadOnlyPoolCollection<LogicalDiskInfo, string>
+                .GetOrCreate(source.GetConvertedProperty("DeviceId", Convert.ToString),
+                () => new LogicalDiskInfo(source));
+
         /// <summary>
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
@@ -49,11 +60,6 @@ namespace Drivelens.DetectionLibrary
             // 卷信息
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
 
-            ManagementObject partition = WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId);
-            DiskPartitionInfo? indexAndStartingOffset =
-                DiskInformationUtility.GetDiskPartitionIndexAndStartingOffset(partition);
-            this.Index = indexAndStartingOffset?.Index;                        // 分区的索引
-            this.StartingOffset = indexAndStartingOffset?.StartingOffset;      // 分区起始偏移
         }
 
         #region 属性
@@ -115,17 +121,6 @@ namespace Drivelens.DetectionLibrary
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// 获取标识符。
-        /// </summary>
-        public string Identifier
-        {
-            get
-            {
-                return DeviceId;
-            }
         }
     }
 }
