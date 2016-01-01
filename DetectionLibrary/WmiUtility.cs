@@ -136,7 +136,7 @@ namespace Drivelens.DetectionLibrary
         /// <param name="cast">用于转换的函数。</param>
         /// <param name="defaultValue">默认值。</param>
         /// <returns>如果要转换的对象不为 null，则调用指定的转换函数进行转换；否则返回默认值。</returns>
-        public static TResult TryCastObject<TResult>(object source, Func<object, TResult> cast, TResult defaultValue)
+        public static TResult TryCastObject<TResult>(object source, Func<object, TResult> cast, TResult defaultValue = default(TResult))
         {
             if(source == null)
             {
@@ -157,7 +157,7 @@ namespace Drivelens.DetectionLibrary
         /// <param name="cast">用于转换的函数。</param>
         /// <param name="defaultValue">默认值。</param>
         /// <returns>如果指定属性不为 null，则调用指定的转换函数进行转换；否则返回默认值。</returns>
-        public static TResult GetConvertedProperty<TResult>(this ManagementObject source, string propertyName, Func<object, TResult> cast, TResult defaultValue)
+        public static TResult GetConvertedProperty<TResult>(this ManagementObject source, string propertyName, Func<object, TResult> cast, TResult defaultValue = default(TResult))
         {
             return TryCastObject(source[propertyName], cast, defaultValue);
         }
