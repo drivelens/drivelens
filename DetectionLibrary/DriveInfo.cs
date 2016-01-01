@@ -65,6 +65,12 @@ namespace Drivelens.DetectionLibrary
             DiskControllerInfo? info = DiskInformationUtility.GetDiskControllerInfo(source);
             this.ControllerName = info?.ControllerName;
             this.ControllerService = info?.ControllerService;
+
+            this.Partitions = new Lazy<ReadOnlyPoolCollection<DiskPartitionInfo, string>>(() =>
+                new ReadOnlyPoolCollection<DiskPartitionInfo, string>(
+                    WmiUtility.GetPartitionsByDiskDriveId(this.DeviceId)
+                    .Select(mobj => DiskPartitionInfo.Get(mobj, this.DeviceId))
+                    .ToList()));
         }
 
         #region 属性
@@ -110,6 +116,11 @@ namespace Drivelens.DetectionLibrary
 
 
         #endregion
+
+        public Lazy<ReadOnlyPoolCollection<DiskPartitionInfo,string>> Partitions
+        {
+            get; private set;
+        }
 
     }
 

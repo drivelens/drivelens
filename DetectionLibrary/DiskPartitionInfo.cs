@@ -13,10 +13,10 @@ namespace Drivelens.DetectionLibrary
             ReadOnlyPoolCollection<DiskPartitionInfo, string>
                 .GetOrCreate(deviceId, () => new DiskPartitionInfo(WmiUtility.GetDiskPartitionObjectById(deviceId)));
 
-        internal static DiskPartitionInfo Get(ManagementObject source) =>
+        internal static DiskPartitionInfo Get(ManagementObject source, string diskDriveId = null) =>
             ReadOnlyPoolCollection<DiskPartitionInfo, string>
                 .GetOrCreate(source.GetConvertedProperty("DeviceId", Convert.ToString),
-                    () => new DiskPartitionInfo(source));
+                    () => new DiskPartitionInfo(source, diskDriveId));
 
         protected DiskPartitionInfo(ManagementObject source, string diskDriveId = null) : base(source)
         {
