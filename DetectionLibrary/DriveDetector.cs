@@ -14,10 +14,10 @@ namespace Drivelens.DetectionLibrary
         /// 获取该计算机上的所有磁盘分区。
         /// </summary>
         /// <returns>计算机上的所有磁盘分区。</returns>
-        internal static PartitionInfo[] GetPartitions()
+        internal static LogicalDiskInfo[] GetPartitions()
         {
             return WmiUtility.GetAllLogicalDisks()                          // 获取所有的 LogicalDisk 对象。
-                .Select(m => new PartitionInfo(m))         // 转换为 PartitionInfo 数组。
+                .Select(m => new LogicalDiskInfo(m))         // 转换为 PartitionInfo 数组。
                 .ToArray();
         }
 

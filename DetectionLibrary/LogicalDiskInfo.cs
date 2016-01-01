@@ -10,13 +10,13 @@ namespace Drivelens.DetectionLibrary
     /// <summary>
     /// 表示一个分区。
     /// </summary>
-    public sealed class PartitionInfo : IIdentifiable<string>
+    public sealed class LogicalDiskInfo : IIdentifiable<string>
     {
         /// <summary>
         /// 用指定的 WMI 对象（Win23_LogicalDisk）初始化 PartitionInfo 类的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win23_LogicalDisk）。</param>
-        internal PartitionInfo(ManagementObject source)
+        internal LogicalDiskInfo(ManagementObject source)
         {
             RefreshPropertiesFromWmiObject(source);
         }
@@ -48,11 +48,14 @@ namespace Drivelens.DetectionLibrary
             // 卷信息
             this.BlockSize = DiskInformationUtility.GetPartitionBlockSize(this.DeviceId); // 分区的分配单元大小
 
-            DiskPartitionInfo? indexAndStartingOffset = DiskInformationUtility.GetDiskPartitionIndexAndStartingOffset(this.DeviceId);
+            ManagementObject partition = WmiUtility.GetDiskPartitionObjectByLogicalDiskDeviceId(this.DeviceId);
+            DiskPartitionInfo? indexAndStartingOffset = 
+                DiskInformationUtility.GetDiskPartitionIndexAndStartingOffset(partition);
             this.Index = indexAndStartingOffset?.Index;                        // 分区的索引
             this.StartingOffset = indexAndStartingOffset?.StartingOffset;      // 分区起始偏移
         }
 
+        #region 属性
         /// <summary>
         /// 获取此分区的区块大小。
         /// </summary>
@@ -102,11 +105,12 @@ namespace Drivelens.DetectionLibrary
         /// 获取此分区的文件系统。
         /// </summary>
         public string FileSystem { get; private set; }
+        #endregion
 
         /// <summary>
         /// 获取此分区所属的磁盘。
         /// </summary>
-        public DriveInfo Drive
+        public Lazy<DriveInfo> Drive
         {
             get;
             private set;
