@@ -20,13 +20,10 @@ namespace Drivelens.DetectionLibrary
 
         protected DiskPartitionInfo(ManagementObject source) : base(source)
         {
-            RefreshPropertiesFromWmiObject(source);
             this.Drive = new Lazy<DriveInfo>(() =>
                  DriveInfo.Get(
                      WmiUtility.GetDiskDriveObjectByPartitionId(this.DeviceId)));
         }
-
-
 
         public override void RefreshProperties()
         {

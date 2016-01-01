@@ -37,7 +37,7 @@ namespace Drivelens.DetectionLibrary
         /// <param name="source">用于初始化的 WMI 对象（Win32_DiskDrive）。</param>
         protected DriveInfo(ManagementObject source) : base(source)
         {
-            RefreshPropertiesFromWmiObject(source);
+            
         }
 
         /// <summary>
