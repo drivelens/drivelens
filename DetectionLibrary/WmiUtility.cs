@@ -130,7 +130,7 @@ namespace Drivelens.DetectionLibrary
         /// <param name="pnpDeviceId">PnP 实体对象 ID（Win32_PnPEntity.DeviceID）。</param>
         /// <returns>获取到的 Win32_PnPEntity 对象。</returns>
         public static ManagementObject GetPnPEntityObjectByPnPDeviceId(string pnpDeviceId) =>
-            GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = {pnpDeviceId.Replace(@"\", @"\\")}");
+            GetFirstObjectOrNull($"SELECT * FROM Win32_PnPEntity WHERE DeviceID = '{pnpDeviceId.Replace(@"\", @"\\")}'");
 
         /// <summary>
         /// 根据指定的 WMI 查询语句执行 WMI 查询，并返回查询结果的第一项。

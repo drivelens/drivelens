@@ -58,7 +58,7 @@ namespace Drivelens.DetectionLibrary
                 result.ControllerName = controllerDeviceObject.GetConvertedProperty("Name", Convert.ToString, null);
                 using (ManagementObject controllerPnPObject = WmiUtility.GetPnPEntityObjectByPnPDeviceId(controllerDeviceObject.GetConvertedProperty("DeviceId", Convert.ToString, null)))
                 {
-                    result.ControllerService = controllerDeviceObject.GetConvertedProperty("Service", Convert.ToString, null);
+                    result.ControllerService = controllerPnPObject.GetConvertedProperty("Service", Convert.ToString, null);
                     // 在 IDE 接口的电脑上需要进行两次该操作才能获取到真实的控制器信息，否则只能获得“主要 IDE 通道”字样。
                     if (result.ControllerService == "atapi")
                     {
