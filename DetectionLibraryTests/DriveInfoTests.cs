@@ -12,7 +12,7 @@ namespace Drivelens.DetectionLibrary.Tests
     public class DriveInfoTests
     {
         [TestMethod()]
-        public void GetTest()
+        public void LocalDrivesTest()
         {
             var result = DriveInfo.LocalDrives;
             if(result.Count == 0)
