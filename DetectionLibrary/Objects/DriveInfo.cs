@@ -15,29 +15,13 @@ namespace Drivelens.DetectionLibrary.Objects
     /// </summary>
     public class DriveInfo : WmiDeviceInfoObjectBase
     {
-        public static ReadOnlyPoolCollection<DriveInfo, string> LocalDrives
-        {
-            get
-            {
-                return new ReadOnlyPoolCollection<DriveInfo, string>(WmiUtility.GetAllDiskDrives().Select(mobject => DriveInfo.Get(mobject)).ToList());
-            }
-        }
 
-        public static DriveInfo Get(string id) =>
-            ReadOnlyPoolCollection<DriveInfo, string>
-                .GetOrCreate(id,
-                () => new DriveInfo(WmiUtility.GetDiskDriveObjectById(id)));
-
-        internal static DriveInfo Get(ManagementObject source) =>
-            ReadOnlyPoolCollection<DriveInfo, string>
-                .GetOrCreate(source.GetConvertedProperty("DeviceId", Convert.ToString),
-                () => new DriveInfo(source));
 
         /// <summary>
         /// 用指定的 WMI 对象（Win32_DiskDrive）初始化 DriveInfo 对象的新实例。
         /// </summary>
         /// <param name="source">用于初始化的 WMI 对象（Win32_DiskDrive）。</param>
-        protected DriveInfo(ManagementObject source) : base(source)
+        protected internal DriveInfo(ManagementObject source) : base(source)
         {
             
         }
