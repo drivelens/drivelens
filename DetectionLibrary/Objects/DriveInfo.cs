@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Management;
 using Drivelens.DetectionLibrary.Wmi;
+using Drivelens.DetectionLibrary.Collections;
 
 namespace Drivelens.DetectionLibrary.Objects
 {

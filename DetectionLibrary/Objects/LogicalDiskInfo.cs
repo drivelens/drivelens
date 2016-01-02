@@ -1,4 +1,5 @@
-﻿using Drivelens.DetectionLibrary.Wmi;
+﻿using Drivelens.DetectionLibrary.Collections;
+using Drivelens.DetectionLibrary.Wmi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

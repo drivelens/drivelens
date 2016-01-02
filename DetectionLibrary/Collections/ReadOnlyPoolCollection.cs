@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Collections;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Collections
 {
     /// <summary>
     /// 表示一个包含对象池的集合。集合内的所有元素全部存在于对象池中。使用单一的标识符来确定对象。
