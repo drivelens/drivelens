@@ -5,7 +5,7 @@ using System.Text;
 using System.Management;
 using System.Threading.Tasks;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Wmi
 {
     /// <summary>
     /// 操作 WMI 对象。

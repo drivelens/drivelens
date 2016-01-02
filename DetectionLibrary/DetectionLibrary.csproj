@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiskInformationUtility.cs" />
+    <Compile Include="Wmi\DiskInformationUtility.cs" />
     <Compile Include="DiskPartitionInfo.cs" />
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="ReadOnlyPoolCollection.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="LogicalDiskInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WmiInfoObjectBase.cs" />
-    <Compile Include="WmiUtility.cs" />
+    <Compile Include="Wmi\WmiUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

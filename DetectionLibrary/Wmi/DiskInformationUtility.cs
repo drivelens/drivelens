@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Wmi
 {
     public static class DiskInformationUtility
     {
