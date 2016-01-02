@@ -18,14 +18,14 @@ namespace Drivelens.DetectionLibrary.Collections
         where TObject : IIdentifiable<TIdentifier>
         where TIdentifier : IEquatable<TIdentifier>
     {
-        private static List<TObject> pool = new List<TObject>();
+        protected static List<TObject> pool = new List<TObject>();
 
-        public static TObject GetElement(TIdentifier identifier)
+        protected static TObject GetElement(TIdentifier identifier)
         {
             return pool.FirstOrDefault(obj => obj.Identifier.Equals(identifier));
         }
 
-        public static TObject GetOrCreate(TIdentifier identifier, Func<TObject> creator)
+        protected static TObject GetOrCreate(TIdentifier identifier, Func<TObject> creator)
         {
             TObject element = pool.FirstOrDefault(obj => obj.Identifier.Equals(identifier));
             if(element == null)
@@ -36,7 +36,7 @@ namespace Drivelens.DetectionLibrary.Collections
             return element;
         }
 
-        public static void AddToPool(TObject obj)
+        protected static void AddToPool(TObject obj)
         {
             if (!pool.Contains(obj))
             {
@@ -44,7 +44,7 @@ namespace Drivelens.DetectionLibrary.Collections
             }
         }
 
-        public static ReadOnlyPoolCollection<TObject, TIdentifier> Pool
+        public static ReadOnlyPoolCollection<TObject, TIdentifier> ObjectPool
         {
             get
             {
