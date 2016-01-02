@@ -6,7 +6,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Objects
 {
     public class DiskPartitionInfo : WmiDeviceInfoObjectBase
     {

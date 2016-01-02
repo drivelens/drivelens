@@ -43,13 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Wmi\DiskInformationUtility.cs" />
-    <Compile Include="DiskPartitionInfo.cs" />
+    <Compile Include="Objects\DiskPartitionInfo.cs" />
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="ReadOnlyPoolCollection.cs" />
-    <Compile Include="DriveInfo.cs" />
-    <Compile Include="LogicalDiskInfo.cs" />
+    <Compile Include="Objects\DriveInfo.cs" />
+    <Compile Include="Objects\LogicalDiskInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WmiInfoObjectBase.cs" />
+    <Compile Include="Objects\WmiInfoObjectBase.cs" />
     <Compile Include="Wmi\WmiUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Management;
 using Drivelens.DetectionLibrary.Wmi;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Objects
 {
     /// <summary>
     /// 表示一个驱动器。

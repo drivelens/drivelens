@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Drivelens.DetectionLibrary.Wmi;
 
-namespace Drivelens.DetectionLibrary
+namespace Drivelens.DetectionLibrary.Objects
 {
     public abstract class WmiDeviceInfoObjectBase : IIdentifiable<string>
     {
