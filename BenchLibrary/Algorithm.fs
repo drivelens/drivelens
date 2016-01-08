@@ -37,13 +37,11 @@ let getTime work =
 
 let compressible = function BenchmarkFlags.Compressible -> true | _ -> false
 
-let constf x o = x
-
 let sequenceBenchmark blockSize blockCount stream work flags =
     let buffer = getData blockSize <| compressible flags
 
     {1 .. blockCount}
-    |> Seq.map (constf <| getTime (constf <| work (buffer, 0, buffer.Length)))
+    |> Seq.map (fun _ -> getTime (fun _ -> work (buffer, 0, buffer.Length)))
     |> Seq.fold (+) (System.TimeSpan 0L)
 
 let randomBenchmark evalutionCount blockSize blockCount (stream : FileStream) work flags =
