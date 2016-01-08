@@ -8,9 +8,11 @@ open System.IO
 open System.Management
 open System.Runtime.InteropServices
 
-
+[<Literal>]
 let private FILE_FLAG_NO_BUFFERING = 0x20000000u
+[<Literal>]
 let private FILE_FLAG_WRITE_THROUGH = 0x80000000u
+[<Literal>]
 let private FileFlags = FILE_FLAG_NO_BUFFERING ||| FILE_FLAG_WRITE_THROUGH
 
 let private workDirectory = @"\SSD测试工具临时文件夹"
@@ -27,12 +29,17 @@ let decompressFolder (path : string) =
         |> sprintf "Win32_Directory.Name=\"%s\""
     use obj  = new ManagementObject(path')
     downcast obj.InvokeMethod("Uncompress", null, null).Properties.["ReturnValue"].Value
+
+let fileAccessFlag =
+    function
+    | BenchmarkType.Read -> FileAccess.Read
+    | BenchmarkType.Write -> FileAccess.Write
+    | BenchmarkType.ReadWrite -> FileAccess.ReadWrite
+    | _ -> FileAccess()
     
 
-let openFileHandle (partition : PartitionInfo) (benchmarkType : BenchmarkType) work =
-    let fileAccess = 
-        if benchmarkType.HasFlag(BenchmarkType.Read) then FileAccess.Read else FileAccess() 
-        ||| if benchmarkType.HasFlag(BenchmarkType.Write) then FileAccess.Write else FileAccess()
+let openFileHandle (partition : PartitionInfo) benchmarkType work =
+    let fileAccess = fileAccessFlag benchmarkType
     let fullWorkDirectory = partition.DeviceId + workDirectory
     let fileDirectory = sprintf @"%s\%s" fullWorkDirectory fileName
 

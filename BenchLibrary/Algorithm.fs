@@ -35,18 +35,20 @@ let getTime work =
 
     stopwatch.Elapsed
 
+let compressible = function BenchmarkFlags.Compressible -> true | _ -> false
+
 let constf x o = x
 
-let sequenceBenchmark blockSize blockCount stream work (flags : BenchmarkFlags) =
-    let buffer = getData blockSize <| flags.HasFlag(BenchmarkFlags.Compressible)
+let sequenceBenchmark blockSize blockCount stream work flags =
+    let buffer = getData blockSize <| compressible flags
 
     {1 .. blockCount}
     |> Seq.map (constf <| getTime (constf <| work (buffer, 0, buffer.Length)))
     |> Seq.fold (+) (System.TimeSpan 0L)
 
-let randomBenchmark evalutionCount blockSize blockCount (stream : FileStream) work (flags : BenchmarkFlags) =
+let randomBenchmark evalutionCount blockSize blockCount (stream : FileStream) work flags =
     let benchOnce _ =
-        let buffer = getData blockSize <| flags.HasFlag(BenchmarkFlags.Compressible)
+        let buffer = getData blockSize <| compressible flags
         let posision = int64 <| blockSize * random.Next blockCount
         let work' () =
             ignore <| stream.Seek(posision, SeekOrigin.Begin)
